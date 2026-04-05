@@ -1,0 +1,414 @@
+/* ================================================================= */
+/* PLAY COURSE PAGE STYLES */
+/* ================================================================= */
+
+/* .play-course-root {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-color, #f5f6f9);
+} */
+
+/* .play-course-root #content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.play-course-root main {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+} */
+
+
+
+.play-course-root aside::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+
+
+
+
+.play-course-root aside button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #2b7cff;
+  transition: color 0.2s;
+}
+
+.play-course-root aside button:hover {
+  color: #1a4e9a;
+}
+
+/* Lecture Item */
+.play-course-root aside > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.play-course-root aside > div:nth-child(2) > div {
+  background: var(--card-bg, #f5f5f5);
+  color: #222;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.2s;
+  border: none;
+}
+
+.play-course-root aside > div:nth-child(2) > div:hover:not([style*="opacity: 0.6"]) {
+  background: #e8eef7;
+  transform: translateX(4px);
+}
+
+.play-course-root aside > div:nth-child(2) > div[style*="background: #2b7cff"] {
+  background: #2b7cff !important;
+  color: #fff !important;
+  border: 2px solid #1a4e9a !important;
+}
+
+.play-course-root aside > div:nth-child(2) > div > div:first-child {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.play-course-root aside > div:nth-child(2) > div > div:last-child {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  display: flex;
+  gap: 8px;
+}
+
+/* Progress Section */
+.play-course-root aside > div:last-child {
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.play-course-root aside > div:last-child > div {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.play-course-root aside > div:last-child > div > div {
+  height: 100%;
+  background: #2b7cff;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.play-course-root aside > div:last-child > span {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+/* ================================================================= */
+/* MAIN CONTENT AREA */
+/* ================================================================= */
+
+.play-course-root > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.play-course-root > div > div {
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Video Player Container */
+.play-course-root > div > div:first-child > div {
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.play-course-root > div > div:first-child video {
+  width: 100%;
+  height: auto;
+  min-height: 400px;
+  display: block;
+}
+
+.play-course-root > div > div:first-child h1 {
+  margin: 12px 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary, #222);
+}
+
+.play-course-root > div > div:first-child > div:nth-child(2) {
+  display: flex;
+  gap: 16px;
+  color: #999;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.play-course-root > div > div:first-child > p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Course Info */
+.play-course-root > div > div:nth-child(2) h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary, #222);
+}
+
+.play-course-root > div > div:nth-child(2) p {
+  margin: 0 0 12px 0;
+  color: #999;
+}
+
+.play-course-root > div > div:nth-child(2) > div {
+  display: flex;
+  gap: 24px;
+  color: #666;
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+
+/* Notes Section */
+.play-course-root > div > div:nth-child(3) h3 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #222);
+}
+
+.play-course-root > div > div:nth-child(3) textarea {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  background: var(--input-bg, #fff);
+  color: var(--text-primary, #222);
+  transition: border-color 0.2s;
+}
+
+.play-course-root > div > div:nth-child(3) textarea:focus {
+  outline: none;
+  border-color: #2b7cff;
+  box-shadow: 0 0 0 2px rgba(43, 124, 255, 0.1);
+}
+
+/* Comments Section */
+.play-course-root > div > div:nth-child(4) h3 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #222);
+}
+
+.play-course-root > div > div:nth-child(4) > div {
+  margin-bottom: 16px;
+}
+
+.play-course-root > div > div:nth-child(4) > div > p {
+  color: #999;
+  margin: 0;
+}
+
+.play-course-root > div > div:nth-child(4) > div > div {
+  background: #f7f8fa;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.play-course-root > div > div:nth-child(4) > div > div > span:first-child {
+  font-weight: 600;
+  margin-right: 8px;
+  color: #2b7cff;
+}
+
+.play-course-root > div > div:nth-child(4) form {
+  display: flex;
+  gap: 8px;
+}
+
+.play-course-root > div > div:nth-child(4) input {
+  flex: 1;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  font-size: 1rem;
+  background: var(--input-bg, #fff);
+  color: var(--text-primary, #222);
+  transition: border-color 0.2s;
+}
+
+.play-course-root > div > div:nth-child(4) input:focus {
+  outline: none;
+  border-color: #2b7cff;
+}
+
+.play-course-root > div > div:nth-child(4) button {
+  background: #2b7cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.play-course-root > div > div:nth-child(4) button:hover {
+  background: #1a4e9a;
+}
+
+/* ================================================================= */
+/* DARK MODE */
+/* ================================================================= */
+
+
+body.dark .play-course-root aside > div:nth-child(2) > div {
+  background: #333;
+  color: #e0e0e0;
+}
+
+body.dark .play-course-root aside > div:nth-child(2) > div:hover:not([style*="opacity: 0.6"]) {
+  background: #3a3f50;
+}
+
+body.dark .play-course-root > div > div {
+  background: var(--card-bg, #2a2a2a);
+  color: var(--text-primary, #e0e0e0);
+}
+
+body.dark .play-course-root > div > div:nth-child(4) > div > div {
+  background: #333;
+}
+
+body.dark .play-course-root textarea,
+body.dark .play-course-root input {
+  background: var(--input-bg, #333);
+  color: var(--text-primary, #e0e0e0);
+  border-color: #444;
+}
+
+/* ================================================================= */
+/* RESPONSIVE */
+/* ================================================================= */
+
+@media (max-width: 1200px) {
+  .play-course-root main {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .play-course-root aside {
+    width: 280px;
+    max-height: 70vh;
+  }
+}
+
+@media (max-width: 900px) {
+  .play-course-root main {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .play-course-root aside {
+    width: 100%;
+    max-height: 50vh;
+    display: none !important;
+  }
+
+  .play-course-root > div > div:first-child video {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .play-course-root main {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .play-course-root aside {
+    width: 100%;
+    max-height: 50vh;
+  }
+
+  .play-course-root > div > div {
+    padding: 16px;
+  }
+
+  .play-course-root > div > div:first-child h1 {
+    font-size: 1.4rem;
+  }
+
+  .play-course-root > div > div:first-child video {
+    min-height: 250px;
+  }
+
+  .play-course-root > div > div:nth-child(2) > div {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .play-course-root {
+    flexDirection: column;
+  }
+
+  .play-course-root main {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .play-course-root > div > div {
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .play-course-root > div > div:first-child h1 {
+    font-size: 1.2rem;
+  }
+
+  .play-course-root > div > div:first-child video {
+    min-height: 200px;
+  }
+
+  .play-course-root > div > div:nth-child(2) {
+    border-radius: 8px;
+  }
+
+  .play-course-root > div > div:nth-child(2) > div {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .play-course-root aside > div:last-child {
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,16 @@
+// src/services/api.js
+import axios from "axios";
+import { serverUrl } from "@config/server";
+// Base URL: prefer configured serverUrl, fall back to localhost for dev
+const BASE_URL = serverUrl || "http://localhost:8000";
+// Create an axios instance with sane defaults
+export const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true, // enable cookies for auth flows
+  timeout: 10000, // 10s timeout for requests
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+export default api;

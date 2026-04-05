@@ -1,0 +1,629 @@
+import React from "react";
+import { useProfileLogic } from "../functions";
+
+// Components
+import Nav from "../../../components/dashboard/components/Nav";
+import SideBar from "../../../components/dashboard/components/SideBar";
+import AuthInput from "../../../components/AuthInput";
+import LoadingDouble from "../../../components/LoadingDouble";
+// Icons
+import {
+  AiOutlineMessage,
+  VscSettings,
+  RiVideoAiLine,
+  RiEditCircleLine,
+  LuWifiOff,
+  BsFillCollectionPlayFill,
+  BsCameraFill,
+  BsPersonBoundingBox,
+  MdEmail,
+  FaInbox,
+  FaSort,
+  IoCloudDone,
+  TbArrowLeftDashed,
+  IoClose,
+  FaSignature,
+  TbPasswordFingerprint,
+  BsFillShieldLockFill,
+  FaEye,
+  FaEyeLowVision,
+  MdPassword,
+} from "@icons";
+
+import { ClipLoader } from "react-spinners";
+import { ROLE_LABELS } from "@/constants/roles";
+import userAvatar from "../../../assets/img/userAvatar.jpg";
+import image from "../../../assets/img/image.png";
+
+const Profile = () => {
+  const {
+    navigate,
+    darkMode,
+    setDarkMode,
+    handleFocus,
+    handleBlur,
+    showPass,
+    togglePass,
+    inputType,
+    activeMenu,
+    setActiveMenu,
+    sidebarHide,
+    setSidebarHide,
+    searchShow,
+    setSearchShow,
+    activeTab,
+    setActiveTab,
+    showSort,
+    setShowSort,
+    profileLoading,
+    coursesLoading,
+    userLoading,
+    avatarLoading,
+    error,
+    firstName,
+    lastName,
+    bio,
+    setFirstName,
+    setLastName,
+    setBio,
+    editMode,
+    setEditMode,
+    editPassword,
+    setEditPassword,
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    sortFilter,
+    handleSortChange,
+    isMyProfile,
+    displayedUser,
+    isInstructor,
+    isOwner,
+    filteredCourses,
+    sortLabel,
+    handleAvatarChange,
+    handlePublishCourse,
+    handleSaveProfile,
+    handleCancelEdit,
+    handleChangePassword,
+    profileTab,
+    setProfileTab,
+    userPosts,
+    purchasedCourses,
+    postsLoading,
+    purchasedLoading,
+  } = useProfileLogic();
+  const visibleCourses = isOwner
+    ? filteredCourses
+    : filteredCourses.filter(course => course.isPublished);
+
+  return (
+    <div>
+      {/* SORTING & FILTERING MODAL */}
+      {showSort && (
+        <div className="sort-container">
+          <div className="sort-wrapper">
+            <div className="head">
+              <h3>Sorting & Filtering</h3>
+              <IoClose
+                className="icon-close"
+                onClick={() => setShowSort(false)}
+              />
+            </div>
+            {["all", "published", "unpublished"].map((key) => (
+              <div className="sort-option" key={key}>
+                <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+                <label className="sort-switch">
+                  <input
+                    type="checkbox"
+                    checked={sortFilter[key]}
+                    onChange={() => handleSortChange(key)}
+                  />
+                  <span className="sort-slider"></span>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SIDEBAR */}
+      <SideBar
+        sidebarHide={sidebarHide}
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+      />
+      <section id="content">
+        {/* NAVIGATION */}
+        <Nav
+          sidebarHide={sidebarHide}
+          setSidebarHide={setSidebarHide}
+          searchShow={searchShow}
+          setSearchShow={setSearchShow}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
+
+        <main>
+          <div className="profile-main">
+            {/* LEFT SECTION - PROFILE INFO & CONTENT */}
+            <div className="section">
+              <div className="profile-container">
+                <div className="profile-cover">
+                  <img src={image} alt="cover" />
+                </div>
+                <div className="profile-info">
+                  <div className="avatar">
+                    {isMyProfile && (
+                      <label className="change-avatar">
+                        <BsCameraFill />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          onChange={handleAvatarChange}
+                        />
+                      </label>
+                    )}
+                    <div className="profile-img">
+                      {avatarLoading ? (
+                        <ClipLoader size={30} />
+                      ) : (
+                        <img
+                          src={displayedUser?.photoUrl || userAvatar}
+                          alt="profile"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <h2>
+                    {firstName} {lastName}
+                  </h2>
+                  <span className="clamp-v clamp-v2">{bio}</span>
+                  <div className="actions">
+                    <button onClick={() => navigate(`/message/${displayedUser._id}`)}>
+                      <AiOutlineMessage />
+                      <span>Messages</span>
+                    </button>
+                    <VscSettings className="settings" />
+                  </div>
+                </div>
+
+                {isMyProfile && displayedUser?.role === 2 && (
+                  <div className="stats-summary">
+                    <div>
+                      <p>0</p>
+                      <span>Craftsmen</span>
+                    </div>
+                    <span className="line"></span>
+                    <div>
+                      <p>{filteredCourses.length}</p>
+                      <span>{sortLabel}</span>
+                    </div>
+                    <span className="line"></span>
+                    <div>
+                      <p>0</p>
+                      <span>Earning</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+
+              <div className="courses-feed">
+                <div className="content-header">
+                  <div className="action-tab">
+                    <button
+                      className={activeTab === "details" ? "active" : ""}
+                      onClick={() => {
+                        setActiveTab("details");
+                        setProfileTab("profile");
+                      }}
+                    >
+                      Details
+                    </button>
+                    <button
+                      className={activeTab === "courses" ? "active" : ""}
+                      onClick={() => {
+                        setActiveTab("courses");
+                        setProfileTab("profile");
+                      }}
+                    >
+                      {isInstructor ? "Courses" : "Feeds"}
+                    </button>
+                    <button
+                      className={profileTab === "posts" ? "active" : ""}
+                      onClick={() => {
+                         setActiveTab("posts");
+                          setProfileTab("posts")
+                      }}
+                    >
+                      Posts
+                    </button>
+                    {isOwner && (
+                      <button
+                        className={profileTab === "purchased" ? "active" : ""}
+                        onClick={
+                          () => {
+                            setActiveTab("purchased");
+                            setProfileTab("purchased")
+                        }
+                        }
+                      >
+                        Purchased Courses
+                      </button>
+                    )}
+                  </div>
+                  {isInstructor && isOwner && (
+                    <button className="sort" onClick={() => setShowSort(true)}>
+                      <FaSort /> Sort
+                    </button>
+                  )}
+                </div>
+
+                {/* POSTS TAB */}
+                {profileTab === "posts" && (
+                  <div className="user-posts-tab">
+                    <h3>User Posts</h3>
+                    {postsLoading ? (
+                      <LoadingDouble />
+                    ) : userPosts.length === 0 ? (
+                      <p>No posts yet.</p>
+                    ) : (
+                      userPosts.map((post) => (
+                        <div key={post._id || post.id} className="user-post-card">
+                          <h4>{post.title}</h4>
+                          <p>{post.content || post.description || "No content"}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* PURCHASED COURSES TAB */}
+                {profileTab === "purchased" && isOwner && (
+                  <div className="purchased-courses-tab">
+            
+                    {purchasedLoading ? (
+                      <LoadingDouble />
+                    ) : purchasedCourses.length === 0 ? (
+                      <p>No purchased courses yet.</p>
+                    ) : (
+                      purchasedCourses.map((course) => (
+                        // <div key={course._id} className="purchased-course-card">
+                        //   <h4>{course.title}</h4>
+                        //   <span>By: {course.creator?.name || "Unknown"}</span>
+                        //   <span>EGP {course.price}</span>
+                        // </div>
+                         <div className="course-feed-card" key={course._id} onClick={() => navigate(`/playcourse/${course._id}`)}>
+                          <div className="img-course">
+                            <img src={course.thumbnail || image} alt={course.title} />
+        
+                    
+                          </div>
+                          <div className="content">
+                            <h2 className="clamp-v clamp-v1">{course.title}</h2>
+                            <p className="clamp-v clamp-v2">{course.subTitle}</p>
+                            <span onClick={() => navigate(`/profile/${course.creator._id}`)}>
+                              By: {course.creator?.name || "You"}
+                            </span>
+                            <span>
+                              {course.lecturesCount || 0} Lectures • {course.level}
+                            </span>
+                            <h2>EGP {course.price}</h2>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* COURSES TAB */}
+                {profileTab === "profile" && activeTab === "courses" && isInstructor && (
+                  <>
+                    {coursesLoading ? (
+                      <LoadingDouble />
+                    ) : visibleCourses.length > 0 ? (
+                      visibleCourses.map((course) => (
+                        <div className="course-feed-card" key={course._id}>
+                          <div className="img-course">
+                            <img src={course.thumbnail || image} alt={course.title} />
+                            <div className="bookmark-category-wrapper">
+                              {isOwner && (
+                                <label
+                                  className="ui-bookmark"
+                                  onClick={() => handlePublishCourse(course)}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    readOnly
+                                    checked={course.isPublished && course.lecturesCount > 0}
+                                  />
+                                  <div className="bookmark">
+                                    <svg viewBox="0 0 32 32">
+                                      <g>
+                                        <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                      </g>
+                                    </svg>
+                                  </div>
+                                </label>
+                              )}
+                              {course.category && <span className="category">#{course.category}</span>}
+                            </div>
+                            {isOwner && (
+                              <div className="edit-course"
+                                onClick={() =>
+                                  navigate(`/createcourse/${course._id}`)
+                                }>
+                                <RiEditCircleLine />
+                                <span>Edit</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="content">
+                            <h2 className="clamp-v clamp-v1">{course.title}</h2>
+                            <p className="clamp-v clamp-v2">{course.subTitle}</p>
+                            <span onClick={() => navigate(`/profile/${course.creator._id}`)}>
+                              By: {course.creator?.name || "You"}
+                            </span>
+                            <span>
+                              {course.lecturesCount || 0} Lectures • {course.level}
+                            </span>
+                            <h2>EGP {course.price}</h2>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="failed-load">
+                        {error ? (
+                          <>
+                            <LuWifiOff className="icon" />
+                            <p className="failed-text">{error}</p>
+                          </>
+                        ) : (
+                          <>
+                            <BsFillCollectionPlayFill className="icon" />
+                            <p className="failed-text">No courses created yet.</p>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* DETAILS TAB */}
+                {profileTab === "profile" && activeTab === "details" && !editMode && !editPassword && (
+                  <div className="profile-details">
+                    <div className="head">
+                      <h3>Information</h3>
+                      {isMyProfile && (
+                        <button
+                          className="edit"
+                          onClick={() => setEditMode(true)}
+                        >
+                          <RiEditCircleLine />
+                          <span>Edit</span>
+                        </button>
+                      )}
+                    </div>
+                    <div className="info">
+                      <BsPersonBoundingBox />
+                      <p>{displayedUser?.name || "CraftLink User"}</p>
+                    </div>
+                    <div className="info">
+                      <MdEmail />
+                      <p>{displayedUser?.email || "example@email.com"}</p>
+                    </div>
+                    {isMyProfile && (
+                      <div className="info">
+                        <TbPasswordFingerprint />
+                        <button
+                          className="btn-pass"
+                          onClick={() => setEditPassword(true)}
+                        >
+                          Change Password
+                        </button>
+                      </div>
+                    )}
+                    <div className="info">
+                      <FaSignature />
+                      <p>{ROLE_LABELS[displayedUser?.role] || "User"}</p>
+                    </div>
+                    <div className="info">
+                      <FaInbox />
+                      <p>{bio}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* PASSWORD CHANGE FORM */}
+                {activeTab === "details" && editPassword && (
+                  <form
+                    className="change-password"
+                    onSubmit={(e) => e.preventDefault()}
+                  >
+                    <div className="head">
+                      <div className="head-info">
+                        <TbArrowLeftDashed onClick={handleCancelEdit} />
+                        <h3>Change Password</h3>
+                      </div>
+                      <button
+                        className="save"
+                        type="button"
+                        onClick={handleChangePassword}
+                        disabled={userLoading}
+                      >
+                        <IoCloudDone />
+                        <span>
+                          {userLoading ?
+                            "Saving..."
+                            :
+                            "Save"
+                          }
+                        </span>
+
+                      </button>
+                    </div>
+                    <AuthInput
+                      type={inputType}
+                      label="Current Password"
+                      value={currentPassword}
+                      onChange={setCurrentPassword}
+                      handleBlur={handleBlur}
+                      handleFocus={handleFocus}
+                      Icon={MdPassword}
+                    />
+                    <AuthInput
+                      type={inputType}
+                      label="New Password"
+                      value={newPassword}
+                      onChange={setNewPassword}
+                      Icon={BsFillShieldLockFill}
+                    />
+                    <AuthInput
+                      type={inputType}
+                      label="Confirm Password"
+                      value={confirmPassword}
+                      onChange={setConfirmPassword}
+                      Icon={showPass ? FaEye : FaEyeLowVision}
+                      onIconClick={togglePass}
+                    />
+                  </form>
+                )}
+
+                {/* EDIT PROFILE FORM */}
+                {activeTab === "details" && editMode && (
+                  <form
+                    className="edit-profile"
+                    onSubmit={(e) => e.preventDefault()}
+                  >
+                    <div className="head">
+                      <div className="head-info">
+                        <TbArrowLeftDashed onClick={handleCancelEdit} />
+                        <h3>Edit Profile</h3>
+                      </div>
+                      <button
+                        className="save"
+                        type="button"
+                        onClick={handleSaveProfile}
+                      >
+                        <IoCloudDone />
+                        <span>
+                          {userLoading ?
+                            "Saving..."
+                            :
+                            "Save"
+                          }
+                        </span>
+                      </button>
+                    </div>
+                    <AuthInput
+                      type="text"
+                      label="First Name"
+                      value={firstName}
+                      onChange={setFirstName}
+                      handleBlur={handleBlur}
+                      handleFocus={handleFocus}
+                      Icon={BsPersonBoundingBox}
+                    />
+                    <AuthInput
+                      type="text"
+                      label="Last Name"
+                      value={lastName}
+                      onChange={setLastName}
+                      Icon={BsPersonBoundingBox}
+                    />
+                    <AuthInput
+                      type="text"
+                      label="Email"
+                      value={displayedUser?.email || ""}
+                      Icon={MdEmail}
+                      disabled
+                    />
+                    <AuthInput
+                      type="text"
+                      label="Role"
+                      value={ROLE_LABELS[displayedUser?.role] || "User"}
+                      Icon={FaSignature}
+                      disabled
+                    />
+                    <AuthInput
+                      textarea
+                      label="Bio"
+                      value={bio}
+                      onChange={setBio}
+                      Icon={FaInbox}
+                    />
+                  </form>
+                )}
+              </div>
+            </div>
+
+            {/* RIGHT SECTION - SIDEBAR WIDGETS */}
+            <div className="side-right">
+              <div className="latest-purchases">
+                <div className="head">
+                  <h3>Messages</h3>
+                </div>
+                <div className="content">
+                  {[1, 2, 3].map((i) => (
+                    <div className="user" key={i}>
+                      <img src={userAvatar} alt="" />
+                      <div className="info">
+                        <h4>Muhammed Salah</h4>
+                        <span>Craftsman</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="latest-purchases">
+                <div className="head">
+                  <h3>Latest purchases</h3>
+                </div>
+                <div className="content">
+                  {[1, 2, 3].map((i) => (
+                    <div className="user" key={i}>
+                      <img src={userAvatar} alt="" />
+                      <div className="info">
+                        <h4>Muhammed Salah</h4>
+                        <span>Craftsman</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="join-button"
+                onClick={() => navigate("/createcourse")}
+              >
+                <span className="fold"></span>
+                <div className="points_wrapper">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <i key={i} className="point"></i>
+                  ))}
+                </div>
+                <span className="inner-btn">
+                  <RiVideoAiLine className="icon" />
+                  Create New Course
+                </span>
+              </button>
+            </div>
+          </div>
+        </main>
+      </section>
+    </div>
+  );
+};
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
+export default Profile;

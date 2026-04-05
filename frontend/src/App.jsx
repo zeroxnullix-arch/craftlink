@@ -1,0 +1,126 @@
+// ===================== React Imports ===================== //
+import React, { Suspense, lazy } from "react";
+import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-photo-view/dist/react-photo-view.css';
+// ===================== Pages Imports ===================== //
+
+const SignUp = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.SignUp }))
+);
+
+const SignIn = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.SignIn }))
+);
+
+const ResetPassword = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.ResetPassword }))
+);
+
+const ViewCourse = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.ViewCourse }))
+);
+
+const Main = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.Main }))
+);
+
+const HelpCenter = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.HelpCenter }))
+);
+
+const About = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.About }))
+);
+
+const ContactUs = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.ContactUs }))
+);
+
+const PrivacyPolicy = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.PrivacyPolicy }))
+);
+
+const TermsPage = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.TermsPage }))
+);
+const PaymentSuccess = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.PaymentSuccess }))
+);
+
+const Profile = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.Profile }))
+);
+
+const Message = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.Message }))
+);
+
+const CreateCourse = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.CreateCourse }))
+);
+
+const CreateLecture = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.CreateLecture }))
+);
+const TimeLine = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.TimeLine }))
+);
+const SinglePost = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.SinglePost }))
+);
+const PlayCourse = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.PlayCourse }))
+);
+// ===================== Components Imports ===================== //
+import { ScrollToTop, LoadingFire } from '@components';
+import useCurrentUser from './customHooks/getCurrentUser';
+import getCreatorCourse from './customHooks/getCreatorCourse';
+import useGetPublishedCourse from './customHooks/useGetPublishedCourse';
+import PrivateRoute from '../PrivateRoute';
+import GuestRoute from '../GuestRoute';
+
+export const serverUrl = "http://localhost:8000"
+
+export default function App() {
+  getCreatorCourse();
+  useGetPublishedCourse();
+  const loadingUser = useCurrentUser(); // Hook
+  if (loadingUser) {
+    return (
+      <LoadingFire />
+    );
+  }
+
+  return (
+    <>
+      <ToastContainer />
+      <ScrollToTop />
+      <Suspense fallback={<LoadingFire />}>
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/signup' element={<GuestRoute loading={loadingUser}><SignUp /></GuestRoute>} />
+        <Route path='/signin' element={<GuestRoute loading={loadingUser}><SignIn /></GuestRoute>} />
+        <Route path='/resetpassword' element={<GuestRoute loading={loadingUser}><ResetPassword /></GuestRoute>} />
+        <Route path="/profile/:userId" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
+        <Route path="/message/:userId" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
+        <Route path="/message" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
+        <Route path="/profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
+        <Route path='/helpcenter' element={<HelpCenter />} />
+        <Route path='/viewcourse/:courseId' element={<ViewCourse />} />
+        <Route path='/createcourse' element={<CreateCourse />} />
+        <Route path="/createcourse/:courseId" element={<CreateCourse />} />
+        <Route path="/payment-success/" element={<PaymentSuccess />} />
+        <Route path='createcourse/createLecture/:courseId' element={<CreateLecture />} />
+        <Route path='about' element={<About />} />
+        <Route path='contactus' element={<ContactUs />} />
+        <Route path='privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='terms' element={<TermsPage />} />
+        <Route path='timeline' element={<TimeLine />} />
+        <Route path='timeline/post/:postId' element={<SinglePost />} />
+        <Route path='/playCourse/:courseId' element={<PlayCourse />} />
+      </Routes>
+      </Suspense>
+    </>
+  )
+}
