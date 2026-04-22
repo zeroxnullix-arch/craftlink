@@ -6,6 +6,7 @@ import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
 import AuthInput from "../../../components/AuthInput";
 import LoadingDouble from "../../../components/LoadingDouble";
+import PostCard from "./components/PostCard";
 // Icons
 import {
   AiOutlineMessage,
@@ -95,10 +96,20 @@ const Profile = () => {
     purchasedCourses,
     postsLoading,
     purchasedLoading,
+    currentUser,
+    salesData,
+    salesLoading,
+    earningsData,
+    earningsLoading,
   } = useProfileLogic();
   const visibleCourses = isOwner
     ? filteredCourses
     : filteredCourses.filter(course => course.isPublished);
+
+  const totalPaid = purchasedCourses.reduce(
+    (sum, course) => sum + (course.paidAmount || course.price || 0),
+    0,
+  );
 
   return (
     <div>
@@ -195,7 +206,7 @@ const Profile = () => {
                 {isMyProfile && displayedUser?.role === 2 && (
                   <div className="stats-summary">
                     <div>
-                      <p>0</p>
+                      <p>{salesLoading ? "..." : salesData?.totalBuyers || 0}</p>
                       <span>Craftsmen</span>
                     </div>
                     <span className="line"></span>
@@ -205,8 +216,10 @@ const Profile = () => {
                     </div>
                     <span className="line"></span>
                     <div>
-                      <p>0</p>
-                      <span>Earning</span>
+<p>
+   {earningsLoading ? "..." : (earningsData?.availableBalance || 0).toLocaleString()} EGP
+</p>
+                      <span>Available Balance</span>
                     </div>
                   </div>
                 )}
@@ -234,15 +247,17 @@ const Profile = () => {
                     >
                       {isInstructor ? "Courses" : "Feeds"}
                     </button>
-                    <button
-                      className={profileTab === "posts" ? "active" : ""}
-                      onClick={() => {
-                         setActiveTab("posts");
-                          setProfileTab("posts")
-                      }}
-                    >
-                      Posts
-                    </button>
+                    {isMyProfile && (
+                      <button
+                        className={profileTab === "posts" ? "active" : ""}
+                        onClick={() => {
+                           setActiveTab("posts");
+                            setProfileTab("posts")
+                        }}
+                      >
+                        Posts
+                      </button>
+                    )}
                     {isOwner && (
                       <button
                         className={profileTab === "purchased" ? "active" : ""}
@@ -265,7 +280,7 @@ const Profile = () => {
                 </div>
 
                 {/* POSTS TAB */}
-                {profileTab === "posts" && (
+                {profileTab === "posts" && isMyProfile && (
                   <div className="user-posts-tab">
                     <h3>User Posts</h3>
                     {postsLoading ? (
@@ -274,10 +289,12 @@ const Profile = () => {
                       <p>No posts yet.</p>
                     ) : (
                       userPosts.map((post) => (
-                        <div key={post._id || post.id} className="user-post-card">
-                          <h4>{post.title}</h4>
-                          <p>{post.content || post.description || "No content"}</p>
-                        </div>
+                        <PostCard
+                          key={post._id}
+                          post={post}
+                          currentUserId={currentUser._id}
+                          onPostDeleted={(id) => setUserPosts(prev => prev.filter(p => p._id !== id))}
+                        />
                       ))
                     )}
                   </div>
@@ -286,23 +303,21 @@ const Profile = () => {
                 {/* PURCHASED COURSES TAB */}
                 {profileTab === "purchased" && isOwner && (
                   <div className="purchased-courses-tab">
-            
+                    <div className="purchased-summary">
+                      <div>
+                        <p>المبلغ المدفوع في الشراء</p>
+                        <strong>EGP {totalPaid}</strong>
+                      </div>
+                    </div>
                     {purchasedLoading ? (
                       <LoadingDouble />
                     ) : purchasedCourses.length === 0 ? (
                       <p>No purchased courses yet.</p>
                     ) : (
                       purchasedCourses.map((course) => (
-                        // <div key={course._id} className="purchased-course-card">
-                        //   <h4>{course.title}</h4>
-                        //   <span>By: {course.creator?.name || "Unknown"}</span>
-                        //   <span>EGP {course.price}</span>
-                        // </div>
-                         <div className="course-feed-card" key={course._id} onClick={() => navigate(`/playcourse/${course._id}`)}>
+                        <div className="course-feed-card" key={course._id} onClick={() => navigate(`/playcourse/${course._id}`)}>
                           <div className="img-course">
                             <img src={course.thumbnail || image} alt={course.title} />
-        
-                    
                           </div>
                           <div className="content">
                             <h2 className="clamp-v clamp-v1">{course.title}</h2>
@@ -371,6 +386,9 @@ const Profile = () => {
                             </span>
                             <span>
                               {course.lecturesCount || 0} Lectures • {course.level}
+                            </span>
+                            <span className="enrolled-count">
+                              {course?.enrolledCraftsmen?.length || 0} enrolled
                             </span>
                             <h2>EGP {course.price}</h2>
                           </div>
@@ -597,6 +615,7 @@ const Profile = () => {
                   ))}
                 </div>
               </div>
+
 
               <button
                 type="button"

@@ -48,6 +48,10 @@ const PaymentSuccess = lazy(() =>
   import('@pages/website').then(m => ({ default: m.PaymentSuccess }))
 );
 
+const PaymentFail = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.PaymentFail }))
+);
+
 const Profile = lazy(() =>
   import('@pages/admin').then(m => ({ default: m.Profile }))
 );
@@ -72,6 +76,22 @@ const SinglePost = lazy(() =>
 const PlayCourse = lazy(() =>
   import('@pages/admin').then(m => ({ default: m.PlayCourse }))
 );
+
+const Dashboard = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.Dashboard }))
+);
+const AdminDashboard = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.AdminDashboard }))
+);
+
+const InstructorWithdraw = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.InstructorWithdraw }))
+);
+
+const AdminLogin = lazy(() =>
+  import('@pages/admin').then(m => ({ default: m.AdminLogin }))
+);
+
 // ===================== Components Imports ===================== //
 import { ScrollToTop, LoadingFire } from '@components';
 import useCurrentUser from './customHooks/getCurrentUser';
@@ -110,7 +130,8 @@ export default function App() {
         <Route path='/viewcourse/:courseId' element={<ViewCourse />} />
         <Route path='/createcourse' element={<CreateCourse />} />
         <Route path="/createcourse/:courseId" element={<CreateCourse />} />
-        <Route path="/payment-success/" element={<PaymentSuccess />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment/fail" element={<PaymentFail />} />
         <Route path='createcourse/createLecture/:courseId' element={<CreateLecture />} />
         <Route path='about' element={<About />} />
         <Route path='contactus' element={<ContactUs />} />
@@ -119,6 +140,10 @@ export default function App() {
         <Route path='timeline' element={<TimeLine />} />
         <Route path='timeline/post/:postId' element={<SinglePost />} />
         <Route path='/playCourse/:courseId' element={<PlayCourse />} />
+        <Route path='/admin-login' element={<GuestRoute loading={loadingUser}><AdminLogin /></GuestRoute>} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/admin-dashboard' element={<AdminDashboard />} />
+        <Route path='/instructor-withdraw' element={<PrivateRoute allowedRoles={[2]}><InstructorWithdraw /></PrivateRoute>} />
       </Routes>
       </Suspense>
     </>

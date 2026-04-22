@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { api } from "@services/api";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import ChatBot from "../../../components/chatBot";
 const tabs = [
   { id: "Overview", icon: BsFillInfoCircleFill, text: "Overview" },
   { id: "Curriculum", icon: PiMonitorPlayFill, text: "Curriculum" },
@@ -35,7 +36,13 @@ const ViewCourse = () => {
 
   useEffect(() => {
     if (course && userData) {
-      setIsEnrolled(course.enrolledCraftsmen?.includes(userData._id));
+      setIsEnrolled(
+        course.enrolledCraftsmen?.some(
+          id => id.toString() === userData._id.toString()
+        )
+      );
+      console.log("userData:", userData);
+      console.log("course enrolled:", course?.enrolledCraftsmen);
     }
   }, [course, userData]);
   useEffect(() => {
@@ -58,35 +65,54 @@ const ViewCourse = () => {
 
     fetchCourse();
   }, [courseId]);
+
+  // Refetch course data when returning from payment
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // Page has become visible - user might be returning from payment
+        console.log("Page visible again, refetching course data...");
+        const fetchCourse = async () => {
+          try {
+            const { data } = await api.get(`/api/course/getcourse/${courseId}`);
+            setCourse(data);
+          } catch (err) {
+            console.error("Error refetching course:", err);
+          }
+        };
+        fetchCourse();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [courseId]);
   const handlePayment = async () => {
     if (!course) return;
 
     try {
       setLoadingPayment(true);
 
-      const res = await api.post(
-        `/api/payment/create-payment`,
-        {
-          amount: course.price, // سعر الكورس بالجنيه
-          userId: userData._id,
-          courseId: course._id,
-        },
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/payment/create-payment`, {
+        amount: course.price,
+        courseId: course._id,
+      });
 
-      if (res.data.success) {
-        // فتح نافذة جديدة للـ Paymob
-        window.open(res.data.iframeUrl, "_blank", "width=800,height=600");
+      if (res.data.success && res.data.iframeUrl) {
+        // Redirect to Paymob iframe for payment
+        window.location.href = res.data.iframeUrl;
       } else {
-        alert("Payment initiation failed.");
+        alert("Failed to initiate payment. Please try again.");
       }
     } catch (err) {
-      console.log(err);
-      alert("Payment failed.");
+      console.error("Payment error:", err);
+      alert("Payment failed: " + (err.response?.data?.message || err.message));
     } finally {
       setLoadingPayment(false);
     }
   };
+  const buyersCount = course?.enrolledCraftsmen?.length || 0;
+
   return (
     <>
       <div className="full-width">
@@ -119,6 +145,7 @@ const ViewCourse = () => {
               <img src={picProfile} alt="" />
               <span>{course?.creator.name} • Instructor</span>
             </div>
+            
           </div>
         </div>
         <div className="course-grid">
@@ -190,7 +217,10 @@ const ViewCourse = () => {
           </div>
           <div className="card-container">
             <div className="title-card">
-              <p>MOST POPULAR</p>
+              <p>{course?.category}</p>
+              {/* <div className="course-meta-info">
+              <span>{buyersCount} Purchases</span>
+            </div> */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -204,7 +234,7 @@ const ViewCourse = () => {
               </svg>
             </div>
             <div className="card-content">
-              <p className="title">{course?.category}</p>
+              <p className="title">{buyersCount} Purchases</p>
               <p className="plain">
                 <span>{course?.price}</span>
                 <span>EGP</span>
@@ -311,7 +341,7 @@ const ViewCourse = () => {
         </div>
       </section>
       <TestimonialsSwiper />
-
+<ChatBot/>
       <Footer />
     </>
   );

@@ -8,6 +8,7 @@
  * CLIENT (3): Service/course consumer - can hire craftsmen and enroll in courses
  */
 export const ROLES = {
+  ADMIN: 0,
   CRAFTSMAN: 1,   // Service provider
   INSTRUCTOR: 2,  // Course creator
   CLIENT: 3,      // Consumer
@@ -19,6 +20,7 @@ export const ROLES = {
  * Useful for UI displays and documentation
  */
 export const ROLE_DESCRIPTIONS = {
+  [ROLES.ADMIN]: "Admin - System administrator",
   [ROLES.CRAFTSMAN]: "Craftsman - Provide skilled services",
   [ROLES.INSTRUCTOR]: "Instructor - Create and teach courses",
   [ROLES.CLIENT]: "Client - Hire professionals and learn",

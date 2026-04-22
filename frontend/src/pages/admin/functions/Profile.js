@@ -68,6 +68,27 @@ export const useProfileLogic = () => {
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [postsLoading, setPostsLoading] = useState(false);
   const [purchasedLoading, setPurchasedLoading] = useState(false);
+const [salesData, setSalesData] = useState({
+  totalRevenue: 0,
+  totalBuyers: 0,
+  totalCourses: 0,
+  totalCourseBuyers: 0,
+});
+
+  const [salesLoading, setSalesLoading] = useState(false);
+  const [salesError, setSalesError] = useState(null);
+
+  // Add earnings state
+  const [earningsData, setEarningsData] = useState({
+  totalEarnings: 0,
+  totalWithdrawn: 0,
+  availableBalance: 0,
+  computedAvailable: 0,   // 🔥 جديد
+  pendingAmount: 0,
+  approvedAmount: 0,
+  reservedAmount: 0,
+  });
+  const [earningsLoading, setEarningsLoading] = useState(false);
 
   // ========================================================================
   // STATE - FILTERS
@@ -272,6 +293,97 @@ useEffect(() => {
 }, [userId, isOwner, dispatch]);
 
   // ========================================================================
+  // EFFECTS - FETCH INSTRUCTOR SALES DATA
+// ✅ استخدم currentUser مباشرة بدل isInstructor
+useEffect(() => {
+  if (!isOwner || currentUser?.role !== 2) return;
+
+  let isMounted = true;
+
+  const fetchSalesData = async () => {
+    try {
+      setSalesLoading(true);
+      setSalesError(null);
+
+      const res = await api.get("/api/course/sales", {
+        withCredentials: true,
+      });
+
+      if (!isMounted) return;
+
+      if (res.data?.success) {
+        const data = res.data.data;
+        setSalesData({
+          totalRevenue: data.totalRevenue || 0,
+          totalBuyers: data.totalBuyers || 0,
+          totalCourses: data.totalCourses || 0,
+          totalCourseBuyers: data.totalCourseBuyers || 0,
+        });
+      } else {
+        throw new Error(res.data?.message || "Failed");
+      }
+    } catch (err) {
+      if (!isMounted) return;
+      console.error("Failed to load instructor sales", err?.message || err);
+      setSalesError("Failed to load instructor sales data");
+      setSalesData({ totalRevenue: 0, totalBuyers: 0, totalCourses: 0, totalCourseBuyers: 0 });
+    } finally {
+      if (isMounted) setSalesLoading(false);
+    }
+  };
+
+  fetchSalesData();
+  return () => { isMounted = false; };
+
+}, [isOwner, currentUser]); // ✅ currentUser بدل isInstructor
+  // ========================================================================
+  // EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
+// ========================================================================
+// EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
+// ========================================================================
+useEffect(() => {
+  if (!isOwner || currentUser?.role !== 2) return;
+
+  const fetchEarningsData = async () => {
+    try {
+      setEarningsLoading(true);
+
+      const res = await api.get("/api/withdrawal/earnings", {
+        withCredentials: true,
+      });
+
+      if (res.data?.success) {
+        const data = {
+          totalEarnings: res.data.totalEarnings || 0,
+          totalWithdrawn: res.data.totalWithdrawn || 0,
+          availableBalance: res.data.availableBalance || 0,
+          computedAvailable: res.data.computedAvailable || 0, // 🔥
+          pendingAmount: res.data.pendingAmount || 0,
+          approvedAmount: res.data.approvedAmount || 0,
+          reservedAmount: res.data.reservedAmount || 0, // 🔥
+        };
+
+        setEarningsData(data);
+
+        // 🔥 DEBUG مهم جدًا
+        if (data.availableBalance !== data.computedAvailable) {
+          console.warn("⚠️ Balance mismatch detected!", {
+            dbBalance: data.availableBalance,
+            computedBalance: data.computedAvailable,
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load instructor earnings", err?.message || err);
+    } finally {
+      setEarningsLoading(false);
+    }
+  };
+
+  fetchEarningsData();
+}, [isOwner, currentUser]);
+
+  // ========================================================================
   // EFFECTS - FETCH USER POSTS
   // ========================================================================
   useEffect(() => {
@@ -474,12 +586,19 @@ useEffect(() => {
     isOwner,
     creatorCourses,
     filteredCourses,
-    sortLabel,    profileTab,
+    sortLabel,
+    profileTab,
     setProfileTab,
     userPosts,
     purchasedCourses,
     postsLoading,
     purchasedLoading,
+    currentUser,
+    salesData,
+    salesLoading,
+    salesError,
+    earningsData,
+    earningsLoading,
     // HANDLERS
     handleAvatarChange,
     handlePublishCourse,

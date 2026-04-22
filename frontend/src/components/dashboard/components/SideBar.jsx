@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/CraftLink.svg";
 import { performLogout } from "../../../redux/userActions";
 import { toast } from "react-toastify";
+import { IoMdWallet } from "react-icons/io";
 import {
   MdTimeline,
   RiVideoAiLine,
@@ -34,6 +35,7 @@ const SideBar = ({ sidebarHide }) => {
       path: currentUser?._id ? `/profile/${currentUser._id}` : "/profile",
     },
     { name: "Create Course", icon: RiVideoAiLine, path: "/createcourse" },
+    { name: "Wallet", icon: IoMdWallet, path: "/instructor-withdraw" },
   ];
   const handleLogOut = () => {
     localStorage.setItem("logout", Date.now());

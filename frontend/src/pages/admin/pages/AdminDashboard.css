@@ -1,0 +1,335 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--main-color);
+  padding-bottom: 1rem;
+}
+
+.admin-header h1 {
+  color: var(--main-color);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-header p {
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--main-color);
+  background-color: transparent;
+  color: var(--main-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.tab-btn.active {
+  background-color: var(--main-color);
+  color: white;
+}
+
+
+
+/* Withdrawals Section */
+.admin-withdrawals {
+  background: var(--nav-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.admin-withdrawals h2 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+.withdrawals-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.withdrawal-card {
+  background: var(--input-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.withdrawal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.withdrawal-header h4 {
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+}
+
+.withdrawal-header p {
+  color: var(--text-color);
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* .status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+} */
+
+/* .status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+} */
+
+/* .status-badge.approved {
+  background-color: #cfe2ff;
+  color: #084298;
+} */
+/* 
+.status-badge.completed {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-badge.rejected {
+  background-color: #f8d7da;
+  color: #842029;
+} */
+
+.withdrawal-body {
+  margin-bottom: 1.5rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 0.95rem;
+}
+
+.info-row .label {
+  color: var(--text-color);
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.info-row .value {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.withdrawal-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.withdrawal-actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-approve {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-approve:hover {
+  background-color: #229954;
+  transform: translateY(-2px);
+}
+
+.btn-reject {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-reject:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.btn-complete {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-complete:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* Users Section */
+.admin-users {
+  background: var(--nav-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.admin-users h2 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+
+
+
+.ad-status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.ad-status.active {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.ad-status.inactive {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.btn-toggle {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.btn-toggle.deactivate {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-toggle.deactivate:hover {
+  background-color: #c0392b;
+}
+
+.btn-toggle.activate {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-toggle.activate:hover {
+  background-color: #229954;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+
+  .admin-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    min-width: 50px;
+  }
+
+  .withdrawal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .admin-tabs {
+    gap: 0.5rem;
+  }
+
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

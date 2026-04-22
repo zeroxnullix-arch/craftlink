@@ -2,6 +2,7 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import Course from "../model/courseModel.js";
 import Lecture from "../model/LectureModel.js";
 import User from "../model/userModel.js";
+import Payment from "../model/paymentModel.js";
 import mongoose from "mongoose";
 /**
  * Create a new course
@@ -434,7 +435,7 @@ export const getInstructorCourses = async (req, res) => {
     const courses = await Course.find(filter)
       .populate("creator", "name photoUrl")
       .select(
-        "title subTitle description category level price thumbnail lectures isPublished creator"
+        "title subTitle description category level price thumbnail lectures isPublished creator enrolledCraftsmen"
       )
       .sort({ createdAt: -1 });
 
@@ -447,6 +448,56 @@ export const getInstructorCourses = async (req, res) => {
   } catch (error) {
     console.error("getInstructorCourses error:", error);
     res.status(500).json({ message: "Failed to load instructor courses" });
+  }
+};
+
+export const getInstructorSales = async (req, res) => {
+  try {
+    const instructorId = req.userId;
+
+    if (!instructorId || !mongoose.Types.ObjectId.isValid(instructorId)) {
+      return res.status(400).json({ message: "Invalid instructor user ID" });
+    }
+
+    const courses = await Course.find({ creator: instructorId }).select(
+      "_id title price enrolledCraftsmen"
+    );
+
+    const courseIds = courses.map((course) => course._id);
+
+// ✅
+const payments = await Payment.find({
+  course: { $in: courseIds },
+  status: { $in: ["success", "paid"] },
+});
+
+    const totalRevenue = payments.reduce(
+      (sum, payment) => sum + (payment.amount || 0),
+      0,
+    );
+
+    const totalBuyers = Array.from(
+      new Set(payments.map((payment) => String(payment.user)))
+    ).length;
+
+    const totalCourses = courses.length;
+    const totalCourseBuyers = courses.reduce(
+      (sum, course) => sum + (course.enrolledCraftsmen?.length || 0),
+      0,
+    );
+
+ res.status(200).json({
+  success: true,
+  data: {
+    totalRevenue,
+    totalBuyers,
+    totalCourses,
+    totalCourseBuyers,
+  }
+});
+  } catch (error) {
+    console.error("getInstructorSales error:", error);
+    res.status(500).json({ message: "Failed to load instructor sales" });
   }
 };
 
@@ -505,6 +556,7 @@ export const addLectureComment = async (req, res) => {
 
     const newComment = {
       userId,
+      photoUrl: user.photoUrl,
       userName: user.name,
       text: text.trim(),
       createdAt: new Date(),

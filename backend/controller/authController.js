@@ -80,6 +80,7 @@ export const login = async (req, res) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
+
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -100,6 +101,43 @@ export const login = async (req, res) => {
       error && error.message ? error.message : error,
     );
     return res.status(500).json({ message: "Login failed" });
+  }
+};
+
+export const adminLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (username !== "admin" || password !== "123") {
+      return res.status(401).json({ message: "Invalid admin credentials" });
+    }
+
+    const adminEmail = "admin@craftlink.com";
+    let user = await User.findOne({ email: adminEmail }).select("+password");
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user = await User.create({
+        name: "Admin",
+        email: adminEmail,
+        password: hashedPassword,
+        role: 0,
+      });
+    }
+
+    if (!user.password) {
+      return res.status(500).json({ message: "Admin password missing" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect admin password" });
+    }
+
+    const token = await genToken(user._id);
+    setAuthCookie(res, token);
+    return res.status(200).json(sanitizeUser(user));
+  } catch (error) {
+    console.error("adminLogin error:", error && error.message ? error.message : error);
+    return res.status(500).json({ message: "Admin login failed" });
   }
 };
 

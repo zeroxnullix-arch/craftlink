@@ -1,105 +1,495 @@
 // backend/controller/paymentController.js
 import axios from "axios";
 import Course from "../model/courseModel.js";
+import User from "../model/userModel.js";
+import Payment from "../model/paymentModel.js";
+
 
 const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;
 const PAYMOB_INTEGRATION_ID = Number(process.env.PAYMOB_INTEGRATION_ID);
 const PAYMOB_API_URL = process.env.PAYMOB_API_URL;
 const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID;
+const FRONTEND_URL = process.env.FRONTEND_URL || process.env.VITE_FRONTEND_URL || "http://localhost:5173";
+
+/* ================== HELPER FUNCTION ================== */
+const enrollUserInCourse = async (userId, courseId) => {
+  try {
+    // Add user to course's enrolledCraftsmen
+    const courseUpdate = await Course.findByIdAndUpdate(
+      courseId,
+      { $addToSet: { enrolledCraftsmen: userId } },
+      { new: true }
+    );
+    console.log("Course enrollment success:", courseUpdate ? "yes" : "no");
+
+    // Add course to user's enrolledCourses (if field exists)
+    if (true) {
+      const userUpdate = await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { enrolledCourses: courseId } },
+        { new: true }
+      );
+      console.log("User enrollment success:", userUpdate ? "yes" : "no");
+    }
+  } catch (err) {
+    console.error("Error in enrollUserInCourse:", err);
+    throw err;
+  }
+};
 
 /* ================== CREATE PAYMENT ================== */
 
 const getAuthToken = async () => {
-  const res = await axios.post(`${PAYMOB_API_URL}/auth/tokens`, {
-    api_key: PAYMOB_API_KEY,
-  });
-  return res.data.token;
-};
-
-const createOrder = async (authToken, amount, userId, courseId) => {
-  const res = await axios.post(`${PAYMOB_API_URL}/ecommerce/orders`, {
-    auth_token: authToken,
-    delivery_needed: false,
-    amount_cents: amount * 100,
-    currency: "EGP",
-    items: [],
-    metadata: { userId, courseId },
-  });
-  return res.data.id;
-};
-
-const createPaymentKey = async (authToken, orderId, amount) => {
-  const res = await axios.post(`${PAYMOB_API_URL}/acceptance/payment_keys`, {
-    auth_token: authToken,
-    amount_cents: amount * 100,
-    expiration: 3600,
-    order_id: orderId,
-    currency: "EGP",
-    integration_id: PAYMOB_INTEGRATION_ID,
-    billing_data: {
-      first_name: "Test",
-      last_name: "User",
-      email: "test@test.com",
-      phone_number: "01000000000",
-      country: "EG",
-      city: "Cairo",
-      street: "Test Street",
-      building: "1",
-      floor: "1",
-      apartment: "1",
-    },
-  });
-  return res.data.token;
-};
-
-// ================== CREATE PAYMENT (React iframe) ==================
-export const createPayment = async (req, res) => {
   try {
-    const { amount, userId, courseId } = req.body;
-
-    const authToken = await getAuthToken();
-    const orderId = await createOrder(authToken, amount, userId, courseId);
-    const paymentKey = await createPaymentKey(authToken, orderId, amount);
-
-    const iframeUrl = `https://accept.paymobsolutions.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`;
-
-    // ✅ لو عايز تفعل الكورس فورًا بعد الدفع (React side)
-    await Course.findByIdAndUpdate(courseId, {
-      $addToSet: { enrolledCraftsmen: userId },
+    console.log("Requesting auth token from Paymob...");
+    const res = await axios.post(`${PAYMOB_API_URL}/auth/tokens`, {
+      api_key: PAYMOB_API_KEY,
     });
-
-    res.json({ success: true, iframeUrl });
+    console.log("Auth token received successfully");
+    return res.data.token;
   } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ success: false });
+    console.error("getAuthToken error:", err.response?.status, err.response?.data || err.message);
+    throw err;
   }
 };
 
-/* ================== PAYMENT CALLBACK / WEBHOOK ================== */
-export const paymentCallback = async (req, res) => {
+const createOrder = async (authToken, amount, userId, courseId) => {
   try {
-    const { success, obj } = req.body;
+    console.log("Creating order with amount:", amount, "cents:", amount * 100);
+    const res = await axios.post(`${PAYMOB_API_URL}/ecommerce/orders`, {
+      auth_token: authToken,
+      delivery_needed: false,
+      amount_cents: amount * 100,
+      currency: "EGP",
+      items: [],
+      metadata: { userId, courseId },
+    });
+    console.log("Order created successfully, ID:", res.data.id);
+    return res.data.id;
+  } catch (err) {
+    console.error("createOrder error:", err.response?.status, err.response?.data || err.message);
+    throw err;
+  }
+};
 
-    if (!success) {
-      return res.status(400).json({ message: "Payment failed" });
+const createPaymentKey = async (authToken, orderId, amount) => {
+  try {
+    const redirectUrl = `${FRONTEND_URL}/payment-success?orderId=${orderId}`;
+    console.log("Creating payment key with redirect URL:", redirectUrl);
+    const res = await axios.post(`${PAYMOB_API_URL}/acceptance/payment_keys`, {
+      auth_token: authToken,
+      amount_cents: amount * 100,
+      expiration: 3600,
+      order_id: orderId,
+      currency: "EGP",
+      integration_id: PAYMOB_INTEGRATION_ID,
+      billing_data: {
+        first_name: "Test",
+        last_name: "User",
+        email: "test@test.com",
+        phone_number: "01000000000",
+        country: "EG",
+        city: "Cairo",
+        street: "Test Street",
+        building: "1",
+        floor: "1",
+        apartment: "1",
+      },
+      redirect_url: redirectUrl,
+    });
+    console.log("Payment key created successfully");
+    return res.data.token;
+  } catch (err) {
+    console.error("createPaymentKey error:", err.response?.status, err.response?.data || err.message);
+    throw err;
+  }
+};
+
+const getOrderStatusFromPaymob = async (orderId) => {
+  const authToken = await getAuthToken();
+  const res = await axios.get(`${PAYMOB_API_URL}/ecommerce/orders/${orderId}`, {
+    headers: { Authorization: `Bearer ${authToken}` },
+  });
+  return res.data;
+};
+export const createPayment = async (req, res) => {
+  try {
+    const userId = req.userId; // Get from authMiddleware, not body
+    const { amount, courseId } = req.body;
+
+    console.log("=== CREATE PAYMENT REQUEST ===");
+    console.log("userId:", userId);
+    console.log("amount:", amount);
+    console.log("courseId:", courseId);
+    console.log("from request body:", req.body);
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "Authentication required - userId not found" });
     }
 
-    // ⚠️ تحقق من شكل obj حسب Paymob webhook
-    const courseId = obj?.order?.metadata?.courseId || obj?.metadata?.courseId;
-    const userId = obj?.order?.metadata?.userId || obj?.metadata?.userId;
-
-    if (!courseId || !userId) {
-      return res.status(400).json({ message: "Missing courseId or userId" });
+    if (!amount || !courseId) {
+      return res.status(400).json({ success: false, message: "Missing amount or courseId" });
     }
 
-    // ✅ أضف المستخدم للكورس بعد الدفع
-    await Course.findByIdAndUpdate(courseId, {
-      $addToSet: { enrolledCraftsmen: userId },
+    // Validate amount and courseId types
+    if (typeof amount !== 'number' || amount <= 0) {
+      return res.status(400).json({ success: false, message: "Amount must be a positive number" });
+    }
+
+    try {
+      const authToken = await getAuthToken();
+      console.log("Auth token obtained");
+      
+      const orderId = await createOrder(authToken, amount, userId, courseId);
+      console.log("Order created with ID:", orderId);
+      
+      const paymentKey = await createPaymentKey(authToken, orderId, amount);
+      console.log("Payment key obtained");
+
+      const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`;
+
+      const payment = await Payment.create({
+        user: userId,
+        course: courseId,
+        amount,
+        orderId: String(orderId),
+        status: "pending",
+      });
+
+      console.log("Payment record created in DB - orderId:", String(orderId), "userId:", userId, "courseId:", courseId);
+
+      res.json({ success: true, iframeUrl, orderId: String(orderId) });
+    } catch (paymobErr) {
+      console.error("Paymob API error:", paymobErr.response?.status, paymobErr.response?.data || paymobErr.message);
+      res.status(paymobErr.response?.status || 500).json({
+        success: false,
+        message: paymobErr.response?.data?.message || paymobErr.message || "Payment creation failed",
+        details: paymobErr.response?.data
+      });
+    }
+  } catch (err) {
+    console.error("createPayment error:", err.message);
+    res.status(500).json({ success: false, message: err.message || "Payment creation failed" });
+  }
+};
+
+/* ================== VERIFY PAYMENT & AUTO-ENROLL ================== */
+export const verifyPayment = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { orderId } = req.body;
+
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: "Missing orderId" });
+    }
+
+    const payment = await Payment.findOne({ orderId: String(orderId), user: userId });
+    if (!payment) {
+      return res.status(404).json({ success: false, message: "Payment not found or not authorized" });
+    }
+
+    // If payment is already marked as success (e.g., from webhook), return success immediately
+    if (payment.status === "success") {
+      // Ensure user is enrolled
+      try {
+        await enrollUserInCourse(userId, payment.course);
+      } catch (enrollErr) {
+        console.error("Enrollment error in verifyPayment (success status):", enrollErr);
+      }
+      return res.status(200).json({
+        success: true,
+        course: payment.course,
+        orderId: payment.orderId,
+        message: "Payment verified successfully"
+      });
+    }
+
+    // If payment is success/paid, enroll + credit + return success
+    if (["paid", "success"].includes(payment.status)) {
+      // Ensure enrollment
+      await enrollUserInCourse(userId, payment.course);
+      
+      // Credit trainer if not already (idempotent)
+      const course = await Course.findById(payment.course).populate('creator');
+      if (course?.creator?.role === 2) {
+        await User.findByIdAndUpdate(course.creator._id, 
+          { $inc: { balance: payment.amount } },
+          { new: true }
+        );
+        console.log(`✅ Credited ${payment.amount} EGP to trainer ${course.creator._id}`);
+      }
+      
+      return res.json({
+        success: true,
+        course: payment.course,
+        orderId: payment.orderId,
+        message: "Payment verified & enrollment complete"
+      });
+    }
+
+
+
+    // Payment is still pending in DB, check Paymob directly as fallback
+    try {
+      console.log("Payment still pending in DB, checking Paymob directly...");
+      const paymobStatus = await checkPaymobOrderStatus(orderId);
+
+      if (paymobStatus === "PAID") {
+        console.log("Paymob confirms payment is PAID, updating database...");
+
+        // Update payment status in database
+        payment.status = "success";
+        await payment.save();
+
+        // Enroll user in course
+        try {
+          await enrollUserInCourse(userId, payment.course);
+        } catch (enrollErr) {
+          console.error("Enrollment error in verifyPayment:", enrollErr);
+          // Don't fail if enrollment has issues - payment is still successful
+        }
+
+        return res.status(200).json({
+          success: true,
+          course: payment.course,
+          orderId: payment.orderId,
+          message: "Payment verified successfully via Paymob"
+        });
+      }
+    } catch (paymobErr) {
+      console.error("Error checking Paymob status:", paymobErr);
+      // If status was updated to success by webhook during check, return success
+      if (payment.status === "success") {
+        // Ensure user is enrolled
+        try {
+          await enrollUserInCourse(userId, payment.course);
+        } catch (enrollErr) {
+          console.error("Enrollment error in verifyPayment (catch success):", enrollErr);
+        }
+        return res.status(200).json({
+          success: true,
+          course: payment.course,
+          orderId: payment.orderId,
+          message: "Payment verified successfully"
+        });
+      }
+      // Continue with pending status if Paymob check fails
+    }
+
+    // Payment still not confirmed
+    return res.status(200).json({
+      success: false,
+      course: payment.course,
+      status: payment.status,
+      message: "Payment not yet confirmed"
+    });
+  } catch (error) {
+    console.error("verifyPayment error:", error);
+    return res.status(500).json({ success: false, message: "Failed to verify payment" });
+  }
+};
+
+/* ================== CHECK PAYMOB ORDER STATUS ================== */
+const checkPaymobOrderStatus = async (orderId) => {
+  try {
+    const authToken = await getAuthToken();
+    const res = await axios.get(`${PAYMOB_API_URL}/ecommerce/orders/${orderId}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
     });
 
-    res.status(200).json({ message: "Course unlocked" });
+    console.log("Paymob order status response:", res.data.payment_status);
+    return res.data.payment_status; // "PAID", "PENDING", etc.
+  } catch (error) {
+    console.error("Error checking Paymob order status:", error);
+    throw error;
+  }
+};
+
+/* ================== VERIFY PAYMOB TRANSACTION ================== */
+export const verifyPaymobTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+    console.log("Verifying Paymob transaction:", transactionId);
+
+    if (!transactionId) {
+      return res.status(400).json({ success: false, message: "Transaction ID required" });
+    }
+
+    // Query Paymob API to verify transaction
+    const authToken = await getAuthToken();
+    try {
+      const verifyRes = await axios.get(
+        `${PAYMOB_API_URL}/acceptance/transactions/${transactionId}`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` }
+        }
+      );
+
+      const transaction = verifyRes.data;
+      console.log("Paymob transaction response:", JSON.stringify(transaction, null, 2));
+
+      if (transaction.success) {
+        // Find payment by transactionId and update it
+        let payment = await Payment.findOneAndUpdate(
+          { transactionId: String(transactionId) },
+          { 
+            status: "success", 
+            paymentResponse: transaction,
+            transactionId: String(transactionId)
+          },
+          { new: true }
+        );
+        
+        // Credit trainer if payment found
+        if (payment) {
+          try {
+            const course = await Course.findById(payment.course).populate('creator');
+            if (course?.creator?.role === 2) {
+              await User.findByIdAndUpdate(course.creator._id, 
+                { $inc: { balance: payment.amount } },
+                { new: true }
+              );
+              console.log(`Credited ${payment.amount} EGP to trainer ${course.creator._id} (transaction)`);
+            }
+          } catch (balanceErr) {
+            console.error("Error crediting trainer balance (transaction):", balanceErr);
+          }
+        }
+
+
+        // If not found by transactionId, try searching by embedded transactionId in metadata
+        if (!payment && transaction.order && transaction.order.id) {
+          payment = await Payment.findOneAndUpdate(
+            { orderId: String(transaction.order.id) },
+            { 
+              status: "paid", 
+              paymentResponse: transaction,
+              transactionId: String(transactionId)
+            },
+            { new: true }
+          );
+        }
+
+        if (payment) {
+          console.log("Payment found and updated");
+          // Enroll user in course
+          try {
+            await Course.findByIdAndUpdate(
+              payment.course,
+              { $addToSet: { enrolledCraftsmen: payment.user } },
+              { new: true }
+            );
+
+            await User.findByIdAndUpdate(
+              payment.user,
+              { $addToSet: { enrolledCourses: payment.course } },
+              { new: true }
+            );
+            console.log("User enrolled successfully");
+          } catch (enrollErr) {
+            console.error("Error during enrollment:", enrollErr);
+          }
+
+          return res.json({ success: true, message: "Payment verified successfully" });
+        } else {
+          console.log("Payment record not found in database");
+          return res.status(404).json({ success: false, message: "Payment not found in database" });
+        }
+      }
+
+      res.status(400).json({ success: false, message: "Transaction not successful" });
+    } catch (paymobErr) {
+      console.error("Paymob verification error:", paymobErr.message);
+      res.status(500).json({ success: false, message: "Failed to verify with Paymob" });
+    }
+  } catch (error) {
+    console.error("Verify transaction error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/* ================== GET PAYMENT STATUS ================== */
+export const getPaymentStatus = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { orderId } = req.params;
+
+    console.log("Checking payment status - orderId:", orderId, "userId:", userId);
+
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: "Order ID is required" });
+    }
+
+    const payment = await Payment.findOne({ orderId: String(orderId), user: userId });
+
+    if (!payment) {
+      console.log("Payment not found in DB");
+      return res.status(404).json({ success: false, message: "Payment not found" });
+    }
+
+    console.log("Payment found - status:", payment.status);
+
+    res.json({
+      success: true,
+      payment: {
+        orderId: payment.orderId,
+        amount: payment.amount,
+        status: payment.status,
+        course: payment.course,
+        createdAt: payment.createdAt,
+      }
+    });
+  } catch (error) {
+    console.error("getPaymentStatus error:", error);
+    res.status(500).json({ success: false, message: "Failed to get payment status" });
+  }
+};
+
+/* ================== PAYMENT CALLBACK ================== */
+export const paymentCallback = async (req, res) => {
+  try {
+    const data = req.body;
+    console.log("Payment callback received:", JSON.stringify(data, null, 2));
+
+      // Similar logic to webhook
+    if (data.success === true) {
+      const orderId = data.order.id;
+      const transactionId = data.id;
+
+      const payment = await Payment.findOne({ orderId: String(orderId) });
+      if (!payment) {
+        console.log("Payment not found for orderId:", orderId);
+        return res.sendStatus(200);
+      }
+
+      payment.status = "success";
+      payment.transactionId = String(transactionId);
+      payment.paymentResponse = data;
+      await payment.save();
+
+      await enrollUserInCourse(payment.user, payment.course);
+      
+      // Credit trainer balance
+      try {
+        const course = await Course.findById(payment.course).populate('creator');
+        if (course?.creator?.role === 2) {
+          await User.findByIdAndUpdate(course.creator._id, 
+            { $inc: { balance: payment.amount } },
+            { new: true }
+          );
+          console.log(`Credited ${payment.amount} EGP to trainer ${course.creator._id} (callback)`);
+        }
+      } catch (balanceErr) {
+        console.error("Error crediting trainer balance (callback):", balanceErr);
+      }
+
+      console.log("Callback processed successfully for orderId:", orderId);
+    }
+
+
+    res.sendStatus(200);
   } catch (error) {
     console.error("Callback error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.sendStatus(500);
   }
 };

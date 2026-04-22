@@ -37,13 +37,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       select: false,
     },
-    otpExpires: {
+otpExpires: {
       type: Date,
       select: false,
     },
     isOtpVerifed: {
       type: Boolean,
       default: false,
+    },
+    balance: {
+      type: Number,
+      default: 0,
+      min: 0
     },
     progress: {
       type: Object,
@@ -55,6 +60,7 @@ const userSchema = new mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
+
 );
 
 // ===================== Model Export ===================== //

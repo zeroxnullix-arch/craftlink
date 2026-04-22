@@ -9,6 +9,7 @@ import ContactUs from "./pages/ContactUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsPage from "./pages/TermsPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFail from "./pages/PaymentFail";
 export  {
   SignUp,
   SignIn,
@@ -20,5 +21,6 @@ export  {
   ContactUs,
   PrivacyPolicy,
   PaymentSuccess,
+  PaymentFail,
   TermsPage,
 };

@@ -6,11 +6,10 @@ import { toast } from "react-toastify";
 import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
 import { useTheme } from "../../../context/ThemeContext";
-import "./PlayCourse.css";
-
 import { MdVideoLibrary } from "react-icons/md";
 import { TiFlash } from "react-icons/ti";
 import { MdCurrencyPound } from "react-icons/md";
+import { BiLike, BiSolidLike, BiComment, SiTelegram, BsThreeDots } from "@icons";
 // ============================================================================
 // FORMAT DURATION HELPER
 // ============================================================================
@@ -36,7 +35,7 @@ const PlayCourse = () => {
   const [lectures, setLectures] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [loading, setLoading] = useState(true);
-  //   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarHide, setSidebarHide] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [activeMenu, setActiveMenu] = useState(0);
@@ -46,11 +45,26 @@ const PlayCourse = () => {
   const [watchedTime, setWatchedTime] = useState({}); // { lectureId: secondsWatched }
   const [currentLectureProgress, setCurrentLectureProgress] = useState(0);
 
+  const commentsContainerRef = useRef(null);
   const sidebarRef = useRef(null);
   const activeLectureRef = useRef(null);
   const videoRef = useRef(null);
   const videoInitializedRef = useRef(null); // Track which lecture video was initialized
+const scrollToBottom = () => {
+  if (commentsContainerRef.current) {
+    commentsContainerRef.current.scrollTop =
+      commentsContainerRef.current.scrollHeight;
+  }
+};
+const isFirstLoad = useRef(true);
 
+useEffect(() => {
+  if (isFirstLoad.current) {
+    isFirstLoad.current = false;
+    return;
+  }
+  scrollToBottom();
+}, [comments]);
   // ========================================================================
   // FETCH COURSE & LECTURES
   // ========================================================================
@@ -98,7 +112,7 @@ const PlayCourse = () => {
       try {
         setCommentLoading(true);
         const res = await api.get(
-          `/api/course/lecture/${currentLecture._id}/comments`,
+          `/api/course/lecture/${currentLecture._id}/comments`
         );
         setComments(res.data || []);
       } catch (err) {
@@ -126,7 +140,15 @@ const PlayCourse = () => {
           text,
         },
       );
-      setComments((prev) => [...prev, res.data]);
+      setComments((prev) => [
+        ...prev,
+        {
+          ...res.data,
+          userId: {
+            ...userData, // أو أي data عندك في redux
+          },
+        },
+      ]);
       e.target.reset();
       toast.success("Comment added successfully");
     } catch (err) {
@@ -138,16 +160,16 @@ const PlayCourse = () => {
   // ========================================================================
   // SCROLL TO ACTIVE LECTURE
   // ========================================================================
-  //   useEffect(() => {
-  //     if (sidebarRef.current && activeLectureRef.current) {
-  //       const sidebar = sidebarRef.current;
-  //       const active = activeLectureRef.current;
-  //       sidebar.scrollTo({
-  //         top: active.offsetTop - sidebar.offsetTop - 24,
-  //         behavior: "smooth",
-  //       });
-  //     }
-  //   }, [currentLecture, sidebarOpen]);
+  useEffect(() => {
+    if (sidebarRef.current && activeLectureRef.current) {
+      const sidebar = sidebarRef.current;
+      const active = activeLectureRef.current;
+      sidebar.scrollTo({
+        top: active.offsetTop - sidebar.offsetTop - 24,
+        behavior: "smooth",
+      });
+    }
+  }, [currentLecture, sidebarOpen]);
 
   // ========================================================================
   // VIDEO ENDED - AUTO-PLAY NEXT
@@ -322,12 +344,12 @@ const PlayCourse = () => {
   const courseProgressPercent =
     lectures.length > 0
       ? Math.round(
-          lectures.reduce((sum, lec) => {
-            const watched = watchedTime[lec._id] || 0;
-            const total = lec.duration || 1;
-            return sum + Math.min((watched / total) * 100, 100);
-          }, 0) / lectures.length,
-        )
+        lectures.reduce((sum, lec) => {
+          const watched = watchedTime[lec._id] || 0;
+          const total = lec.duration || 1;
+          return sum + Math.min((watched / total) * 100, 100);
+        }, 0) / lectures.length,
+      )
       : 0;
 
   const currentLectureProgressPercent = Math.round(currentLectureProgress);
@@ -424,7 +446,7 @@ const PlayCourse = () => {
                 // flexDirection: "column",
                 // gap: "24px",
                 background: "transparent",
-                padding:0,
+                padding: 0,
               }}
               className="aside-data-lec"
             >
@@ -436,7 +458,6 @@ const PlayCourse = () => {
                   padding: "24px",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 }}
-                 
               >
                 <div
                   style={{
@@ -444,11 +465,13 @@ const PlayCourse = () => {
                     borderRadius: "8px",
                     overflow: "hidden",
                     marginBottom: "16px",
+                    alignItems: "center",
+                    display: "flex",
                   }}
                 >
                   {currentLecture &&
-                  currentLecture.videoUrl &&
-                  !currentLecture.isLocked ? (
+                    currentLecture.videoUrl &&
+                    !currentLecture.isLocked ? (
                     <video
                       key={currentLecture._id}
                       ref={videoRef}
@@ -456,8 +479,8 @@ const PlayCourse = () => {
                       controls
                       style={{
                         width: "100%",
-                        height: "auto",
-                        minHeight: "400px",
+                        aspectRatio: "16/9",
+                        margin: "auto",
                       }}
                       onEnded={handleVideoEnd}
                       onTimeUpdate={handleTimeUpdate}
@@ -465,7 +488,7 @@ const PlayCourse = () => {
                   ) : (
                     <div
                       style={{
-                        height: "400px",
+                        height: "80vh",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -487,6 +510,7 @@ const PlayCourse = () => {
                     fontSize: "1.8rem",
                     fontWeight: 700,
                     color: "var(--text-primary)",
+                    wordBreak: "break-all",
                   }}
                 >
                   {currentLecture?.lectureTitle || "Select a lecture"}
@@ -497,15 +521,20 @@ const PlayCourse = () => {
                     gap: "16px",
                     color: "var(--text-secondary)",
                     marginBottom: "12px",
+
                   }}
                 >
-                  <span>By: {course.creator?.name}</span>
-                  <span>{formatDuration(currentLecture?.duration)}</span>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <img src={course.creator?.photoUrl} alt="" style={{ width: "32px", height: "32px", borderRadius: "50px" }} />
+                    <span>By: {course.creator?.name}</span>
+                  </div>
+
+                  {/* <span>{formatDuration(currentLecture?.duration)}</span>
                   {currentLecture && !currentLecture.isLocked && (
                     <span>Progress: {currentLectureProgressPercent}%</span>
-                  )}
+                  )} */}
                 </div>
-                <p style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>
+                <p style={{ color: "var(--text-muted)", lineHeight: 1.6, wordBreak: "break-all" }}>
                   {currentLecture?.description}
                 </p>
               </div>
@@ -529,12 +558,10 @@ const PlayCourse = () => {
                 >
                   {course.title}
                 </h2>
-                <p style={{ margin: "0 0 12px 0", color: "var(--text-muted)", }}>
+                <p style={{ margin: "0 0 12px 0", color: "var(--text-muted)" }}>
                   {course.subTitle}
                 </p>
               </div>
-
-         
 
               {/* COMMENTS */}
               <div
@@ -545,48 +572,106 @@ const PlayCourse = () => {
                   boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 }}
               >
-                <h3 style={{ marginBottom: "12px", color: "var(--text-secondary)" }}>Comments</h3>
+                <h3
+                  style={{
+                    marginBottom: "12px",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Comments
+                </h3>
                 <div
+                  className="lec-comments"
                   style={{
                     marginBottom: "16px",
                     maxHeight: "300px",
                     overflowY: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
                   }}
+                  ref={commentsContainerRef}
                 >
                   {commentLoading ? (
                     <p style={{ color: "#999" }}>Loading comments...</p>
                   ) : comments.length === 0 ? (
                     <p style={{ color: "#999" }}>No comments yet</p>
                   ) : (
-                    comments.map((c) => (
-                      <div
-                        key={c._id}
-                        style={{
-                          background: "var(--bg-color)",
-                          borderRadius: "6px",
-                          padding: "8px 12px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        <span style={{ fontWeight: 600, marginRight: "8px", color: "var(--text-primary)" }}>
-                          {c.userName}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.85rem",
-                            color: "#999",
-                            marginLeft: "8px",
-                            color: "var(--text-muted)"
-                          }}
-                        >
-                          {new Date(c.createdAt).toLocaleDateString()}
-                        </span>
-                        <div style={{ marginTop: "4px",color: "var(--text-primary)" }}>{c.text}</div>
+                    comments.map((c, index) => (
+                      // <div
+                      //   key={c._id}
+                      //   style={{
+                      //     background: "var(--bg-color)",
+                      //     borderRadius: "6px",
+                      //     padding: "8px 12px",
+                      //     marginBottom: "8px",
+                      //   }}
+                      // >
+                      //   <img src={c.userId?.photoUrl} alt="" style={{ width: "32px", height: "32px", borderRadius: "50%", marginRight: "8px" }} />
+                      //   <div className="l">
+
+                      //   <span
+                      //     style={{
+                      //       fontWeight: 600,
+                      //       marginRight: "8px",
+                      //       color: "var(--text-primary)",
+                      //     }}
+                      //   >
+                      //     {c.userName}
+                      //   </span>
+                      //   <span
+                      //     style={{
+                      //       fontSize: "0.85rem",
+                      //       color: "#999",
+                      //       marginLeft: "8px",
+                      //       color: "var(--text-muted)",
+                      //     }}
+                      //   >
+                      //     {new Date(c.createdAt).toLocaleDateString()}
+                      //   </span>
+                      // </div>
+
+                      //   <div
+                      //     style={{
+                      //       marginTop: "4px",
+                      //       color: "var(--text-primary)",
+                      //       wordBreak: "break-word",
+                      //     }}
+                      //   >
+                      //     {c.text}
+                      //   </div>
+                      // </div>
+
+                      <div key={`${c.userId?._id}-${c.createdAt}-${index}`} className="comment">
+                        <img
+                          src={c.userId?.photoUrl}
+                          alt="user"
+                          className="comment-avatar"
+                        />
+                        <div className="comment-content">
+                          <div className="comment-text">
+                            <div className="comment-user-container">
+                              <div className="comment-user">
+                                <strong>{c.userName}</strong>
+                                <span className="stat">•</span>
+                                <span className="comment-time">
+                                  {new Date(c.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                            <p>{c.text}</p>
+                          </div>
+
+                        </div>
                       </div>
                     ))
                   )}
+
                 </div>
-                <form
+
+
+
+                {/* <form
                   onSubmit={handleAddComment}
                   style={{ display: "flex", gap: "8px" }}
                 >
@@ -599,7 +684,7 @@ const PlayCourse = () => {
                       border: "none",
                       padding: "8px 10px",
                       fontSize: "1rem",
-                      outline: "none", 
+                      outline: "none",
                     }}
                   />
                   <button
@@ -616,19 +701,36 @@ const PlayCourse = () => {
                   >
                     {commentLoading ? "Posting..." : "Post"}
                   </button>
-                </form>
+                </form> */}
+                         <form onSubmit={handleAddComment} className="comment-form">
+                                        <input
+                                        name="comment"
+                                            type="text"
+                                            placeholder="Write your comment..."
+                                            className="comment-input"
+                                            disabled={loading}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="comment-submit-btn"
+                                            disabled={commentLoading}
+                                        >
+                                            {commentLoading ?
+                                                <BsThreeDots />
+                                                :
+                                                <SiTelegram />
+                                            }
+                                        </button>
+                                    </form>
               </div>
             </div>
+
+
             {/* SIDEBAR LECTURES */}
             <div className="aside-lecture">
               <aside ref={sidebarRef}>
-                <div
-
-                >
-                  <h2
-                  >
-                    Lectures
-                  </h2>
+                <div>
+                  <h2>Lectures</h2>
                 </div>
 
                 <div
@@ -639,37 +741,74 @@ const PlayCourse = () => {
                     marginBottom: "24px",
                   }}
                 >
-                  {lectures.length === 0 ? (
-                    <p style={{ color: "#999" }}>No lectures available</p>
+                  {lectures.length === 3 ? (
+                    <p className="text">No lectures available</p>
                   ) : (
-                    lectures.map((lec) => {
+                    lectures.map((lec, index) => {
                       const isActive =
                         currentLecture && lec._id === currentLecture._id;
                       const isCompleted = completed.includes(lec._id);
 
                       return (
                         <div
-                          key={lec._id}
+                          key={`${lec._id}-${lec.createdAt}-${index}`}
                           ref={isActive ? activeLectureRef : null}
                           onClick={() => {
                             if (!lec.isLocked) setCurrentLecture(lec);
                           }}
                           style={{
                             background: isActive
-                              ? "var(--main-color)"
+                              ? "var(--border-color)"
                               : "var(--bg-color)",
-                            color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
-                            padding: "12px",
+                            color: isActive
+                              ? "var(--text-primary)"
+                              : "var(--text-secondary)",
+                            // padding: "12px",
                             borderRadius: "10px",
                             cursor: lec.isLocked ? "not-allowed" : "pointer",
                             opacity: lec.isLocked ? 0.6 : 1,
                             transition: "all 0.2s",
+                            display: "flex",
                             // border: isActive ? "2px solid #1a4e9a" : "none",
                           }}
                         >
-                          <div style={{ fontWeight: 600, marginBottom: "4px" }}>
-                            {lec.lectureTitle}
+                          <div style={{ width: "100px", borderRadius: "6px" }}>
+                            <img src={course.thumbnail} alt="" style={{ width: "100%", height: "100%", borderRadius: "6px", }} />
+                            <span>{formatDuration(lec.duration)}</span>
                           </div>
+
+                          <div>
+                            <div style={{ fontWeight: 600, wordBreak: "break-all", }} className="clamp-v clamp-v1">
+                              {lec.lectureTitle}
+                            </div>
+                            <div className="clamp-v clamp-v1" style={{ wordBreak: "break-all", }}>
+                              {lec.description}
+                            </div>
+                            {!lec.isLocked && (
+                              <div
+                                style={{
+                                  width: "100%",
+                                  height: "4px",
+                                  background: "#fff",
+                                  borderRadius: "2px",
+                                  overflow: "hidden",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    height: "100%",
+                                    background: isActive ? "var(--main-color)" : "#2b7cff",
+                                    width: `${Math.min(((watchedTime[lec._id] || 0) / (lec.duration || 1)) * 100, 100)}%`,
+                                    transition: "width 0.3s",
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+
+
+
+
                           <div
                             style={{
                               fontSize: "0.9rem",
@@ -679,30 +818,11 @@ const PlayCourse = () => {
                               marginBottom: "8px",
                             }}
                           >
-                            <span>{formatDuration(lec.duration)}</span>
+
                             {lec.isLocked && <span>🔒</span>}
                             {isCompleted && <span>✔</span>}
                           </div>
-                          {!lec.isLocked && (
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "4px",
-                                background: isActive ? "#fff" : "#e0e0e0",
-                                borderRadius: "2px",
-                                overflow: "hidden",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  height: "100%",
-                                  background: isActive ? "#fff" : "#2b7cff",
-                                  width: `${Math.min(((watchedTime[lec._id] || 0) / (lec.duration || 1)) * 100, 100)}%`,
-                                  transition: "width 0.3s",
-                                }}
-                              />
-                            </div>
-                          )}
+
                         </div>
                       );
                     })
@@ -710,7 +830,7 @@ const PlayCourse = () => {
                 </div>
 
                 <div
-                  style={{ borderTop: "1px solid #eee", paddingTop: "12px" }}
+                  style={{ paddingTop: "12px" }}
                 >
                   <div
                     style={{
@@ -738,14 +858,17 @@ const PlayCourse = () => {
               </aside>
 
               <div className="course-summary-footer">
-                <span><MdVideoLibrary/> {lectures.length} Lectures</span>
+                <span>
+                  <MdVideoLibrary /> {lectures.length} Lectures
+                </span>
                 <span>•</span>
-                <span><TiFlash/> {course.level}</span>
+                <span>
+                  <TiFlash /> {course.level}
+                </span>
                 <span>•</span>
-                <span><MdCurrencyPound/> EGP {course.price}</span>
-                
-
-
+                <span>
+                  <MdCurrencyPound /> EGP {course.price}
+                </span>
               </div>
             </div>
           </div>

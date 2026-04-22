@@ -19,6 +19,7 @@ import Footer from "../../../components/Footer";
 import HeroImgSection from "../../../components/HeroImgSection";
 import useGetPublishedCourse from "../../../customHooks/useGetPublishedCourse";
 import { useSelector } from "react-redux";
+import ChatBot from "../../../components/chatBot";
 const features = [
     { icon: FaUsersViewfinder, text: "Trusted Instructors" },
     { icon: RiVerifiedBadgeFill, text: "Verified Craftsmen" },
@@ -143,6 +144,7 @@ const Main = () => {
                     )}
                 </section>
                 <TestimonialsSwiper />
+                <ChatBot/>
                 <Footer />
             </main>
         </>

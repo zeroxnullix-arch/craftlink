@@ -13,6 +13,7 @@ import {
   getCreatorById,
   togglePublishCourse,
   getInstructorCourses,
+  getInstructorSales,
   getLectureComments,
   addLectureComment,
 } from "../controller/courseController.js";
@@ -21,6 +22,7 @@ const courseRouter = express.Router();
 courseRouter.post("/create", authMiddleware, createCourse);
 courseRouter.patch("/publish/:courseId", authMiddleware, togglePublishCourse);
 courseRouter.get("/instructor/:userId", authMiddleware, getInstructorCourses);
+courseRouter.get("/sales", authMiddleware, getInstructorSales);
 courseRouter.get("/getpublished", getPublishedCourses);
 courseRouter.get("/getcreator", authMiddleware, getCreatorCourses);
 courseRouter.post("/editcourse/:courseId", authMiddleware, editCourse);

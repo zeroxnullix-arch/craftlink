@@ -1,5 +1,6 @@
 import User from "../model/userModel.js";
 import Course from "../model/courseModel.js";
+import Payment from "../model/paymentModel.js";
 import bcrypt from "bcryptjs";
 
 export const getCurrentUser = async (req, res) => {
@@ -63,15 +64,43 @@ export const getPurchasedCourses = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized: No user ID" });
     }
 
-    const courses = await Course.find({ enrolledCraftsmen: userId })
-      .select("title subTitle price thumbnail category level creator lecturesCount isPublished")
-      .populate("creator", "name photoUrl")
-      .sort({ createdAt: -1 });
+    const payments = await Payment.find({ user: userId, status: { $in: ["success", "paid"] } }).populate(
+      {
+        path: "course",
+        select: "title subTitle price thumbnail category level creator lecturesCount isPublished enrolledCraftsmen",
+        populate: { path: "creator", select: "name photoUrl" },
+      }
+    );
+
+    const courses = payments
+      .filter((payment) => payment.course)
+      .map((payment) => ({
+        ...payment.course.toObject(),
+        paidAmount: payment.amount,
+        paymentId: payment._id,
+        paymentAt: payment.createdAt,
+      }))
+      .sort((a, b) => new Date(b.paymentAt) - new Date(a.paymentAt));
 
     return res.status(200).json(courses || []);
   } catch (error) {
     console.error("getPurchasedCourses error:", error?.message || error);
     return res.status(500).json({ message: "Failed to load purchased courses" });
+  }
+};
+
+// NEW: Get user balance endpoint for Profile display
+export const getUserBalance = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).select("balance");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ success: true, balance: user.balance || 0 });
+  } catch (error) {
+    console.error("getUserBalance error:", error);
+    res.status(500).json({ message: "Failed to get balance" });
   }
 };
 
@@ -150,3 +179,4 @@ export const getUserById = async (req, res) => {
     });
   }
 };
+
