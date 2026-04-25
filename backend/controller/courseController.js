@@ -152,7 +152,7 @@ export const getCourseById = async (req, res) => {
     }
 
     const course = await Course.findById(courseId)
-      .populate("creator", "name photoUrl description") // 👈 بيانات المدرس
+      .populate("creator", "name photoUrl description ") // 👈 بيانات المدرس
       .populate("lectures"); // 👈 هيرجع كل المحاضرات
 
     if (!course) {
@@ -435,7 +435,7 @@ export const getInstructorCourses = async (req, res) => {
     const courses = await Course.find(filter)
       .populate("creator", "name photoUrl")
       .select(
-        "title subTitle description category level price thumbnail lectures isPublished creator enrolledCraftsmen"
+        "title subTitle description category enrolledCraftsmen level price thumbnail lectures isPublished creator enrolledCraftsmen"
       )
       .sort({ createdAt: -1 });
 

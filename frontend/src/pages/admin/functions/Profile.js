@@ -15,7 +15,7 @@ import { changePassword } from "../../../redux/userThunk";
 
 import { useTheme } from "../../../context/ThemeContext";
 import { useInputAnimation, usePasswordToggle } from "@hooks";
-
+import { decrypt } from "@/utils/encryption";
 // ============================================================================
 // HOOK
 // ============================================================================
@@ -23,7 +23,7 @@ export const useProfileLogic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userId } = useParams();
-
+const encryptionKeysRef = useRef({});
   const { darkMode, setDarkMode } = useTheme();
   const { handleFocus, handleBlur } = useInputAnimation();
   const { showPass, togglePass, inputType } = usePasswordToggle();
@@ -68,25 +68,30 @@ export const useProfileLogic = () => {
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [postsLoading, setPostsLoading] = useState(false);
   const [purchasedLoading, setPurchasedLoading] = useState(false);
-const [salesData, setSalesData] = useState({
-  totalRevenue: 0,
-  totalBuyers: 0,
-  totalCourses: 0,
-  totalCourseBuyers: 0,
-});
+  // ========================================================================
+  // STATE - FORMS
+  // ========================================================================
+  const [conversations, setConversations] = useState([]);
+  const [conversationsLoading, setConversationsLoading] = useState(false);
+  const [salesData, setSalesData] = useState({
+    totalRevenue: 0,
+    totalBuyers: 0,
+    totalCourses: 0,
+    totalCourseBuyers: 0,
+  });
 
   const [salesLoading, setSalesLoading] = useState(false);
   const [salesError, setSalesError] = useState(null);
 
   // Add earnings state
   const [earningsData, setEarningsData] = useState({
-  totalEarnings: 0,
-  totalWithdrawn: 0,
-  availableBalance: 0,
-  computedAvailable: 0,   // 🔥 جديد
-  pendingAmount: 0,
-  approvedAmount: 0,
-  reservedAmount: 0,
+    totalEarnings: 0,
+    totalWithdrawn: 0,
+    availableBalance: 0,
+    computedAvailable: 0,   // 🔥 جديد
+    pendingAmount: 0,
+    approvedAmount: 0,
+    reservedAmount: 0,
   });
   const [earningsLoading, setEarningsLoading] = useState(false);
 
@@ -218,6 +223,77 @@ const [salesData, setSalesData] = useState({
   }, [userId, currentUser, isMyProfile, cachedUser, dispatch]);
 
   // ========================================================================
+  // EFFECTS - Conversation
+  // ========================================================================
+  useEffect(() => {
+    if (!currentUser?._id) return;
+
+    let isMounted = true;
+
+const fetchConversations = async () => {
+  try {
+    setConversationsLoading(true);
+
+    const res = await api.get("/api/message/conversation", {
+      withCredentials: true,
+    });
+
+    const convs = res.data;
+
+    const processed = convs.map((conv) => {
+      // خزّن المفتاح
+      if (conv.encryptionKey) {
+        encryptionKeysRef.current[conv._id] = conv.encryptionKey;
+      }
+
+      const lastMsg = conv.lastMessage;
+
+      // فك التشفير
+      if (lastMsg?.text && encryptionKeysRef.current[conv._id]) {
+        try {
+          return {
+            ...conv,
+            lastMessage: {
+              ...lastMsg,
+              text: decrypt(
+                lastMsg.text,
+                encryptionKeysRef.current[conv._id]
+              ),
+            },
+          };
+        } catch (err) {
+          console.error("decrypt failed", err);
+          return conv;
+        }
+      }
+
+      return conv;
+    });
+
+    setConversations(processed);
+  } catch (err) {
+    console.error("Failed to load conversations", err);
+  } finally {
+    setConversationsLoading(false);
+  }
+};
+
+    fetchConversations();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentUser]);
+const last3Conversations = useMemo(() => {
+  return [...conversations]
+    .sort(
+      (a, b) =>
+        new Date(b.lastMessage?.createdAt || 0) -
+        new Date(a.lastMessage?.createdAt || 0)
+    )
+    .slice(0, 3);
+}, [conversations]);
+  // ========================================================================
   // EFFECTS - INITIALIZE PROFILE FIELDS
   // ========================================================================
   useEffect(() => {
@@ -255,133 +331,133 @@ const [salesData, setSalesData] = useState({
   // ========================================================================
   // EFFECTS - FETCH INSTRUCTOR COURSES
   // ========================================================================
-useEffect(() => {
-  // 🔥 أهم شرط
-  if (!userId) return;
+  useEffect(() => {
+    // 🔥 أهم شرط
+    if (!userId) return;
 
-  const fetchCourses = async () => {
-    try {
-      setCoursesLoading(true);
+    const fetchCourses = async () => {
+      try {
+        setCoursesLoading(true);
 
-      let res;
+        let res;
 
-      if (isOwner) {
-        res = await api.get(`/api/course/getcreator`, {
-          withCredentials: true,
-        });
-      } else {
-        res = await api.get(`/api/course/instructor/${userId}`);
+        if (isOwner) {
+          res = await api.get(`/api/course/getcreator`, {
+            withCredentials: true,
+          });
+        } else {
+          res = await api.get(`/api/course/instructor/${userId}`);
+        }
+
+        dispatch(
+          setCreatorCourseData({
+            userId,
+            courses: res.data || [],
+          })
+        );
+
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load courses");
+      } finally {
+        setCoursesLoading(false);
       }
+    };
 
-      dispatch(
-        setCreatorCourseData({
-          userId,
-          courses: res.data || [],
-        })
-      );
-
-      setError(null);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load courses");
-    } finally {
-      setCoursesLoading(false);
-    }
-  };
-
-  fetchCourses();
-}, [userId, isOwner, dispatch]);
+    fetchCourses();
+  }, [userId, isOwner, dispatch]);
 
   // ========================================================================
   // EFFECTS - FETCH INSTRUCTOR SALES DATA
-// ✅ استخدم currentUser مباشرة بدل isInstructor
-useEffect(() => {
-  if (!isOwner || currentUser?.role !== 2) return;
+  // ✅ استخدم currentUser مباشرة بدل isInstructor
+  useEffect(() => {
+    if (!isOwner || currentUser?.role !== 2) return;
 
-  let isMounted = true;
+    let isMounted = true;
 
-  const fetchSalesData = async () => {
-    try {
-      setSalesLoading(true);
-      setSalesError(null);
+    const fetchSalesData = async () => {
+      try {
+        setSalesLoading(true);
+        setSalesError(null);
 
-      const res = await api.get("/api/course/sales", {
-        withCredentials: true,
-      });
-
-      if (!isMounted) return;
-
-      if (res.data?.success) {
-        const data = res.data.data;
-        setSalesData({
-          totalRevenue: data.totalRevenue || 0,
-          totalBuyers: data.totalBuyers || 0,
-          totalCourses: data.totalCourses || 0,
-          totalCourseBuyers: data.totalCourseBuyers || 0,
+        const res = await api.get("/api/course/sales", {
+          withCredentials: true,
         });
-      } else {
-        throw new Error(res.data?.message || "Failed");
+
+        if (!isMounted) return;
+
+        if (res.data?.success) {
+          const data = res.data.data;
+          setSalesData({
+            totalRevenue: data.totalRevenue || 0,
+            totalBuyers: data.totalBuyers || 0,
+            totalCourses: data.totalCourses || 0,
+            totalCourseBuyers: data.totalCourseBuyers || 0,
+          });
+        } else {
+          throw new Error(res.data?.message || "Failed");
+        }
+      } catch (err) {
+        if (!isMounted) return;
+        console.error("Failed to load instructor sales", err?.message || err);
+        setSalesError("Failed to load instructor sales data");
+        setSalesData({ totalRevenue: 0, totalBuyers: 0, totalCourses: 0, totalCourseBuyers: 0 });
+      } finally {
+        if (isMounted) setSalesLoading(false);
       }
-    } catch (err) {
-      if (!isMounted) return;
-      console.error("Failed to load instructor sales", err?.message || err);
-      setSalesError("Failed to load instructor sales data");
-      setSalesData({ totalRevenue: 0, totalBuyers: 0, totalCourses: 0, totalCourseBuyers: 0 });
-    } finally {
-      if (isMounted) setSalesLoading(false);
-    }
-  };
+    };
 
-  fetchSalesData();
-  return () => { isMounted = false; };
+    fetchSalesData();
+    return () => { isMounted = false; };
 
-}, [isOwner, currentUser]); // ✅ currentUser بدل isInstructor
+  }, [isOwner, currentUser]); // ✅ currentUser بدل isInstructor
   // ========================================================================
   // EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
-// ========================================================================
-// EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
-// ========================================================================
-useEffect(() => {
-  if (!isOwner || currentUser?.role !== 2) return;
+  // ========================================================================
+  // EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
+  // ========================================================================
+  useEffect(() => {
+    if (!isOwner || currentUser?.role !== 2) return;
 
-  const fetchEarningsData = async () => {
-    try {
-      setEarningsLoading(true);
+    const fetchEarningsData = async () => {
+      try {
+        setEarningsLoading(true);
 
-      const res = await api.get("/api/withdrawal/earnings", {
-        withCredentials: true,
-      });
+        const res = await api.get("/api/withdrawal/earnings", {
+          withCredentials: true,
+        });
 
-      if (res.data?.success) {
-        const data = {
-          totalEarnings: res.data.totalEarnings || 0,
-          totalWithdrawn: res.data.totalWithdrawn || 0,
-          availableBalance: res.data.availableBalance || 0,
-          computedAvailable: res.data.computedAvailable || 0, // 🔥
-          pendingAmount: res.data.pendingAmount || 0,
-          approvedAmount: res.data.approvedAmount || 0,
-          reservedAmount: res.data.reservedAmount || 0, // 🔥
-        };
+        if (res.data?.success) {
+          const data = {
+            totalEarnings: res.data.totalEarnings || 0,
+            totalWithdrawn: res.data.totalWithdrawn || 0,
+            availableBalance: res.data.availableBalance || 0,
+            computedAvailable: res.data.computedAvailable || 0, // 🔥
+            pendingAmount: res.data.pendingAmount || 0,
+            approvedAmount: res.data.approvedAmount || 0,
+            reservedAmount: res.data.reservedAmount || 0, // 🔥
+          };
 
-        setEarningsData(data);
+          setEarningsData(data);
 
-        // 🔥 DEBUG مهم جدًا
-        if (data.availableBalance !== data.computedAvailable) {
-          console.warn("⚠️ Balance mismatch detected!", {
-            dbBalance: data.availableBalance,
-            computedBalance: data.computedAvailable,
-          });
+          // 🔥 DEBUG مهم جدًا
+          if (data.availableBalance !== data.computedAvailable) {
+            console.warn("⚠️ Balance mismatch detected!", {
+              dbBalance: data.availableBalance,
+              computedBalance: data.computedAvailable,
+            });
+          }
         }
+      } catch (err) {
+        console.error("Failed to load instructor earnings", err?.message || err);
+      } finally {
+        setEarningsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to load instructor earnings", err?.message || err);
-    } finally {
-      setEarningsLoading(false);
-    }
-  };
+    };
 
-  fetchEarningsData();
-}, [isOwner, currentUser]);
+    fetchEarningsData();
+  }, [isOwner, currentUser]);
 
   // ========================================================================
   // EFFECTS - FETCH USER POSTS
@@ -462,30 +538,30 @@ useEffect(() => {
   };
 
   const handlePublishCourse = async (course) => {
-  if (!course.lecturesCount) return toast.error("Add lectures before publishing");
+    if (!course.lecturesCount) return toast.error("Add lectures before publishing");
 
-  try {
-    const res = await api.patch(
-      `/api/course/publish/${course._id}`,
-      { isPublished: !course.isPublished },
-      { withCredentials: true }
-    );
+    try {
+      const res = await api.patch(
+        `/api/course/publish/${course._id}`,
+        { isPublished: !course.isPublished },
+        { withCredentials: true }
+      );
 
-    // دمج بيانات الـ creator القديم مع البيانات الجديدة
-    const updatedCourse = { ...course, ...res.data };
+      // دمج بيانات الـ creator القديم مع البيانات الجديدة
+      const updatedCourse = { ...course, ...res.data };
 
-    dispatch(
-      setCreatorCourseData({
-        userId,
-        courses: creatorCourses.map((c) => (c._id === course._id ? updatedCourse : c)),
-      })
-    );
+      dispatch(
+        setCreatorCourseData({
+          userId,
+          courses: creatorCourses.map((c) => (c._id === course._id ? updatedCourse : c)),
+        })
+      );
 
-    toast.success(res.data.isPublished ? "Course published successfully 🎉" : "Course unpublished");
-  } catch {
-    toast.error("Failed to update course status");
-  }
-};
+      toast.success(res.data.isPublished ? "Course published successfully 🎉" : "Course unpublished");
+    } catch {
+      toast.error("Failed to update course status");
+    }
+  };
 
   const handleSortChange = (key) => {
     setSortFilter((prev) => {
@@ -605,6 +681,10 @@ useEffect(() => {
     handleSaveProfile,
     handleCancelEdit,
     handleChangePassword,
+    // Conversation
+    conversations,
+    last3Conversations,
+    conversationsLoading,
   };
 };
 

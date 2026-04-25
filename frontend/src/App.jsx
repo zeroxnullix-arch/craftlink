@@ -51,6 +51,9 @@ const PaymentSuccess = lazy(() =>
 const PaymentFail = lazy(() =>
   import('@pages/website').then(m => ({ default: m.PaymentFail }))
 );
+const Search = lazy(() =>
+  import('@pages/website').then(m => ({ default: m.Search }))
+);
 
 const Profile = lazy(() =>
   import('@pages/admin').then(m => ({ default: m.Profile }))
@@ -119,6 +122,7 @@ export default function App() {
       <Suspense fallback={<LoadingFire />}>
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/search' element={<Search />} />
         <Route path='/signup' element={<GuestRoute loading={loadingUser}><SignUp /></GuestRoute>} />
         <Route path='/signin' element={<GuestRoute loading={loadingUser}><SignIn /></GuestRoute>} />
         <Route path='/resetpassword' element={<GuestRoute loading={loadingUser}><ResetPassword /></GuestRoute>} />

@@ -14,6 +14,7 @@ import withdrawRouter from "./route/withdrawRouter.js";
 import messageRouter from "./route/messageRoute.js";
 import postRouter from "./route/postRoute.js";
 import paymentWebhook from "./route/paymentWebhook.js";
+import searchRoutes from "./route/searchRoutes.js";
 import { initializeSocket } from "./sockets/index.js";
 dotenv.config();
 const app = express();
@@ -46,6 +47,7 @@ app.use("/api/payment", paymentWebhook);
 app.use("/api/withdrawal", withdrawRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/post", postRouter);
+app.use("/api", searchRoutes);
 app.get("/", (req, res) => res.send("Server Running 🚀"));
 const server = http.createServer(app);
 const io = new Server(server, {

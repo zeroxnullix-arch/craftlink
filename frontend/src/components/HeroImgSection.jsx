@@ -50,7 +50,7 @@ const HeroImgSection = () => {
                 </div>
                 <div className="img-intro-container">
                     <img src={image} className="inverted-radius" alt="intro" />
-                    <button>
+                    <button onClick={()=>navigate("/search")}>
                         <FaPlay />
                     </button>
                 </div>

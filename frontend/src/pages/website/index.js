@@ -10,6 +10,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsPage from "./pages/TermsPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFail from "./pages/PaymentFail";
+import Search from "./pages/Search";
 export  {
   SignUp,
   SignIn,
@@ -21,6 +22,7 @@ export  {
   ContactUs,
   PrivacyPolicy,
   PaymentSuccess,
+  Search,
   PaymentFail,
   TermsPage,
 };

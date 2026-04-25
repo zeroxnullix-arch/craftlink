@@ -101,6 +101,9 @@ const Profile = () => {
     salesLoading,
     earningsData,
     earningsLoading,
+    conversations,
+    last3Conversations,
+    conversationsLoading,
   } = useProfileLogic();
   const visibleCourses = isOwner
     ? filteredCourses
@@ -216,9 +219,9 @@ const Profile = () => {
                     </div>
                     <span className="line"></span>
                     <div>
-<p>
-   {earningsLoading ? "..." : (earningsData?.availableBalance || 0).toLocaleString()} EGP
-</p>
+                      <p>
+                        {earningsLoading ? "..." : (earningsData?.availableBalance || 0).toLocaleString()} EGP
+                      </p>
                       <span>Available Balance</span>
                     </div>
                   </div>
@@ -251,8 +254,8 @@ const Profile = () => {
                       <button
                         className={profileTab === "posts" ? "active" : ""}
                         onClick={() => {
-                           setActiveTab("posts");
-                            setProfileTab("posts")
+                          setActiveTab("posts");
+                          setProfileTab("posts")
                         }}
                       >
                         Posts
@@ -265,7 +268,7 @@ const Profile = () => {
                           () => {
                             setActiveTab("purchased");
                             setProfileTab("purchased")
-                        }
+                          }
                         }
                       >
                         Purchased Courses
@@ -387,9 +390,9 @@ const Profile = () => {
                             <span>
                               {course.lecturesCount || 0} Lectures • {course.level}
                             </span>
-                            <span className="enrolled-count">
-                              {course?.enrolledCraftsmen?.length || 0} enrolled
-                            </span>
+                            {/* <span className="enrolled-count">
+                                {(Array.isArray(course?.enrolledCraftsmen) ? course.enrolledCraftsmen.length : 0)} enrolled
+                            </span> */}
                             <h2>EGP {course.price}</h2>
                           </div>
                         </div>
@@ -587,18 +590,40 @@ const Profile = () => {
                   <h3>Messages</h3>
                 </div>
                 <div className="content">
-                  {[1, 2, 3].map((i) => (
-                    <div className="user" key={i}>
-                      <img src={userAvatar} alt="" />
-                      <div className="info">
-                        <h4>Muhammed Salah</h4>
-                        <span>Craftsman</span>
-                      </div>
-                    </div>
-                  ))}
+                  {conversationsLoading ? (
+                    <p>Loading...</p>
+                  ) : last3Conversations.length === 0 ? (
+                    <p>No conversations yet.</p>
+                  ) : (
+                    last3Conversations.map((conv) => {
+                      const otherUser = conv.members.find(
+                        (m) => m._id !== currentUser._id
+                      );
+
+                      return (
+                        <div
+                          className="user"
+                          key={conv._id}
+                          onClick={() => navigate(`/message/${otherUser._id}`)}
+                        >
+                          <img src={otherUser?.photoUrl || userAvatar} alt="" />
+
+                          <div className="info">
+                            <h4>{otherUser?.name}</h4>
+
+                            <span>
+                              {conv.lastMessage?.text
+                                ? conv.lastMessage.text.slice(0, 25) + "..."
+                                : "No messages"}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
-
+{/* 
               <div className="latest-purchases">
                 <div className="head">
                   <h3>Latest purchases</h3>
@@ -614,7 +639,7 @@ const Profile = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
 
               <button
