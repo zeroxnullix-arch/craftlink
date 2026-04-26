@@ -8,13 +8,12 @@ import { ROLES } from "../constants/roles.js";
 const setAuthCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false,
-    sameSite: "Lax",
+    secure: true,        // 🔥 لازم true مع https
+    sameSite: "none",    // 🔥 أهم حاجة
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
-
 const sanitizeUser = (userDoc) => {
   if (!userDoc) return null;
   const user = userDoc.toObject ? userDoc.toObject() : { ...userDoc };
