@@ -2,9 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// Vite configuration
-// - Aliases simplify imports (e.g. `@components/MyComp`)
-// - Server options tuned for local development and mobile testing
 export default defineConfig({
   plugins: [react()],
 
@@ -21,24 +18,28 @@ export default defineConfig({
     },
   },
 
+  // 🔥 development server
   server: {
-    host: "0.0.0.0", // listen on all interfaces (useful for testing from other devices)
+    host: "0.0.0.0",
     port: 5173,
-    strictPort: true, // if the port is busy, fail instead of using another port
-    cors: true, // allow cross-origin requests during development
+    strictPort: true,
+    cors: true,
+
     proxy: {
       "/api": {
         target: "https://craftlink-production.up.railway.app",
         changeOrigin: true,
         secure: false,
       },
-       preview: {
-    allowedHosts: ["craftlink-production.up.railway.app"]
-  },
     },
-    // Note: Vite handles SPA routing; `historyApiFallback` is not a Vite option
   },
 
-  // Base path for built assets (useful when serving from relative paths)
+  // 🔥 production preview (IMPORTANT for Railway)
+  preview: {
+    host: "0.0.0.0",
+    port: 4173,
+    allowedHosts: ["craftlink-production.up.railway.app"],
+  },
+
   base: "./",
 });
