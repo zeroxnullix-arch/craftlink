@@ -35,8 +35,19 @@ app.use(cookieParser());
 //     credentials: true,
 //   })
 // );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://craftlink-cfwv.vercel.app"
+];
+
 app.use(cors({
-  origin: "https://craftlink-cfwv.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 app.use("/api/auth", authRouter);
