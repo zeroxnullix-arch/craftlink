@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import CraftLinkCompany from "../../../assets/CraftLinkCompany.png";
-import Craftswoman from "../../../assets/img/Craftswoman.jpg";
+import Craftswoman from "../../../assets/img/craftswoman.jpg";
 import {HiSparkles} from "@icons"
 import OurTeam from "../../../components/ourTeam";
 import FeatureCard from "../../../components/FeatureCard";
