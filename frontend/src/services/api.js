@@ -7,7 +7,7 @@ const BASE_URL = serverUrl || "https://craftlink-production.up.railway.app";
 export const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true, // enable cookies for auth flows
-  timeout: 10000, // 10s timeout for requests
+  timeout: 25000, // 10s timeout for requests
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

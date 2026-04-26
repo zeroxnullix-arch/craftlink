@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://craftlink-production.up.railway.app";
 const TEST_ORDER_ID = "501375152"; // From the logs
 
 (async () => {
