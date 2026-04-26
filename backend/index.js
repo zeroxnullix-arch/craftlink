@@ -36,7 +36,7 @@ app.use(cookieParser());
 //   })
 // );
 app.use(cors({
-  origin: true,
+  origin: "https://craftlink-cfwv.vercel.app",
   credentials: true
 }));
 app.use("/api/auth", authRouter);
