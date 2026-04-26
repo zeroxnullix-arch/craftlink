@@ -18,8 +18,7 @@ export default defineConfig({
     },
   },
 
-  // ❌ احذف proxy من production
-  // proxy بيكسر في Railway + يسبب 431 / timeout
+
 
   server: {
     host: "0.0.0.0",
@@ -28,12 +27,12 @@ export default defineConfig({
     cors: true,
   },
 
-  preview: {
+
+ preview: {
     host: "0.0.0.0",
     port: 4173,
 
-    // ✅ لازم يكون كده في Vite الجديد
-    allowedHosts: [
+  allowedHosts: [
       "craftlink-production.up.railway.app",
     ],
   },
