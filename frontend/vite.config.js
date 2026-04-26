@@ -32,6 +32,9 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+       preview: {
+    allowedHosts: ["craftlink-production.up.railway.app"]
+  },
     },
     // Note: Vite handles SPA routing; `historyApiFallback` is not a Vite option
   },
