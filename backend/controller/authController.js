@@ -12,7 +12,6 @@ const setAuthCookie = (res, token) => {
     sameSite: "none",    // 🔥 أهم حاجة
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    domain: ".vercel.app", // 🔥 لازم مع sameSite none و secure true
   });
 };
 const sanitizeUser = (userDoc) => {
