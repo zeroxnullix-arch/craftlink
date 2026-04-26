@@ -28,7 +28,7 @@ export default defineConfig({
     cors: true, // allow cross-origin requests during development
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "https://craftlink-production.up.railway.app",
         changeOrigin: true,
         secure: false,
       },

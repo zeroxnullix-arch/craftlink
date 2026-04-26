@@ -1,7 +1,7 @@
 /**
  * Timeline/Posts API - Quick Reference
  * 
- * Base URL: http://localhost:8000/api/post
+ * Base URL: https://craftlink-production.up.railway.app/api/post
  * All write operations require authentication (Bearer token in Authorization header)
  */
 
@@ -9,7 +9,7 @@
 // 1. CREATE A NEW POST
 // ============================================================================
 async function createPost() {
-  const response = await fetch("http://localhost:8000/api/post", {
+  const response = await fetch("https://craftlink-production.up.railway.app/api/post", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +31,7 @@ async function createPost() {
 // 2. GET ALL POSTS (Public - No auth required)
 // ============================================================================
 async function getAllPosts() {
-  const response = await fetch("http://localhost:8000/api/post");
+  const response = await fetch("https://craftlink-production.up.railway.app/api/post");
   return await response.json();
   // Returns: Array of posts with populated author and comments
 }
@@ -41,7 +41,7 @@ async function getAllPosts() {
 // ============================================================================
 async function getUserPosts(userId) {
   const response = await fetch(
-    `http://localhost:8000/api/post/user/${userId}`,
+    `https://craftlink-production.up.railway.app/api/post/user/${userId}`,
     {
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -57,7 +57,7 @@ async function getUserPosts(userId) {
 // 4. UPDATE A POST
 // ============================================================================
 async function updatePost(postId) {
-  const response = await fetch(`http://localhost:8000/api/post/${postId}`, {
+  const response = await fetch(`https://craftlink-production.up.railway.app/api/post/${postId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +78,7 @@ async function updatePost(postId) {
 // 5. DELETE A POST
 // ============================================================================
 async function deletePost(postId) {
-  const response = await fetch(`http://localhost:8000/api/post/${postId}`, {
+  const response = await fetch(`https://craftlink-production.up.railway.app/api/post/${postId}`, {
     method: "DELETE",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -94,7 +94,7 @@ async function deletePost(postId) {
 // 6. LIKE/UNLIKE A POST
 // ============================================================================
 async function toggleLike(postId) {
-  const response = await fetch(`http://localhost:8000/api/post/${postId}/like`, {
+  const response = await fetch(`https://craftlink-production.up.railway.app/api/post/${postId}/like`, {
     method: "PATCH",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -111,7 +111,7 @@ async function toggleLike(postId) {
 // ============================================================================
 async function addComment(postId) {
   const response = await fetch(
-    `http://localhost:8000/api/post/${postId}/comment`,
+    `https://craftlink-production.up.railway.app/api/post/${postId}/comment`,
     {
       method: "POST",
       headers: {
@@ -133,7 +133,7 @@ async function addComment(postId) {
 // ============================================================================
 async function deleteComment(postId, commentId) {
   const response = await fetch(
-    `http://localhost:8000/api/post/${postId}/comment/${commentId}`,
+    `https://craftlink-production.up.railway.app/api/post/${postId}/comment/${commentId}`,
     {
       method: "DELETE",
       headers: {
