@@ -52,18 +52,27 @@
 // };
 
 // export default sendMail;
-
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
+
   auth: {
     user: process.env.USER_EMAIL,
     pass: process.env.USER_APP_PASSWORD,
   },
+
+  tls: {
+    rejectUnauthorized: false,
+  },
+
+  connectionTimeout: 10000,
 });
 
 const sendMail = async (to, otp) => {
@@ -71,17 +80,25 @@ const sendMail = async (to, otp) => {
     from: `CraftLink <${process.env.USER_EMAIL}>`,
     to,
     subject: "CraftLink OTP Verification",
+
     html: `
       <div style="font-family:Arial;padding:20px">
         <h2>CraftLink OTP Verification</h2>
+
         <p>Your OTP code is:</p>
-        <h1>${otp}</h1>
+
+        <h1 style="letter-spacing:4px">
+          ${otp}
+        </h1>
+
         <p>This code expires in 5 minutes.</p>
       </div>
     `,
   });
 
   console.log("EMAIL SENT:", info.messageId);
+
+  return info;
 };
 
 export default sendMail;
