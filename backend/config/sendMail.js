@@ -2,50 +2,47 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
-
+const { USER_EMAIL, USER_PASSWORD } = process.env;
+if (!USER_EMAIL || !USER_PASSWORD) {
+  console.warn(
+    "sendMail: USER_EMAIL or USER_PASSWORD is not set. Emails will fail.",
+  );
+}
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465, // 🔥 استخدم 465 مع secure
-  secure: true, // 🔥 true مع 465
+  service: "Gmail",
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.USER_EMAIL,
-    pass: process.env.USER_APP_PASSWORD,
+    user: USER_EMAIL,
+    pass: USER_PASSWORD,
   },
-  connectionTimeout: 30000, // 🔥 30 ثانية
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
 });
 
-// 🔥 اختبار الاتصال
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('❌ SMTP FAILED:', error);
-  } else {
-    console.log('✅ SMTP READY');
-  }
-});
-
-const sendMail = async (to, otp) => {
+/**
+ * sendMail - send an email (default: OTP)
+ * @param {string} to - recipient email address
+ * @param {string} otp - one-time password (optional if html/text provided)
+ * @param {object} [opts] - optional overrides: { subject, html, text, from }
+ */
+const sendMail = async (to, otp, opts = {}) => {
+  if (!to) throw new Error("Recipient email (to) is required");
+  const from = opts.from || `CraftLink Support <${USER_EMAIL}>`;
+  const subject = opts.subject || "Reset Your Password";
+  const html =
+    opts.html ||
+    `<p>Your OTP for password reset is <strong>${otp}</strong>. It expires in 5 minutes.</p>`;
+  const text =
+    opts.text ||
+    `Your OTP for password reset is ${otp}. It expires in 5 minutes.`;
   try {
-    const info = await transporter.sendMail({
-      from: `CraftLink <${process.env.USER_EMAIL}>`,
-      to,
-      subject: "CraftLink OTP Verification",
-      html: `
-        <div style="font-family:Arial;padding:20px">
-          <h2>CraftLink OTP Verification</h2>
-          <p>Your OTP code is:</p>
-          <h1 style="letter-spacing:4px">${otp}</h1>
-          <p>This code expires in 5 minutes.</p>
-        </div>
-      `,
-    });
-
-    console.log("✅ EMAIL SENT:", info.messageId);
+    const info = await transporter.sendMail({ from, to, subject, html, text });
+    console.log(`Email sent to ${to}: ${info.messageId}`);
     return info;
   } catch (error) {
-    console.error("❌ EMAIL ERROR:", error.message);
-    console.error("❌ FULL ERROR:", JSON.stringify(error, null, 2));
+    console.error(
+      "sendMail error:",
+      error && error.message ? error.message : error,
+    );
     throw error;
   }
 };
