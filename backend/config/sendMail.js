@@ -110,7 +110,7 @@ const sendMail = async (to, otp) => {
       `,
     });
 
-    console.log("OTP sent:", result.id);
+    console.log("OTP sent:", result.data.id);
     return result;
   } catch (err) {
     console.error("OTP ERROR:", err);
