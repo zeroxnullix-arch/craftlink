@@ -9,7 +9,7 @@ export const sendOtpRequest = async (email, setLoading, setStep) => {
             { email },
             { withCredentials: true }
         );
-        toast.success(res?.data?.message || "OTP sent successfully");
+        toast.success(res.data.message || "OTP sent successfully");
         setStep(2);
     } catch (err) {
         toast.error(err.response?.data?.message || "Failed to send OTP");

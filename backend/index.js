@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import connectDb from "./config/connectDB.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -16,7 +17,6 @@ import postRouter from "./route/postRoute.js";
 import paymentWebhook from "./route/paymentWebhook.js";
 import searchRoutes from "./route/searchRoutes.js";
 import { initializeSocket } from "./sockets/index.js";
-dotenv.config();
 const app = express();
 const port = Number(process.env.PORT) || 8000;
 app.use(express.json());
