@@ -21,7 +21,7 @@ export default defineConfig({
 
 
   server: {
-    host: "0.0.0.0",
+    host: true,
     port: 5173,
     strictPort: true,
     cors: true,
@@ -29,7 +29,7 @@ export default defineConfig({
 
 
  preview: {
-    host: "0.0.0.0",
+    host: true,
     port: 4173,
 
   allowedHosts: [

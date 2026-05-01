@@ -970,6 +970,7 @@ html[dir="rtl"] .input-wrap .icon {
 .otp-resend .resend-btn button {
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   color: var(--text-secondary);
+  font-family: inherit;
   font-weight: 400;
   cursor: pointer;
   position: relative;
