@@ -12,9 +12,11 @@ import { PiSubtitles } from "react-icons/pi";
 import { FaInbox } from "react-icons/fa6";
 import SelectInput from "../components/SelectInput";
 import { api } from "@services/api";
+import { useTranslation } from "react-i18next";
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dhynqaw42/image/upload";
 const UPLOAD_PRESET = "CraftLink_Image";
 const CreateCoursePage = () => {
+  const { i18n, t } = useTranslation();
   const { courseId } = useParams();
   const { handleFocus, handleBlur } = useInputAnimation();
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ const CreateCoursePage = () => {
   const [resetUpload, setResetUpload] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const compressImage = (file, maxWidth = 800, maxHeight = 800) => {
+    
     return new Promise((resolve) => {
       const img = new Image();
       img.src = URL.createObjectURL(file);
@@ -222,109 +225,109 @@ const CreateCoursePage = () => {
                 />
                 <div className="selected-options">
                   <SelectInput
-                    label="Select Category"
+                    label={t("Select Category")}
                     options={[
                       {
-                        label: "Construction & Building",
+                        label: t("Construction & Building"),
                         items: [
-                          "Carpenter",
-                          "Plumber",
-                          "Electrician",
-                          "Mason",
-                          "Bricklayer",
-                          "Painter",
-                          "Welder",
-                          "Blacksmith",
-                          "Roofer",
-                          "Tiler",
-                          "Concrete Worker",
+                          t("Carpenter"),
+                          t("Plumber"),
+                          t("Electrician"),
+                          t("Mason"),
+                          t("Bricklayer"),
+                          t("Painter"),
+                          t("Welder"),
+                          t("Blacksmith"),
+                          t("Roofer"),
+                          t("Tiler"),
+                          t("Concrete Worker"),
                         ],
                       },
                       {
-                        label: "Technical & Engineering",
+                        label: t("Technical & Engineering"),
                         items: [
-                          "Mechanic",
-                          "Auto Electrician",
-                          "HVAC Technician",
-                          "Refrigeration Technician",
-                          "Technician",
-                          "Electronics Technician",
-                          "Network Technician",
-                          "Computer Technician",
+                          t("Mechanic"),
+                          t("Auto Electrician"),
+                          t("HVAC Technician"),
+                          t("Refrigeration Technician"),
+                          t("Technician"),
+                          t("Electronics Technician"),
+                          t("Network Technician"),
+                          t("Computer Technician"),
                         ],
                       },
                       {
-                        label: "Crafts & Handicrafts",
+                        label: t("Crafts & Handicrafts"),
                         items: [
-                          "Tailor",
-                          "Shoemaker",
-                          "Weaver",
-                          "Potter",
-                          "Goldsmith",
-                          "Silversmith",
-                          "Woodworker",
-                          "Sculptor",
-                          "Calligrapher",
+                          t("Tailor"),
+                          t("Shoemaker"),
+                          t("Weaver"),
+                          t("Potter"),
+                          t("Goldsmith"),
+                          t("Silversmith"),
+                          t("Woodworker"),
+                          t("Sculptor"),
+                          t("Calligrapher"),
                         ],
                       },
                       {
-                        label: "Food & Hospitality",
+                        label: t("Food & Hospitality"),
                         items: [
-                          "Chef",
-                          "Cook",
-                          "Baker",
-                          "Butcher",
-                          "Pastry Chef",
-                          "Barista",
-                          "Waiter",
-                          "Restaurant Worker",
+                          t("Chef"),
+                          t("Cook"),
+                          t("Baker"),
+                          t("Butcher"),
+                          t("Pastry Chef"),
+                          t("Barista"),
+                          t("Waiter"),
+                          t("Restaurant Worker"),
                         ],
                       },
                       {
-                        label: "Services",
+                        label: t("Services"),
                         items: [
-                          "Barber",
-                          "Hairdresser",
-                          "Makeup Artist",
-                          "Cleaner",
-                          "Gardener",
-                          "Babysitter",
-                          "Driver",
-                          "Delivery Man",
-                          "Security Guard",
+                          t("Barber"),
+                          t("Hairdresser"),
+                          t("Makeup Artist"),
+                          t("Cleaner"),
+                          t("Gardener"),
+                          t("Babysitter"),
+                          t("Driver"),
+                          t("Delivery Man"),
+                          t("Security Guard"),
                         ],
                       },
                       {
-                        label: "Industry & Labor",
+                        label: t("Industry & Labor"),
                         items: [
-                          "Factory Worker",
-                          "Metalworker",
-                          "Textile Worker",
-                          "Printer",
-                          "Assembler",
+                          t("Factory Worker"),
+                          t("Metalworker"),
+                          t("Textile Worker"),
+                          t("Printer"),
+                          t("Assembler"),
                         ],
                       },
                       {
-                        label: "Creative & Digital",
+                        label: t("Creative & Digital"),
                         items: [
-                          "Programmer",
-                          "Web Developer",
-                          "Mobile Developer",
-                          "UI/UX Designer",
-                          "Graphic Designer",
-                          "Photographer",
-                          "Artist",
-                          "Musician",
-                          "Video Editor",
+                          t("Programmer"),
+                          t("Web Developer"),
+                          t("Mobile Developer"),
+                          t("UI/UX Designer"),
+                          t("Graphic Designer"),
+                          t("Photographer"),
+                          t("Artist"),
+                          t("Musician"),
+                          t("Video Editor"),
                         ],
                       },
                       {
-                        label: "Agriculture & Nature",
+                        label: t("Agriculture & Nature"),
                         items: [
-                          "Farmer",
-                          "Fisherman",
-                          "Gardener",
-                          "Animal Breeder",
+                          t("Farmer"),
+                          t("Fisherman"),
+                          t("Gardener"),
+                          t("Animal Breeder"),
                         ],
                       },
                     ]}

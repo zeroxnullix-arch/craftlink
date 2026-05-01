@@ -20,7 +20,7 @@ import useGetPublishedCourse from "../../../customHooks/useGetPublishedCourse";
 import { useSelector } from "react-redux";
 import ChatBot from "../../../components/chatBot";
 import PopularCourses from "../../../components/PopularCourses";
-
+import { useTranslation } from "react-i18next";
 const features = [
   { icon: FaUsersViewfinder, text: "Trusted Instructors" },
   { icon: RiVerifiedBadgeFill, text: "Verified Craftsmen" },
@@ -37,7 +37,7 @@ const TopCategories = [
 
 const Main = () => {
   const isMobile = useIsMobile(1000);
-
+  const { i18n, t } = useTranslation();
   useGetPublishedCourse();
   const courses = useSelector((state) =>
     Object.values(state.course.courseData)
@@ -54,21 +54,32 @@ const Main = () => {
 
         {/* Features */}
         <section className="features why-choose">
-          <h2>Why Choose CraftLink<span>?</span></h2>
-          <p>A platform built to simplify learning, teaching, and getting work done.</p>
+          <h2>{t("Why Choose CraftLink")}<span>{t("?")}</span></h2>
+          <p>{t("A platform built to simplify learning, teaching, and getting work done.")}</p>
 
           {isMobile ? (
-            <Swiper slidesPerView="auto" spaceBetween={16}>
+            <Swiper
+              className="TopCategories-swiper"
+              slidesPerView={"auto"}
+              spaceBetween={16}
+            >
               {features.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <FeatureCard {...item} />
+                  <FeatureCard
+                    icon={item.icon}
+                    text={t(item.text)}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
           ) : (
             <div className="features-grid">
               {features.map((item, index) => (
-                <FeatureCard key={index} {...item} />
+                <FeatureCard
+                  key={index}
+                  icon={item.icon}
+                  text={t(item.text)}
+                />
               ))}
             </div>
           )}
@@ -76,20 +87,28 @@ const Main = () => {
 
         {/* Top Categories */}
         <section className="container-wrapper section-layout TopCategories">
-          <h2>Top Categories</h2>
+          <h2>{t("Top Categories")}</h2>
 
           {isMobile ? (
-            <Swiper slidesPerView="auto" spaceBetween={16}>
+            <Swiper
+              className="TopCategories-swiper"
+              slidesPerView={"auto"}
+              spaceBetween={16}
+            >
               {TopCategories.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <TopCategoriesCard {...item} />
+                  <TopCategoriesCard 
+                  img={item.img}
+                  text={t(item.text)}
+                   />
                 </SwiperSlide>
               ))}
             </Swiper>
           ) : (
             <div className="TopCategories-grid">
               {TopCategories.map((item, index) => (
-                <TopCategoriesCard key={index} {...item} />
+                <TopCategoriesCard key={index}  img={item.img}
+                  text={t(item.text)} />
               ))}
             </div>
           )}

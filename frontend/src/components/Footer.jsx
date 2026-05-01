@@ -5,7 +5,9 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/CraftLink.svg";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const Footer = () => {
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate()
   return (
     <footer className="footer">
@@ -14,72 +16,71 @@ const Footer = () => {
           <div className="footer-logo pointer" onClick={()=>navigate("/")}>
             <img src={logo} className="logo-CraftLink" alt="craftlink" />
             <h2>
-              CraftLink<span>.</span>
+              {t("craflink")}<span>.</span>
             </h2>
           </div>
           <p className="footer-desc">
-            A platform connecting skilled craftsmen with customers and learners.
-            Discover, hire, and grow your skills with trusted professionals.
+            {t("A platform connecting skilled craftsmen with customers and learners. Discover, hire, and grow your skills with trusted professionals.")}
           </p>
           <div className="footer-social">
             <button className="Btn instagram">
               <FaInstagram className="svgIcon" />
-              <span className="text">Instagram</span>
+              <span className="text">{t("Instagram")}</span>
             </button>
             <button className="Btn youtube">
               <FaYoutube className="svgIcon" />
-              <span className="text">YouTube</span>
+              <span className="text">{t("YouTube")}</span>
             </button>
             <button className="Btn twitter">
               <FaTwitter className="svgIcon" />
-              <span className="text">Twitter</span>
+              <span className="text">{t("Twitter")}</span>
             </button>
           </div>
         </div>
         <div className="footer-col">
-          <h4>Quick Links</h4>
+          <h4>{t("Quick Links")}</h4>
           <ul>
-            <li onClick={()=>navigate("/")}>Home</li>
-            <li>Courses</li>
-            <li>Craftsmen</li>
-            <li>Categories</li>
-            <li onClick={()=>navigate("/about")}>About Us</li>
+            <li onClick={()=>navigate("/")}>{t("home")}</li>
+            <li>{t("Courses")}</li>
+            <li>{t("Craftsmen")}</li>
+            <li>{t("Categories")}</li>
+            <li onClick={()=>navigate("/about")}>{t("About Us")}</li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Popular Crafts</h4>
+          <h4>{t("Popular Crafts")}</h4>
           <ul>
-            <li>Carpentry</li>
-            <li>Plumbing</li>
-            <li>Electricity</li>
-            <li>Painting</li>
-            <li>Metal Works</li>
+            <li>{t("Carpentry")}</li>
+            <li>{t("Plumbing")}</li>
+            <li>{t("Electricity")}</li>
+            <li>{t("Painting")}</li>
+            <li>{t("Metal Works")}</li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Support</h4>
+          <h4>{t("Support")}</h4>
           <ul>
-            <li onClick={()=>navigate("/helpcenter")}>Help Center</li>
-            <li onClick={()=>navigate("/contactus")}>Contact Us</li>
-            <li onClick={()=>navigate("/privacy-policy")}>Privacy Policy</li>
-            <li onClick={()=>navigate("/terms")}>Terms & Conditions</li>
+            <li onClick={()=>navigate("/helpcenter")}>{t("Help Center")}</li>
+            <li onClick={()=>navigate("/contactus")}>{t("Contact Us")}</li>
+            <li onClick={()=>navigate("/privacy-policy")}>{t("Privacy Policy")}</li>
+            <li onClick={()=>navigate("/terms")}>{t("Terms & Conditions")}</li>
           </ul>
         </div>
 
         {/* Newsletter */}
         <div className="footer-col footer-newsletter">
-          <h4>Subscribe</h4>
-          <p>Get updates about new craftsmen and courses.</p>
+          <h4>{t("Subscribe")}</h4>
+          <p>{t("Get updates about new craftsmen and courses.")}</p>
           <div className="newsletter-box">
-            <input type="email" placeholder="Enter your email" />
-            <button>Subscribe</button>
+            <input type="email" placeholder={t("Enter your email")} />
+            <button>{t("Subscribe")}</button>
           </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} CraftLink. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} {t("craflink")}. {t("All rights reserved")}.</p>
       </div>
     </footer>
   );

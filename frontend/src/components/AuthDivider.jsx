@@ -1,3 +1,4 @@
+
 const AuthDivider = ({ text }) => (
   <div className="auth-divider">
     <span className="h-line"></span>

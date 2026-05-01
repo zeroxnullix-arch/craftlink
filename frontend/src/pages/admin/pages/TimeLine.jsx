@@ -11,6 +11,7 @@ import PostCard from "./components/PostCard";
 import { fetchPosts, deletePost } from "../../../redux/postSlice";
 import userAvatar from "../../../assets/img/userAvatar.jpg";
 import { TbExternalLink, FaBuysellads, SiGoogleadsense, FaRegNewspaper } from "@icons";
+import { useTranslation } from "react-i18next";
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
@@ -20,7 +21,7 @@ const TimeLine = () => {
   const [activeMenu, setActiveMenu] = useState(0);
   const [sidebarHide, setSidebarHide] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
-
+ const { i18n, t } = useTranslation();
   const posts = useSelector((state) => state.posts.posts);
   const postsStatus = useSelector((state) => state.posts.status);
   const createStatus = useSelector((state) => state.posts.createStatus);
@@ -108,7 +109,7 @@ const TimeLine = () => {
             <div className="todo ads">
               <div className="head">
                 <FaBuysellads/>
-                <h3> Ads</h3>
+                <h3> {t("Ads")}</h3>
               </div>
               <div className="todo-list">
                 <div class="card sweeperCard o-hidden">
@@ -116,13 +117,12 @@ const TimeLine = () => {
                     <div class="icon">
                       <SiGoogleadsense/>
                     </div>
-                    <div class="title my-3">Easy For Everyone</div>
+                    <div class="title my-3">{t("Easy For Everyone")}</div>
                     <div class="subtitle">
-                      Every year, we award travelers’ favorite destinations, hotels,
-                      restaurants, and things to
+                      {t("Craftsmen Jobs Ad")}
                     </div>
                     <div class="linkMore mt-3">
-                      Learn More
+                      {t("Learn More")}
                      <TbExternalLink/>
                     </div>
                   </div>
@@ -132,13 +132,12 @@ const TimeLine = () => {
                     <div class="icon">
                       <SiGoogleadsense/>
                     </div>
-                    <div class="title my-3">Easy For Everyone</div>
+                    <div class="title my-3">{t("Easy For Everyone")}</div>
                     <div class="subtitle">
-                      Every year, we award travelers’ favorite destinations, hotels,
-                      restaurants, and things to
+                      {t("Craftsmen Jobs Ad")}
                     </div>
                     <div class="linkMore mt-3">
-                      Learn More
+                      {t("Learn More")}
                      <TbExternalLink/>
                     </div>
                   </div>

@@ -8,7 +8,7 @@ import {
 } from "@icons";
 import { useResetPasswordLogic } from "../functions";
 import { useMemo } from "react";
-
+import { useTranslation } from "react-i18next";
 export default function ResetPassword() {
   const logic = useResetPasswordLogic();
 
@@ -70,7 +70,7 @@ export default function ResetPassword() {
     if (step === 2) return verifyOtp();
     if (step === 3) return resetPassword();
   };
-
+const { i18n, t } = useTranslation();
   return (
     <>
       <div className="background" />
@@ -88,27 +88,27 @@ export default function ResetPassword() {
                   {step === 1 && (
                     <>
                       <h2>
-                        Forget Password<span>?</span>
+                        {t("Forget Password")}<span>{t("?")}</span>
                       </h2>
-                      <p className="text">We'll send you the updated instructions shortly.</p>
+                      <p className="text">{t("We'll send you the updated instructions shortly.")}</p>
                     </>
                   )}
 
                   {step === 2 && (
                     <>
                       <h2>
-                        OTP Verification<span>.</span>
+                        {t("OTP Verification")}<span>.</span>
                       </h2>
-                      <p className="text">A verification code has been sent to {maskEmail(email)}</p>
+                      <p className="text">{t("A verification code has been sent to")} {maskEmail(email)}</p>
                     </>
                   )}
 
                   {step === 3 && (
                     <>
                       <h2>
-                        Reset Password<span>.</span>
+                        {t("Reset Password")}<span>.</span>
                       </h2>
-                      <p className="text">Enter new password below.</p>
+                      <p className="text">{t("Enter new password below.")}</p>
                     </>
                   )}
                 </div>
@@ -132,7 +132,7 @@ export default function ResetPassword() {
 
                   {step === 1 && (
                     <AuthButton type="submit" loading={loading}>
-                      Send OTP
+                      {t("Send OTP")}
                     </AuthButton>
                   )}
 
@@ -141,7 +141,7 @@ export default function ResetPassword() {
                       <div className="otp-resend">
                         {canResend ? (
                           <div className="resend-btn">
-                            <p className="text">Didn't get a code?</p>
+                            <p className="text">{t("Didn't get a code?")}</p>
                             <button
                               type="button"
                               onClick={() => {
@@ -149,7 +149,7 @@ export default function ResetPassword() {
                                 sendOtp();
                               }}
                             >
-                              <span>Resend</span>
+                              <span>{t("Resend")}</span>
                               <span className="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="svg-icon">
                                   <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
@@ -159,30 +159,30 @@ export default function ResetPassword() {
                           </div>
                         ) : (
                           <p className="text">
-                            Time Remaining: {Math.floor(timer / 60).toString().padStart(2, "0")}:
+                            {t("Time Remaining")}: {Math.floor(timer / 60).toString().padStart(2, "0")}:
                             {(timer % 60).toString().padStart(2, "0")}
                           </p>
                         )}
                       </div>
 
                       <AuthButton  type="submit" loading={loading}>
-                        Verify OTP
+                        {t("Verify OTP")}
                       </AuthButton>
                     </>
                   )}
 
                   {step === 3 && (
                     <AuthButton  type="submit" loading={loading}>
-                      Reset Password
+                      {t("Reset Password")}
                     </AuthButton>
                   )}
                 </form>
 
                 {step === 1 && (
                   <div className="other-auth">
-                    <p>Didn't have an account?</p>
+                    <p>{t("Didn't have an account?")}</p>
                     <button type="button" onClick={() => navigate("/signup")}>
-                      Sign Up
+                      {t("Sign Up")}
                     </button>
                   </div>
                 )}

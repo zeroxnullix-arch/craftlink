@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/el-messiri": "^5.2.8",
     "@fontsource/outfit": "^5.2.8",
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.18",
@@ -20,9 +21,11 @@
     "framer-motion": "^12.31.0",
     "fuse.js": "^7.3.0",
     "gsap": "^3.14.2",
+    "i18next": "^26.0.8",
     "localforage": "^1.10.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-i18next": "^17.0.6",
     "react-icons": "^5.5.0",
     "react-photo-view": "^1.2.7",
     "react-redux": "^9.2.0",

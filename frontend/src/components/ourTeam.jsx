@@ -25,7 +25,7 @@ import ShahdMahmoud from "../assets/ourTeam/Shahd-Mahmoud.png";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
+import { useTranslation } from "react-i18next";
 
 const team = [
     {
@@ -136,10 +136,11 @@ const team = [
 ];
 
 export default function OurTeam() {
+  const { i18n, t } = useTranslation();
   return (
     <section className="team-section">
 
-      <h3>Our Team</h3>
+      <h3>{t("Our Team")}</h3>
 
       <Swiper
         modules={[Autoplay]}

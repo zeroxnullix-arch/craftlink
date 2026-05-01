@@ -14,6 +14,7 @@ import {
   AuthButton,
   Footer,
 } from "@components";
+import { useTranslation } from "react-i18next";
 const faqData = [
   {
     question: "What is CraftLink?",
@@ -67,6 +68,7 @@ const faqData = [
 ];
 export default function ContactUs() {
   const [activeIndex, setActiveIndex] = useState(null);
+  const { i18n, t } = useTranslation();
   const [title, setTitle] = useState("")
   const { handleFocus, handleBlur } = useInputAnimation();
   const toggleFAQ = (index) => {
@@ -85,7 +87,7 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
 
         <section className="hero">
           <div className="hero-content">
-            <h2>Contact Us</h2>
+            <h2>{t("Contact Us")}</h2>
           </div>
         </section>
 
@@ -96,8 +98,8 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="card-inner">
-              <h3>Customer Support</h3>
-              <p>Need help using the platform?</p>
+              <h3>{t("Customer Support")}</h3>
+              <p>{t("Need help using the platform?")}</p>
               <span>support@craftlink.com</span>
             </div>
           </div>
@@ -105,8 +107,8 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="card-inner">
-              <h3>Technical Support</h3>
-              <p>Facing a technical issue?</p>
+              <h3>{t("Technical Support")}</h3>
+              <p>{t("Facing a technical issue?")}</p>
               <span>tech@craftlink.com</span>
             </div>
           </div>
@@ -114,8 +116,8 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="card-inner">
-              <h3>Business Partnerships</h3>
-              <p>Interested in collaboration?</p>
+              <h3>{t("Business Partnerships")}</h3>
+              <p>{t("Interested in collaboration?")}</p>
               <span>partners@craftlink.com</span>
             </div>
           </div>
@@ -123,8 +125,8 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="card-inner">
-              <h3>Media & Press</h3>
-              <p>Press or media inquiries.</p>
+              <h3>{t("Media & Press")}</h3>
+              <p>{t("Press or media inquiries.")}</p>
               <span>press@craftlink.com</span>
             </div>
           </div>
@@ -182,8 +184,13 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
 
 
               <SelectInput
-                label="Select Department"
-                options={["Customer Support", "Technical Issue", "Business Partnership", "General Inquiry"]}
+                label={t("Select Department")}
+                options={[
+                  t("Customer Support"),
+                  t("Technical Issue"),
+                  t("Business Partnership"),
+                  t("General Inquiry")
+                ]}
                 value={title}
                 onChange={setTitle}
               />
@@ -208,7 +215,7 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
               />
 
               <AuthButton type="submit">
-                Send Message
+                {t("Send Message")}
               </AuthButton>
             </form>
           </div>
@@ -216,32 +223,30 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
           {/* COMPANY INFO */}
 
           <div className="company-info">
-            <h2>Our Office</h2>
+            <h2>{t("Our Office")}</h2>
 
             <p>
-              CraftLink is a digital platform designed to empower artisans and
-              help customers easily find trusted services. We aim to build a
-              reliable ecosystem where skills meet opportunity.
+              {t("CraftLink is a digital platform designed to empower artisans and help customers easily find trusted services. We aim to build a reliable ecosystem where skills meet opportunity.")}
             </p>
 
             <div className="info-item">
-              <strong>Address</strong>
-              <p>Mansoura, Dakahlia, Egypt</p>
+              <strong>{t("Address")}</strong>
+              <p>{t("Mansoura, Dakahlia, Egypt")}</p>
             </div>
 
             <div className="info-item">
-              <strong>Phone</strong>
+              <strong>{t("Phone")}</strong>
               <p>+20 101 763 5512</p>
             </div>
 
             <div className="info-item">
-              <strong>Email</strong>
+              <strong>{t("Email")}</strong>
               <p>contact@craftlink.com</p>
             </div>
 
             <div className="info-item">
-              <strong>Working Hours</strong>
-              <p>Sunday – Thursday / 9AM – 6PM</p>
+              <strong>{t("Working Hours")}</strong>
+              <p>{t("Sunday – Thursday")} / 9AM – 6PM</p>
             </div>
           </div>
         </section>
@@ -249,7 +254,7 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
         {/* FAQ */}
 
 <section className="faq-section">
-  <h2>FAQ</h2>
+  <h2>{t("FAQ")}</h2>
 
   <div className="faq-container">
 
@@ -263,12 +268,12 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             className="faq-question"
             onClick={() => toggleFAQ(index)}
           >
-            {faq.question}
+            {t(faq.question)}
             <span>{activeIndex === index ? "-" : "+"}</span>
           </div>
 
           <div className="faq-answer">
-            <p>{faq.answer}</p>
+            <p>{t(faq.answer)}</p>
           </div>
         </div>
       ))}
@@ -284,12 +289,12 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             className="faq-question"
             onClick={() => toggleFAQ(index + leftFaq.length)}
           >
-            {faq.question}
+            {t(faq.question)}
             <span>{activeIndex === index + leftFaq.length ? "-" : "+"}</span>
           </div>
 
           <div className="faq-answer">
-            <p>{faq.answer}</p>
+            <p>{t(faq.answer)}</p>
           </div>
         </div>
       ))}
@@ -310,15 +315,14 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
         {/* CTA */}
 
         <section className="cta">
-          <h2>Let’s Start a Conversation</h2>
+          <h2>{t("Let’s Start a Conversation")}</h2>
 
           <p>
-            Whether you're a customer, artisan, or potential partner, we would
-            love to hear from you.
+            {t("Whether you're a customer, artisan, or potential partner, we would love to hear from you.")}
           </p>
 
          <button class="button">
-  <span>Contact Support</span>
+  <span>{t("Contact Support")}</span>
 </button>
         </section>
       </div>

@@ -10,10 +10,10 @@ import {
 } from "@components";
 import bg from "../../../assets/img/BgSignIn.jpg";
 import { useSignInLogic } from "../functions";
-
+import { useTranslation } from "react-i18next";
 export default function SignIn() {
   const logic = useSignInLogic();
-
+const { i18n, t } = useTranslation();
   // Destructure for clarity
   const {
     email,
@@ -72,10 +72,10 @@ export default function SignIn() {
               <div className="form-wrapper">
                 <div className="section-main-heading">
                   <h2>
-                    Welcome Back<span>,</span>
+                    {t("Welcome Back")}<span>{t(",")}</span>
                   </h2>
                   <p className="text">
-                    Access your account and explore new opportunities.
+                    {t("Access your account and explore new opportunities.")}
                   </p>
                 </div>
 
@@ -83,7 +83,7 @@ export default function SignIn() {
                   {inputs.map((input, idx) => (
                     <AuthInput
                       key={idx}
-                      label={input.label}
+                      label={t(input.label)}
                       value={input.value}
                       onChange={input.onChange}
                       type={input.type}
@@ -100,26 +100,26 @@ export default function SignIn() {
                       onClick={() => navigate("/resetpassword")}
                       className="pointer"
                     >
-                      Forget Password?
+                      {t("Forget Password?")}
                     </span>
                   </div>
 
                   <AuthButton type="submit" loading={loading} disabled={loading}>
-                    Sign In
+                    {t("Sign In")}
                   </AuthButton>
                 </form>
 
-                <AuthDivider text="Or continue with" />
+                <AuthDivider text={t("Or continue with")} />
                 <AuthGoogleButton
                   onClick={() => googleLoginOrSignUp("googlelogin")} disabled={loading}
                 >
-                  Sign In With Google
+                  {t("Sign In With Google")}
                 </AuthGoogleButton>
 
                 <div className="other-auth">
-                  <p>Don't have an account?</p>
+                  <p>{t("Don't have an account?")}</p>
                   <button type="button" onClick={() => navigate("/signUp")}>
-                    Sign Up
+                    {t("Sign Up")}
                   </button>
                 </div>
               </div>

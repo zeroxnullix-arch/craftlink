@@ -9,6 +9,7 @@ import {
   LuSearchX,
 } from "@icons";
 import { useInputAnimation } from "../../../hooks/useInputAnimation";
+import { useTranslation } from "react-i18next";
 const helpSections = [
   {
     sectionTitle: "Account Management",
@@ -145,6 +146,7 @@ const highlightText = (text, highlight) => {
 };
 
 const HelpCenter = () => {
+  const { i18n, t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
   const [activeSection, setActiveSection] = useState("All Sections");
@@ -196,14 +198,14 @@ const HelpCenter = () => {
         <main className="help-main">
           <div className="wavy-help-center">
 
-            <h1>Help Center</h1>
+            <h1>{t("Help Center")}</h1>
 
             <AuthInput
               type="text"
               value={searchTerm}
               onChange={setSearchTerm}
               Icon={RiSearch2Line}
-              label="Search"
+              label={t("Search")}
               handleFocus={handleFocus}
               handleBlur={handleBlur}
               className="search-input"
@@ -213,7 +215,7 @@ const HelpCenter = () => {
                 className={activeSection === "All Sections" ? "active" : ""}
                 onClick={() => setActiveSection("All Sections")}
               >
-                All
+                {t("All")}
               </li>
               {helpSections.map((section, idx) => (
                 <li
@@ -221,7 +223,7 @@ const HelpCenter = () => {
                   className={activeSection === section.sectionTitle ? "active" : ""}
                   onClick={() => setActiveSection(section.sectionTitle)}
                 >
-                  {section.sectionTitle}
+                  {t(section.sectionTitle)}
                 </li>
               ))}
             </ul>
@@ -230,12 +232,12 @@ const HelpCenter = () => {
             {sectionsToRender.length === 0 ? (
               <dive className="no-results">
               <LuSearchX/>
-              <p>No topics found.</p>
+              <p>{t("No topics found.")}</p>
               </dive>
             ) : (
               sectionsToRender.map((section, idx) => (
                 <div key={idx} className="help-section">
-                  <h2>{section.sectionTitle}</h2>
+                  <h2>{t(section.sectionTitle)}</h2>
                   <div className="accordion-container">
                   {section.topics.map((topic, tIdx) => {
                     const topicKey = `${section.sectionTitle}-${tIdx}`;
@@ -249,13 +251,13 @@ const HelpCenter = () => {
                           className="accordion-header"
                           onClick={() => toggleTopic(topicKey)}
                         >
-                          <h3>{highlightText(topic.title, searchTerm)}</h3>
+                          <h3>{t(highlightText(topic.title, searchTerm))}</h3>
                           <span>{activeTopic === topicKey ? "-" : "+"}</span>
                         </div>
                         <div className="accordion-content">
                           <ul>
                             {topic.content.map((item, i) => (
-                              <li key={i}>{highlightText(item, searchTerm)}</li>
+                              <li key={i}>{t(highlightText(item, searchTerm))}</li>
                             ))}
                           </ul>
                         </div>

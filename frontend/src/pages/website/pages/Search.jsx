@@ -6,11 +6,12 @@ import Footer from "../../../components/Footer";
 import PopularCourses from "../../../components/PopularCourses";
 import { BsStars } from "react-icons/bs";
 import { HiMiniLanguage } from "react-icons/hi2";
+import { useTranslation } from "react-i18next";
 const AICourseSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [lang, setLang] = useState("auto");
-
+ const { i18n, t } = useTranslation();
   const courses = useSelector((s) => Object.values(s.course.courseData));
   const debounceRef = useRef(null);
   const abortRef = useRef(null);
@@ -50,7 +51,7 @@ const AICourseSearch = () => {
     recognition.lang = lang === "en" ? "en-US" : "ar-EG";
 
     recognition.interimResults = true;
-    recognition.continuous = false; // 🔥 مهم جدًا: يقفل تلقائي
+    recognition.continuous = false;
 
     let finalText = "";
 
@@ -76,11 +77,10 @@ const AICourseSearch = () => {
       setSearchTerm(fullText);
       handleSearch(fullText);
 
-      // 🔥 reset timer كل مرة يتكلم فيها
       clearTimeout(silenceTimer);
 
       silenceTimer = setTimeout(() => {
-        recognition.stop(); // 👈 يقفل الميكروفون بعد السكوت
+        recognition.stop();
       }, 1200);
     };
 
@@ -102,7 +102,7 @@ const AICourseSearch = () => {
       </div>
       <div className="search-container">
         <div className="wavy"></div>
-        <h2>Search</h2>
+        <h2>{t("Search")}</h2>
         <div class="search-orb-container">
           <div class="gooey-background-layer">
             <div class="blob blob-1"></div>
@@ -131,7 +131,7 @@ const AICourseSearch = () => {
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
               class="modern-input"
-              placeholder="Explore the digital void..."
+              placeholder={t("Search courses placeholder")}
             />
             <div className="btn-search-actions">
 
@@ -141,23 +141,23 @@ const AICourseSearch = () => {
                 <button className="lang-active-btn">
                   <HiMiniLanguage/>
                   {lang === "auto"
-                    ? "Auto Detect"
+                    ? t("Auto Detect")
                     : lang === "ar"
-                      ? "Arabic"
-                      : "English"}
+                      ? t("Arabic")
+                      : t("English")}
                 </button>
 
                 <div className="lang-menu">
                   <button onClick={() => setLang("auto")}>
-                    Auto Detect
+                    {t("Auto Detect")}
                   </button>
 
                   <button onClick={() => setLang("ar")}>
-                    Arabic
+                    {t("Arabic")}
                   </button>
 
                   <button onClick={() => setLang("en")}>
-                    English
+                    {t("English")}
                   </button>
                 </div>
               </div>
@@ -202,7 +202,7 @@ const AICourseSearch = () => {
       </div> */}
       <PopularCourses
         courses={results.length ? results : courses}
-        title="Results"
+        title={t("Results")}
         limit={12}
       />
       <Footer />

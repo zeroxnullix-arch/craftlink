@@ -172,34 +172,44 @@ export const logOut = async (req, res) => {
 export const sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
+
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
+
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // منع spam OTP
     if (user.otpExpires && user.otpExpires > Date.now()) {
       return res.status(429).json({
         message: "OTP already sent. Please wait before requesting a new one.",
       });
     }
 
-    const otp =
-      process.env.NODE_ENV !== "production" && process.env.BYPASS_OTP === "true"
-        ? "0000"
-        : Math.floor(100000 + Math.random() * 900000).toString();
+    // OTP production only
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
     user.resetOtp = otp;
     user.otpExpires = Date.now() + 5 * 60 * 1000;
-    user.isOtpVerifed = false;
+    user.isOtpVerified = false;
+
     await user.save();
-    if (process.env.NODE_ENV !== "production") {
-      console.log("DEV OTP:", otp);
-    }
+
+    console.log("OTP GENERATED:", otp, "FOR:", email);
+
     await sendMail(email, otp);
-    return res.status(200).json({ message: "OTP sent successfully" });
+
+    return res.status(200).json({
+      message: "OTP sent successfully",
+    });
+
   } catch (error) {
-    console.error("sendOTP error:", error?.message || error);
+    console.error("sendOTP error:", error);
+
     return res.status(500).json({
       message: "Failed to send OTP",
     });

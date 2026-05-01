@@ -3,8 +3,9 @@ import {
   Header,
   Footer,
 } from "@components";
+import { useTranslation } from "react-i18next";
 const TermsPage = () => {
-
+ const { i18n, t } = useTranslation();
   const termsData = [
     {
       title: "1. Platform Purpose",
@@ -132,28 +133,26 @@ const TermsPage = () => {
     <section className="terms-page">
       <div className="terms-container">
 
-        <h1>CraftLink Terms of Use</h1>
-        <span className="last-update">Last Updated: March 13, 2026</span>
+        <h1>{t("CraftLink Terms of Use")}</h1>
+        <span className="last-update">{t("Last Updated: March 13, 2026")}</span>
 
         <p>
-          Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients.
-          These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations
-          of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.
+          {t("Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients. These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.")}
         </p>
 
         {termsData.map((section, index) => (
           <div key={index} className="terms-section">
-            <h3>{section.title}</h3>
-            {section.subTitle && <p className="sub-title">{section.subTitle}</p>}
+            <h3>{t(section.title)}</h3>
+            {section.subTitle && <p className="sub-title">{t(section.subTitle)}</p>}
             {section.items && (
               <ul className="main-list">
                 {section.items.map((item, idx) => (
                   <li key={idx}>
-                    {item.text}
+                    {t(item.text)}
                     {item.subItems && (
                       <ul className="sub-list">
                         {item.subItems.map((sub, subIdx) => (
-                          <li key={subIdx}>{sub}</li>
+                          <li key={subIdx}>{t(sub)}</li>
                         ))}
                       </ul>
                     )}
@@ -161,7 +160,7 @@ const TermsPage = () => {
                 ))}
               </ul>
             )}
-            {section.note && <p className="note">{section.note}</p>}
+            {section.note && <p className="note">{t(section.note)}</p>}
           </div>
         ))}
 

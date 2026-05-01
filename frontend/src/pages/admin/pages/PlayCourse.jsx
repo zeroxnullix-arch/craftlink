@@ -10,6 +10,8 @@ import { MdVideoLibrary } from "react-icons/md";
 import { TiFlash } from "react-icons/ti";
 import { MdCurrencyPound } from "react-icons/md";
 import { BiLike, BiSolidLike, BiComment, SiTelegram, BsThreeDots } from "@icons";
+import userAvatar from "../../../assets/img/userAvatar.jpg"
+import { useTranslation } from "react-i18next";
 // ============================================================================
 // FORMAT DURATION HELPER
 // ============================================================================
@@ -25,6 +27,7 @@ function formatDuration(seconds) {
 // ============================================================================
 const PlayCourse = () => {
   const { courseId } = useParams();
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const { darkMode, setDarkMode } = useTheme();
   const userData = useSelector((state) => state.user?.userData);
@@ -494,6 +497,7 @@ useEffect(() => {
                         alignItems: "center",
                         justifyContent: "center",
                         color: "#e53935",
+                        flex: 1
                       }}
                     >
                       <span style={{ fontSize: "48px", marginBottom: "16px" }}>
@@ -644,7 +648,7 @@ useEffect(() => {
 
                       <div key={`${c.userId?._id}-${c.createdAt}-${index}`} className="comment">
                         <img
-                          src={c.userId?.photoUrl}
+                          src={c.userId?.photoUrl || userAvatar}
                           alt="user"
                           className="comment-avatar"
                         />
@@ -730,7 +734,7 @@ useEffect(() => {
             <div className="aside-lecture">
               <aside ref={sidebarRef}>
                 <div>
-                  <h2>Lectures</h2>
+                  <h2>{t("Lectures")}</h2>
                 </div>
 
                 <div

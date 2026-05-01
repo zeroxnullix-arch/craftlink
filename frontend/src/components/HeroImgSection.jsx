@@ -4,25 +4,26 @@ import { FaLocationArrow, FaPlay } from "react-icons/fa";
 import picProfile from "../assets/img/picProfile.jpg";
 import { FaStar } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 const HeroImgSection = () => {
+    const { i18n, t } = useTranslation();
     const navigate = useNavigate();
     return (
         <section className="section-main intro">
             <div className="left section-layout">
                 <div className="text-intro-container">
+     
                     <h2>
-                        unlock your <span>creative potential</span> & start your
-                        career
+                        {t("unlock your")} <span>{t("creative potential")}</span> & {t("start your career")}
                         <span>!</span>
                     </h2>
                     <p className="text">
-                        master creative skills, explore endless learning
-                        opportunities, start today and transform your future.
+                        {t("master creative skills, explore endless learning opportunities, start today and transform your future.")}
                     </p>
                     <div className="btn-group">
-                        <button className="join-now" onClick={()=>navigate("/signup")}>JOIN NOW</button>
+                        <button className="join-now" onClick={()=>navigate("/signup")}>{t("join now")}</button>
                         <button className="learn-more" onClick={()=>navigate("/about")}>
-                            <span>Learn More</span>
+                            <span>{t("Learn More")}</span>
                             <FaLocationArrow />
                         </button>
                     </div>
@@ -34,7 +35,7 @@ const HeroImgSection = () => {
                             <img src={picProfile} alt="" />
                         </div>
                         <div className="content">
-                            <p>Trusted by 100K+ Craftsmen</p>
+                            <p>{t("Trusted by")} +100{t("K")} {t("Clients")}</p>
                             <div className="reviews">
                                 <span className="stars">
                                     <FaStar />
@@ -43,7 +44,7 @@ const HeroImgSection = () => {
                                     <FaStar />
                                     <FaStar />
                                 </span>
-                                <span>4.5/5 (25K Reviews)</span>
+                                <span>4.5/5 (25{t("K")} {t("Reviews")})</span>
                             </div>
                         </div>
                     </div>

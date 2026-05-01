@@ -17,7 +17,9 @@ import {
   MdPrivacyTip,
   GoCodeOfConduct,
 } from "@icons";
+import { useTranslation } from "react-i18next";
 const SideBar = ({ sidebarHide }) => {
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -45,10 +47,10 @@ const SideBar = ({ sidebarHide }) => {
   };
   return (
     <section id="sidebar" className={sidebarHide ? "hide" : ""}>
-      <div className="logo pointer brand" onClick={() => navigate("/")}>
+      <div className="logo pointer brand" onClick={() => navigate("/timeline")}>
         <img src={logo} className="logo-CraftLink" alt="craftlink" />
         <h2>
-          CraftLink<span>.</span>
+          {t("craflink")}<span>.</span>
         </h2>
       </div>
       <ul className="side-menu top">
@@ -60,40 +62,40 @@ const SideBar = ({ sidebarHide }) => {
           >
             <button>
               {item.icon && <item.icon className="bx" />}
-              <span className="text">{item.name}</span>
+              <span className="text">{t(item.name)}</span>
             </button>
           </li>
         ))}
       </ul>
       <ul className="side-menu">
         <li>
-          <button onClick={() => navigate("/settings")}>
+          <button onClick={() => navigate("/helpcenter")}>
             <TbHelpSquareRoundedFilled className="bx" />
-            <span className="text">Help Center</span>
+            <span className="text">{t("Help Center")}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => navigate("/settings")}>
+          <button onClick={() => navigate("/contactus")}>
             <BiSupport className="bx" />
-            <span className="text">Contact Us</span>
+            <span className="text">{t("Contact Us")}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => navigate("/settings")}>
+          <button onClick={() => navigate("/privacy-policy")}>
             <MdPrivacyTip className="bx" />
-            <span className="text">Privacy Policy</span>
+            <span className="text">{t("Privacy Policy")}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => navigate("/settings")}>
+          <button onClick={() => navigate("/terms")}>
             <GoCodeOfConduct className="bx" />
-            <span className="text">Terms & Conditions</span>
+            <span className="text">{t("Terms & Conditions")}</span>
           </button>
         </li>
         <li>
           <button className="logout" onClick={handleLogOut}>
             <CiLogout className="bx" />
-            <span className="text">Logout</span>
+            <span className="text">{t("Logout")}</span>
           </button>
         </li>
       </ul>

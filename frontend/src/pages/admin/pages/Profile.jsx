@@ -35,8 +35,9 @@ import { ClipLoader } from "react-spinners";
 import { ROLE_LABELS } from "@/constants/roles";
 import userAvatar from "../../../assets/img/userAvatar.jpg";
 import image from "../../../assets/img/image.png";
-
+import { useTranslation } from "react-i18next";
 const Profile = () => {
+  const { i18n, t } = useTranslation();
   const {
     navigate,
     darkMode,
@@ -121,7 +122,7 @@ const Profile = () => {
         <div className="sort-container">
           <div className="sort-wrapper">
             <div className="head">
-              <h3>Sorting & Filtering</h3>
+              <h3>{t("Sorting & Filtering")}</h3>
               <IoClose
                 className="icon-close"
                 onClick={() => setShowSort(false)}
@@ -129,13 +130,15 @@ const Profile = () => {
             </div>
             {["all", "published", "unpublished"].map((key) => (
               <div className="sort-option" key={key}>
-                <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+                <p>{t(key.charAt(0).toUpperCase() + key.slice(1))}</p>
+
                 <label className="sort-switch">
                   <input
                     type="checkbox"
                     checked={sortFilter[key]}
                     onChange={() => handleSortChange(key)}
                   />
+
                   <span className="sort-slider"></span>
                 </label>
               </div>
@@ -196,11 +199,11 @@ const Profile = () => {
                   <h2>
                     {firstName} {lastName}
                   </h2>
-                  <span className="clamp-v clamp-v2">{bio}</span>
+                  <span className="clamp-v clamp-v2">{t(bio)}</span>
                   <div className="actions">
                     <button onClick={() => navigate(`/message/${displayedUser._id}`)}>
                       <AiOutlineMessage />
-                      <span>Messages</span>
+                      <span>{t("Messages")}</span>
                     </button>
                     <VscSettings className="settings" />
                   </div>
@@ -210,19 +213,20 @@ const Profile = () => {
                   <div className="stats-summary">
                     <div>
                       <p>{salesLoading ? "..." : salesData?.totalBuyers || 0}</p>
-                      <span>Craftsmen</span>
+                      <span>{t("Craftsmen")}</span>
                     </div>
                     <span className="line"></span>
                     <div>
                       <p>{filteredCourses.length}</p>
-                      <span>{sortLabel}</span>
+                      <span>{t(sortLabel)}</span>
+
                     </div>
                     <span className="line"></span>
                     <div>
                       <p>
-                        {earningsLoading ? "..." : (earningsData?.availableBalance || 0).toLocaleString()} EGP
+                        {earningsLoading ? "..." : (earningsData?.availableBalance || 0).toLocaleString()} {t("EGP")}
                       </p>
-                      <span>Available Balance</span>
+                      <span>{t("Available Balance")}</span>
                     </div>
                   </div>
                 )}
@@ -239,7 +243,7 @@ const Profile = () => {
                         setProfileTab("profile");
                       }}
                     >
-                      Details
+                      {t("Details")}
                     </button>
                     <button
                       className={activeTab === "courses" ? "active" : ""}
@@ -248,7 +252,7 @@ const Profile = () => {
                         setProfileTab("profile");
                       }}
                     >
-                      {isInstructor ? "Courses" : "Feeds"}
+                      {isInstructor ? t("Courses") : t("Feeds")}
                     </button>
                     {isMyProfile && (
                       <button
@@ -258,7 +262,7 @@ const Profile = () => {
                           setProfileTab("posts")
                         }}
                       >
-                        Posts
+                        {t("Posts")}
                       </button>
                     )}
                     {isOwner && (
@@ -271,13 +275,13 @@ const Profile = () => {
                           }
                         }
                       >
-                        Purchased Courses
+                        {t("Purchased Courses")}
                       </button>
                     )}
                   </div>
                   {isInstructor && isOwner && (
                     <button className="sort" onClick={() => setShowSort(true)}>
-                      <FaSort /> Sort
+                      <FaSort /> {t("Sort")}
                     </button>
                   )}
                 </div>
@@ -285,11 +289,11 @@ const Profile = () => {
                 {/* POSTS TAB */}
                 {profileTab === "posts" && isMyProfile && (
                   <div className="user-posts-tab">
-                    <h3>User Posts</h3>
+                    <h3>{t("User Posts")}</h3>
                     {postsLoading ? (
                       <LoadingDouble />
                     ) : userPosts.length === 0 ? (
-                      <p>No posts yet.</p>
+                      <p>{t("No posts yet.")}</p>
                     ) : (
                       userPosts.map((post) => (
                         <PostCard
@@ -308,14 +312,14 @@ const Profile = () => {
                   <div className="purchased-courses-tab">
                     <div className="purchased-summary">
                       <div>
-                        <p>المبلغ المدفوع في الشراء</p>
-                        <strong>EGP {totalPaid}</strong>
+                        <p>{t("Amount Paid for Purchase")}</p>
+                        <strong>{t("EGP")} {totalPaid}</strong>
                       </div>
                     </div>
                     {purchasedLoading ? (
                       <LoadingDouble />
                     ) : purchasedCourses.length === 0 ? (
-                      <p>No purchased courses yet.</p>
+                      <p>{t("No purchased courses yet.")}</p>
                     ) : (
                       purchasedCourses.map((course) => (
                         <div className="course-feed-card" key={course._id} onClick={() => navigate(`/playcourse/${course._id}`)}>
@@ -377,7 +381,7 @@ const Profile = () => {
                                   navigate(`/createcourse/${course._id}`)
                                 }>
                                 <RiEditCircleLine />
-                                <span>Edit</span>
+                                <span>{t("Edit")}</span>
                               </div>
                             )}
                           </div>
@@ -385,7 +389,7 @@ const Profile = () => {
                             <h2 className="clamp-v clamp-v1">{course.title}</h2>
                             <p className="clamp-v clamp-v2">{course.subTitle}</p>
                             <span onClick={() => navigate(`/profile/${course.creator._id}`)}>
-                              By: {course.creator?.name || "You"}
+                              {t("By")}: {course.creator?.name || "You"}
                             </span>
                             <span>
                               {course.lecturesCount || 0} Lectures • {course.level}
@@ -407,7 +411,7 @@ const Profile = () => {
                         ) : (
                           <>
                             <BsFillCollectionPlayFill className="icon" />
-                            <p className="failed-text">No courses created yet.</p>
+                            <p className="failed-text">{t("No courses created yet.")}</p>
                           </>
                         )}
                       </div>
@@ -419,14 +423,14 @@ const Profile = () => {
                 {profileTab === "profile" && activeTab === "details" && !editMode && !editPassword && (
                   <div className="profile-details">
                     <div className="head">
-                      <h3>Information</h3>
+                      <h3>{t("Details")}</h3>
                       {isMyProfile && (
                         <button
                           className="edit"
                           onClick={() => setEditMode(true)}
                         >
                           <RiEditCircleLine />
-                          <span>Edit</span>
+                          <span>{t("Edit")}</span>
                         </button>
                       )}
                     </div>
@@ -445,13 +449,13 @@ const Profile = () => {
                           className="btn-pass"
                           onClick={() => setEditPassword(true)}
                         >
-                          Change Password
+                          {t("Change Password")}
                         </button>
                       </div>
                     )}
                     <div className="info">
                       <FaSignature />
-                      <p>{ROLE_LABELS[displayedUser?.role] || "User"}</p>
+                      <p>{t(ROLE_LABELS[displayedUser?.role]) || "User"}</p>
                     </div>
                     <div className="info">
                       <FaInbox />
@@ -469,7 +473,7 @@ const Profile = () => {
                     <div className="head">
                       <div className="head-info">
                         <TbArrowLeftDashed onClick={handleCancelEdit} />
-                        <h3>Change Password</h3>
+                        <h3>{t("Change Password")}</h3>
                       </div>
                       <button
                         className="save"
@@ -480,9 +484,9 @@ const Profile = () => {
                         <IoCloudDone />
                         <span>
                           {userLoading ?
-                            "Saving..."
+                            t("Saving...")
                             :
-                            "Save"
+                            t("Save")
                           }
                         </span>
 
@@ -490,7 +494,7 @@ const Profile = () => {
                     </div>
                     <AuthInput
                       type={inputType}
-                      label="Current Password"
+                      label={t("Current Password")}
                       value={currentPassword}
                       onChange={setCurrentPassword}
                       handleBlur={handleBlur}
@@ -499,14 +503,14 @@ const Profile = () => {
                     />
                     <AuthInput
                       type={inputType}
-                      label="New Password"
+                      label={t("New Password")}
                       value={newPassword}
                       onChange={setNewPassword}
                       Icon={BsFillShieldLockFill}
                     />
                     <AuthInput
                       type={inputType}
-                      label="Confirm Password"
+                      label={t("Confirm Password")}
                       value={confirmPassword}
                       onChange={setConfirmPassword}
                       Icon={showPass ? FaEye : FaEyeLowVision}
@@ -524,7 +528,7 @@ const Profile = () => {
                     <div className="head">
                       <div className="head-info">
                         <TbArrowLeftDashed onClick={handleCancelEdit} />
-                        <h3>Edit Profile</h3>
+                        <h3>{t("Edit Profile")}</h3>
                       </div>
                       <button
                         className="save"
@@ -534,16 +538,16 @@ const Profile = () => {
                         <IoCloudDone />
                         <span>
                           {userLoading ?
-                            "Saving..."
+                            t("Saving...")
                             :
-                            "Save"
+                            t("Save")
                           }
                         </span>
                       </button>
                     </div>
                     <AuthInput
                       type="text"
-                      label="First Name"
+                      label={t("First Name")}
                       value={firstName}
                       onChange={setFirstName}
                       handleBlur={handleBlur}
@@ -552,28 +556,28 @@ const Profile = () => {
                     />
                     <AuthInput
                       type="text"
-                      label="Last Name"
+                      label={t("Last Name")}
                       value={lastName}
                       onChange={setLastName}
                       Icon={BsPersonBoundingBox}
                     />
                     <AuthInput
                       type="text"
-                      label="Email"
+                      label={t("Email")}
                       value={displayedUser?.email || ""}
                       Icon={MdEmail}
                       disabled
                     />
                     <AuthInput
                       type="text"
-                      label="Role"
+                      label={t("Role")}
                       value={ROLE_LABELS[displayedUser?.role] || "User"}
                       Icon={FaSignature}
                       disabled
                     />
                     <AuthInput
                       textarea
-                      label="Bio"
+                      label={t("Bio")}
                       value={bio}
                       onChange={setBio}
                       Icon={FaInbox}
@@ -587,13 +591,13 @@ const Profile = () => {
             <div className="side-right">
               <div className="latest-purchases">
                 <div className="head">
-                  <h3>Messages</h3>
+                  <h3>{t("Messages")}</h3>
                 </div>
                 <div className="content">
                   {conversationsLoading ? (
-                    <p>Loading...</p>
+                    <p>{t("Loading...")}</p>
                   ) : last3Conversations.length === 0 ? (
-                    <p>No conversations yet.</p>
+                    <p>{t("No conversations yet.")}</p>
                   ) : (
                     last3Conversations.map((conv) => {
                       const otherUser = conv.members.find(
@@ -623,7 +627,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
-{/* 
+              {/* 
               <div className="latest-purchases">
                 <div className="head">
                   <h3>Latest purchases</h3>
@@ -655,7 +659,7 @@ const Profile = () => {
                 </div>
                 <span className="inner-btn">
                   <RiVideoAiLine className="icon" />
-                  Create New Course
+                  {t("Create New Course")}
                 </span>
               </button>
             </div>

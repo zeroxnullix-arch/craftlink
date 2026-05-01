@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import CourseCard from "./CourseCard";
-
+import { useTranslation } from "react-i18next";
 const PopularCourses = ({ courses = [], title = "Popular Courses", limit = 12 }) => {
+   const { i18n, t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(courses.length / limit);
@@ -39,7 +40,7 @@ const getTotalDuration = (lectures = []) => {
   }
   return (
     <section className="container-wrapper section-layout popular-courses">
-      <h2>{title}</h2>
+      <h2>{t(title)}</h2>
 
       <div className="course-grid">
         {currentCourses.map((course) => (

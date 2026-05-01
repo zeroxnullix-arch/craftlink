@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { IoNotifications } from "react-icons/io5";
 import userAvatar from "../../../assets/img/userAvatar.jpg";
 import {RiSearchLine} from "@icons";
+import { useNavigate } from "react-router-dom";
 function Nav({
   sidebarHide,
   setSidebarHide,
@@ -12,6 +13,7 @@ function Nav({
   setDarkMode,
 }) {
   const { userData: currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   return (
     <nav>
       <label className="hamburger">
@@ -30,7 +32,7 @@ function Nav({
       </label>
 
       <form className={searchShow ? "show" : ""}>
-        <div className="form-input">
+        {/* <div className="form-input">
           <input type="search" placeholder="Search..." />
           <button
             type="submit"
@@ -44,7 +46,7 @@ function Nav({
           >
             <RiSearchLine color="white" className="bx"/>
           </button>
-        </div>
+        </div> */}
       </form>
       <input
         type="checkbox"
@@ -58,9 +60,9 @@ function Nav({
         <IoNotifications className="bx" />
         <span className="num">8</span>
       </a>
-      <a href="#" className="profile">
+      <button onClick={()=>navigate("/profile")} className="profile">
         <img src={currentUser?.photoUrl || userAvatar} alt="profile" />
-      </a>
+      </button>
     </nav>
   );
 }

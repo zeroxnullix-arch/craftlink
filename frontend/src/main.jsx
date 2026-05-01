@@ -1,7 +1,6 @@
 // ===================== React & DOM ===================== //
 import React from "react";
 import { createRoot } from "react-dom/client";
-
 // ===================== Routing ===================== //
 import { BrowserRouter } from "react-router-dom";
 
@@ -14,6 +13,7 @@ import { store, persistor } from "./redux/store";
 import { ThemeProvider } from "./context/ThemeContext";
 
 // ===================== App ===================== //
+import "./locales/i18n";
 import App from "./App";
 
 // ===================== Global Styles ===================== //

@@ -22,7 +22,7 @@ import {
   AuthDivider,
   AuthGoogleButton,
 } from "@components";
-
+import { useTranslation } from "react-i18next";
 // ===================== Functions Imports ===================== //
 import { useSignUpLogic } from "../functions";
 
@@ -30,6 +30,7 @@ import { useSignUpLogic } from "../functions";
 import bg from "../../../assets/img/BgSignUp.jpg";
 
 export default function SignUp() {
+   const { i18n, t } = useTranslation();
   const logic = useSignUpLogic();
 
   // Destructure for clarity
@@ -151,10 +152,10 @@ export default function SignUp() {
               <div className="form-wrapper">
                 <div className="section-main-heading">
                   <h2>
-                    Create new account<span>.</span>
+                    {t("Create new account")}<span>.</span>
                   </h2>
                   <p className="text">
-                    One account to learn, teach, or hire skilled professionals.
+                    {t("One account to learn, teach, or hire skilled professionals.")}
                   </p>
                 </div>
 
@@ -162,7 +163,7 @@ export default function SignUp() {
                   {inputs.map((input, index) => (
                     <AuthInput
                       key={index}
-                      label={input.label}
+                      label={t(input.label)}
                       value={input.value}
                       onChange={input.onChange}
                       Icon={input.Icon}
@@ -176,7 +177,7 @@ export default function SignUp() {
 
                   {/* Roles */}
                   <div className="radio-buttons-container">
-                    {["craftsman", "instructor", "client"].map((r) => (
+                    {[t("craftsman"), t("instructor"), t("client")].map((r) => (
                       <div className="radio-button" key={r}>
                         <input
                           type="radio"
@@ -233,9 +234,9 @@ export default function SignUp() {
                     </div>
 
                     <p className="text">
-                      I agree to the{" "}
+                      {t("I agree to the")}{" "}
                       <span onClick={() => setShowTerms(true)}>
-                        Terms of Use
+                        {t("Terms of Use")}
                       </span>.
                     </p>
                   </div>
@@ -257,17 +258,17 @@ export default function SignUp() {
                   </AnimatePresence>
 
                   <AuthButton type="submit" disabled={loading} loading={loading}>
-                    Sign Up
+                    {t("Sign Up")}
                   </AuthButton>
-                  <AuthDivider text="Or continue with" />
+                  <AuthDivider text={t("Or continue with")} />
                 </form>
                 <AuthGoogleButton onClick={handleGoogleSignup}>
-                  Sign Up With Google
+                  {t("Sign Up With Google")}
                 </AuthGoogleButton>
                 <div className="other-auth">
-                  <p>Already have an account?</p>
+                  <p>{t("Already have an account?")}</p>
                   <button type="button" onClick={() => navigate("/signin")}>
-                    Sign In
+                    {t("Sign In")}
                   </button>
                 </div>
               </div>

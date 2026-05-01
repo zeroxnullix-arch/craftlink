@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: USER_EMAIL,
-    pass: USER_PASSWORD,
+    user: process.env.USER_EMAIL,
+    pass: process.env.USER_PASSWORD,
   },
 });
 
@@ -25,25 +25,29 @@ const transporter = nodemailer.createTransport({
  * @param {object} [opts] - optional overrides: { subject, html, text, from }
  */
 const sendMail = async (to, otp, opts = {}) => {
-  if (!to) throw new Error("Recipient email (to) is required");
-  const from = opts.from || `CraftLink Support <${USER_EMAIL}>`;
-  const subject = opts.subject || "Reset Your Password";
-  const html =
-    opts.html ||
-    `<p>Your OTP for password reset is <strong>${otp}</strong>. It expires in 5 minutes.</p>`;
-  const text =
-    opts.text ||
-    `Your OTP for password reset is ${otp}. It expires in 5 minutes.`;
+  if (!to) throw new Error("Recipient email is required");
+
+  const mailOptions = {
+    from: `CraftLink <${process.env.USER_EMAIL}>`,
+    to,
+    subject: "Your OTP Code",
+    html: `
+      <div>
+        <h2>CraftLink OTP Verification</h2>
+        <p>Your OTP code is:</p>
+        <h1 style="letter-spacing:3px">${otp}</h1>
+        <p>This code will expire in 5 minutes.</p>
+      </div>
+    `,
+  };
+
   try {
-    const info = await transporter.sendMail({ from, to, subject, html, text });
-    console.log(`Email sent to ${to}: ${info.messageId}`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("EMAIL SENT:", info.messageId);
     return info;
   } catch (error) {
-    console.error(
-      "sendMail error:",
-      error && error.message ? error.message : error,
-    );
-    throw error;
+    console.error("EMAIL FAILED:", error);
+    throw new Error("Email sending failed");
   }
 };
 
