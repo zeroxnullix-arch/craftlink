@@ -37,7 +37,6 @@ app.use(cookieParser());
 // );
 const allowedOrigins = [
   "http://localhost:5173",
-  "http://localhost:4173",
   "https://craftlink-cfwv.vercel.app"
 ];
 

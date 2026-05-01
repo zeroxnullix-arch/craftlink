@@ -190,7 +190,10 @@ export const sendOTP = async (req, res) => {
 
     await user.save();
 
-    await sendMail(email, otp);
+    // 🔥 مهم جدًا: ما نستناش الإيميل
+    sendMail(email, otp).catch((err) => {
+      console.error("EMAIL FAILED (async):", err);
+    });
 
     return res.status(200).json({
       message: "OTP sent successfully",
