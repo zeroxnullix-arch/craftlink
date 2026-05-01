@@ -9,9 +9,12 @@ if (!USER_EMAIL || !USER_PASSWORD) {
   );
 }
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  port: 465,
-  secure: true,
+  // service: "Gmail",
+  // port: 465,
+  // secure: true,
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // مهم جدًا
   auth: {
     user: process.env.USER_EMAIL,
     pass: process.env.USER_PASSWORD,
