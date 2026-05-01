@@ -53,40 +53,35 @@
 
 // export default sendMail;
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.USER_EMAIL,
+    pass: process.env.USER_APP_PASSWORD,
+  },
+});
 
-/**
- * sendMail - send OTP email using Resend
- */
 const sendMail = async (to, otp) => {
-  if (!to) throw new Error("Recipient email is required");
+  const info = await transporter.sendMail({
+    from: `CraftLink <${process.env.USER_EMAIL}>`,
+    to,
+    subject: "CraftLink OTP Verification",
+    html: `
+      <div style="font-family:Arial;padding:20px">
+        <h2>CraftLink OTP Verification</h2>
+        <p>Your OTP code is:</p>
+        <h1>${otp}</h1>
+        <p>This code expires in 5 minutes.</p>
+      </div>
+    `,
+  });
 
-  try {
-    const response = await resend.emails.send({
-      from: "CraftLink <onboarding@resend.dev>", // تقدر تغيره بعد domain verification
-      to,
-      subject: "Your OTP Code - CraftLink",
-      html: `
-        <div style="font-family:Arial;padding:20px">
-          <h2>CraftLink OTP Verification</h2>
-          <p>Your OTP code is:</p>
-          <h1 style="letter-spacing:6px;font-size:32px">${otp}</h1>
-          <p>This code will expire in 5 minutes.</p>
-        </div>
-      `,
-    });
-
-    console.log("EMAIL SENT:", response);
-    return response;
-  } catch (error) {
-    console.error("EMAIL FAILED:", error);
-    throw new Error("Email sending failed");
-  }
+  console.log("EMAIL SENT:", info.messageId);
 };
 
 export default sendMail;

@@ -174,34 +174,51 @@ export const sendOTP = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+      return res.status(400).json({
+        message: "Email is required",
+      });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // منع السبام
+    if (user.otpExpires && user.otpExpires > Date.now()) {
+      return res.status(429).json({
+        message: "Please wait before requesting another OTP",
+      });
+    }
+
+    // إنشاء OTP
+    const otp = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
     user.resetOtp = otp;
     user.otpExpires = Date.now() + 5 * 60 * 1000;
 
     await user.save();
 
-    // 🔥 مهم جدًا: ما نستناش الإيميل
-    sendMail(email, otp).catch((err) => {
-      console.error("EMAIL FAILED (async):", err);
-    });
+    // إرسال الإيميل
+    await sendMail(email, otp);
+
+    console.log(`OTP SENT TO ${email}`);
 
     return res.status(200).json({
+      success: true,
       message: "OTP sent successfully",
     });
 
   } catch (err) {
     console.error("sendOTP error:", err);
+
     return res.status(500).json({
+      success: false,
       message: "Failed to send OTP",
     });
   }
