@@ -35,6 +35,17 @@ app.use(cookieParser());
 //     credentials: true,
 //   })
 // );
+import net from "net";
+
+const socket = net.createConnection(587, "smtp.gmail.com");
+
+socket.on("connect", () => {
+  console.log("SMTP PORT OPEN");
+});
+
+socket.on("error", (err) => {
+  console.log("SMTP BLOCKED:", err.message);
+});
 const allowedOrigins = [
   "http://localhost:5173",
   "https://craftlink-cfwv.vercel.app"
