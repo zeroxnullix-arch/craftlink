@@ -7,7 +7,7 @@ export const sendOtpRequest = async (email, setLoading, setStep) => {
         const res = await api.post(
             "/api/auth/sendotp",
             { email },
-            { withCredentials: true }
+            { withCredentials: false }
         );
         toast.success(res?.data?.message || "OTP sent successfully");
         setStep(2);

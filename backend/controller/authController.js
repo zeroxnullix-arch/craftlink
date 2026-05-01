@@ -183,23 +183,12 @@ export const sendOTP = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // منع spam OTP
-    if (user.otpExpires && user.otpExpires > Date.now()) {
-      return res.status(429).json({
-        message: "OTP already sent. Please wait before requesting a new one.",
-      });
-    }
-
-    // OTP production only
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.resetOtp = otp;
     user.otpExpires = Date.now() + 5 * 60 * 1000;
-    user.isOtpVerified = false;
 
     await user.save();
-
-    console.log("OTP GENERATED:", otp, "FOR:", email);
 
     await sendMail(email, otp);
 
@@ -207,15 +196,13 @@ export const sendOTP = async (req, res) => {
       message: "OTP sent successfully",
     });
 
-  } catch (error) {
-    console.error("sendOTP error:", error);
-
+  } catch (err) {
+    console.error("sendOTP error:", err);
     return res.status(500).json({
       message: "Failed to send OTP",
     });
   }
 };
-
 /**
  * Verify the OTP provided by the user
  */
