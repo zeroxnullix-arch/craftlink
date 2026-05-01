@@ -176,28 +176,40 @@ export default function SignUp() {
                   ))}
 
                   {/* Roles */}
-                  <div className="radio-buttons-container">
-                    {[t("craftsman"), t("instructor"), t("client")].map((r) => (
-                      <div className="radio-button" key={r}>
-                        <input
-                          type="radio"
-                          id={r}
-                          name="role"
-                          value={r}
-                          checked={role === r}
-                          onChange={() => {
-                            setRole(r);
-                            setErrorMsg((prev) => ({ ...prev, role: "" }));
-                          }}
-                          className="radio-button__input"
-                        />
-                        <label htmlFor={r} className="radio-button__label">
-                          <span className="radio-button__custom"></span>
-                          {r.charAt(0).toUpperCase() + r.slice(1)}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+            <div className="radio-buttons-container">
+  {[
+    { label: t("craftsman"), value: "craftsman" },
+    { label: t("instructor"), value: "instructor" },
+    { label: t("client"), value: "client" },
+  ].map((r) => (
+    <div className="radio-button" key={r.value}>
+      <input
+        type="radio"
+        id={r.value}
+        name="role"
+        value={r.value}
+        checked={role === r.value}
+        onChange={() => {
+          setRole(r.value);
+          setErrorMsg((prev) => ({
+            ...prev,
+            role: "",
+          }));
+        }}
+        className="radio-button__input"
+      />
+
+      <label
+        htmlFor={r.value}
+        className="radio-button__label"
+      >
+        <span className="radio-button__custom"></span>
+
+        {r.label}
+      </label>
+    </div>
+  ))}
+</div>
 
                   <AnimatePresence>
                     {errorMsg?.role && (
