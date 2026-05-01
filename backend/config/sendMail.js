@@ -1,3 +1,5 @@
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
@@ -10,26 +12,41 @@ if (!USER_EMAIL || !USER_PASSWORD) {
   console.warn("❌ Missing EMAIL or PASSWORD in environment variables");
 }
 
-// 🔥 IMPORTANT: use SMTP manual config (NOT service: Gmail)
+// 🔥 Gmail SMTP FIX (Railway optimized)
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587, // الأفضل على Railway
+  port: 587,
   secure: false, // مهم جدًا
   auth: {
     user: USER_EMAIL,
-    pass: USER_PASSWORD, // must be App Password (no spaces)
+    pass: USER_PASSWORD, // MUST be App Password (no spaces)
   },
   tls: {
     rejectUnauthorized: false,
   },
+
+  // 🔥 prevent long hanging (fix timeout)
+  connectionTimeout: 15000,
+  socketTimeout: 15000,
+  greetingTimeout: 15000,
+
+  // 🔥 Railway stability
   pool: true,
   maxConnections: 1,
-  connectionTimeout: 20000,
-  socketTimeout: 20000,
+  maxMessages: 3,
+});
+
+// 🔍 optional debug (helps if still failing)
+transporter.verify((err) => {
+  if (err) {
+    console.error("❌ SMTP VERIFY FAILED:", err.message);
+  } else {
+    console.log("✅ SMTP READY");
+  }
 });
 
 /**
- * Send Email (OTP)
+ * Send OTP Email
  */
 const sendMail = async (to, otp, opts = {}) => {
   if (!to) throw new Error("Recipient email is required");
@@ -49,8 +66,7 @@ const sendMail = async (to, otp, opts = {}) => {
   `;
 
   const text =
-    opts.text ||
-    `Your OTP is ${otp}. It expires in 5 minutes.`;
+    opts.text || `Your OTP is ${otp}. It expires in 5 minutes.`;
 
   try {
     const info = await transporter.sendMail({
