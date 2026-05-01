@@ -65,7 +65,7 @@ const sendMail = async (to, otp) => {
 
   try {
     const data = await resend.emails.send({
-      from: "CraftLink <onboarding@resend.dev>",
+      from: "CraftLink <otp@mail.craftlink.com>",
       to,
       subject: "Your OTP Code - CraftLink",
       html: `
