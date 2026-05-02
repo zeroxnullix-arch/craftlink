@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { VscRobot } from "react-icons/vsc";
 import { PiUserCircleDashed } from "react-icons/pi";
-
+import { BsRobot } from "react-icons/bs";
 const ChatBot = () => {
   const chatEndRef = useRef(null);
 
@@ -72,7 +72,7 @@ const ChatBot = () => {
     <>
       {/* 💬 Floating Button */}
       <button className="chatbot-fab" onClick={() => setOpen(!open)}>
-        {open ? "✖" : "💬"}
+        {open ? "✖" : <BsRobot/>}
       </button>
 
       {/* 💬 Chat Window */}

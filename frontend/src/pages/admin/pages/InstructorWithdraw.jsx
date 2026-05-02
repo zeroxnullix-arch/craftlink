@@ -17,14 +17,14 @@ import AuthInput from "../../../components/AuthInput";
 import { useInputAnimation } from "../../../hooks/useInputAnimation";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
 import { FaTimesCircle } from "react-icons/fa";
-
+import { useTranslation } from "react-i18next";
 
 const InstructorWithdraw = () => {
   const navigate = useNavigate();
   const { darkMode, setDarkMode } = useTheme();
   const [sidebarHide, setSidebarHide] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
-
+ const { i18n, t } = useTranslation();
   const { handleFocus, handleBlur } = useInputAnimation();
   const [earnings, setEarnings] = useState(null);
   const [withdrawals, setWithdrawals] = useState([]);
@@ -345,20 +345,15 @@ const InstructorWithdraw = () => {
         <main>
           <div className="instructor-withdraw">
             {/* Header */}
-            {/* <div className="withdraw-header">
-              <h1>طلب سحب الأرباح</h1>
-              <p>أدر أرباحك من الكورسات</p>
-            </div> */}
-
             {/* Earnings Summary */}
             {earnings && (
               <div className="earnings-summary">
                 <div className="earnings-card total-earnings">
                   <div className="earnings-icon"><SiMoneygram /></div>
                   <div className="earnings-content">
-                    <h3>Total Revenue</h3>
+                    <h3>{t("Total Revenue")}</h3>
                     <p className="earnings-amount">
-                      {earnings.totalEarnings} EGP
+                      {earnings.totalEarnings} {t("EGP")}
                     </p>
                   </div>
                 </div>
@@ -366,9 +361,9 @@ const InstructorWithdraw = () => {
                 <div className="earnings-card available-balance">
                   <div className="earnings-icon"><BsCurrencyPound /></div>
                   <div className="earnings-content">
-                    <h3>Available Balance</h3>
+                    <h3>{t("Available Balance")}</h3>
                     <p className="earnings-amount">
-                      {earnings?.availableBalance} EGP
+                      {earnings?.availableBalance} {t("EGP")}
                     </p>
                   </div>
                 </div>
@@ -395,9 +390,9 @@ const InstructorWithdraw = () => {
                 <div className="earnings-card approved-amount">
                   <div className="earnings-icon"><MdCreditScore /></div>
                   <div className="earnings-content">
-                    <h3>Completed</h3>
+                    <h3>{t("Completed")}</h3>
                     <p className="earnings-amount">
-                      {earnings.totalWithdrawn || 0} EGP
+                      {earnings.totalWithdrawn || 0} {t("EGP")}
                     </p>
                   </div>
                 </div>
@@ -408,12 +403,12 @@ const InstructorWithdraw = () => {
             {earnings && (
               <div className="charts-section">
                 <div className="chart-container">
-                  <h3>Withdrawal log status</h3>
+                  <h3>{t("Withdrawal log status")}</h3>
                   <CustomPieChart data={getChartData()} />
                 </div>
 
                 <div className="chart-container">
-                  <h3>Balance Distribution</h3>
+                  <h3>{t("Balance Distribution")}</h3>
                   <CustomBarChart data={getBalanceBreakdown()} />
                 </div>
               </div>
@@ -440,7 +435,7 @@ const InstructorWithdraw = () => {
             <div className="w-f-h">
               <div className="withdraw-form-section">
                 <div className="form-container">
-                  <h2>Order Details</h2>
+                  <h2>{t("Order Details")}</h2>
 
                   <div className="form-group">
                     {/* <label>The amount to be withdrawn (EGP)</label> */}
@@ -454,7 +449,7 @@ const InstructorWithdraw = () => {
                     /> */}
                     <AuthInput
                       type="text"
-                      label="Amount (EGP)"
+                      label={t("Amount (EGP)")}
                       // Icon={PiSubtitles}
                       handleFocus={handleFocus}
                       handleBlur={handleBlur}
@@ -462,7 +457,7 @@ const InstructorWithdraw = () => {
                       onChange={setAmount}
                     />
                     <small>
-                      Available balance: {earnings?.availableBalance} EGP
+                      {t("Available Balance")}: {earnings?.availableBalance} {t("EGP")}
                     </small>
                   </div>
 
@@ -478,7 +473,7 @@ const InstructorWithdraw = () => {
                       /> */}
                       <AuthInput
                         type="text"
-                        label="Full Name"
+                        label={t("Full Name")}
                         // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
@@ -497,7 +492,7 @@ const InstructorWithdraw = () => {
                       /> */}
                       <AuthInput
                         type="tel"
-                        label="Vodafone Cash number"
+                        label={t("Vodafone Cash number")}
                         // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
@@ -519,7 +514,7 @@ const InstructorWithdraw = () => {
                       /> */}
                       <AuthInput
                         type="email"
-                        label="E-mail"
+                        label={t("E-mail")}
                         // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
@@ -538,7 +533,7 @@ const InstructorWithdraw = () => {
                       /> */}
                       <AuthInput
                         type="tel"
-                        label="Wallet number"
+                        label={t("Wallet number")}
                         // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
@@ -560,7 +555,7 @@ const InstructorWithdraw = () => {
                     <AuthInput
                       textarea
                       type="tel"
-                      label="Address"
+                      label={t("Address")}
                       // Icon={PiSubtitles}
                       handleFocus={handleFocus}
                       handleBlur={handleBlur}
@@ -574,7 +569,7 @@ const InstructorWithdraw = () => {
                     onClick={handleSubmitRequest}
                     disabled={submitting}
                   >
-                    {submitting ? "Sending..." : "Submit the request"}
+                    {submitting ? t("Sending...") : t("Submit the request")}
                   </button>
                 </div>
               </div>
@@ -582,9 +577,9 @@ const InstructorWithdraw = () => {
 
               {/* {activeTab === "history" && ( */}
               <div className="withdrawals-history">
-                <h2>History</h2>
+                <h2>{t("History")}</h2>
                 {withdrawals.length === 0 ? (
-                  <p className="empty-state">No withdrawal requests yet.</p>
+                  <p className="empty-state">{t("No withdrawal requests yet.")}</p>
                 ) : (
                   <div className="withdrawals-grid">
                     {withdrawals.map((w) => (
@@ -600,18 +595,18 @@ const InstructorWithdraw = () => {
 
                         <div className="withdrawal-details">
                           <div className="detail-row">
-                            <span className="label">Amount:</span>
-                            <span className="value">{w.amount} EGP</span>
+                            <span className="label">{t("Amount")}:</span>
+                            <span className="value">{w.amount} {t("EGP")}</span>
                           </div>
                           <div className="detail-row">
-                            <span className="label">Order date:</span>
+                            <span className="label">{t("Order date")}:</span>
                             <span className="value">
                               {new Date(w.createdAt).toLocaleDateString("en-US")}
                             </span>
                           </div>
                           {w.approvalDate && (
                             <div className="detail-row">
-                              <span className="label">Date of approval:</span>
+                              <span className="label">{t("Date of approval")}:</span>
                               <span className="value">
                                 {new Date(w.approvalDate).toLocaleDateString("en-US")}
                               </span>
@@ -619,7 +614,7 @@ const InstructorWithdraw = () => {
                           )}
                           {w.reason && (
                             <div className="detail-row">
-                              <span className="label">Reason for rejection:</span>
+                              <span className="label">{t("Reason for rejection")}:</span>
                               <span className="value">{w.reason}</span>
                             </div>
                           )}

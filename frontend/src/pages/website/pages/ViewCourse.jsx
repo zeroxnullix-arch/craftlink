@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { api } from "@services/api";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import ChatBot from "../../../components/chatBot";
 const tabs = [
   { id: "Overview", icon: BsFillInfoCircleFill, text: "Overview" },
@@ -24,7 +25,7 @@ const tabs = [
 ];
 const ViewCourse = () => {
   const { courseId } = useParams();
-
+const { i18n, t } = useTranslation();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -139,11 +140,11 @@ const ViewCourse = () => {
                 <FaStar />
                 <FaStar />
               </span>
-              <span>4.8 (12,500 reviews)</span>
+              <span>4.8 (12,500 {t("Reviews")})</span>
             </div>
             <div className="instructor">
               <img src={picProfile} alt="" />
-              <span>{course?.creator.name} • Instructor</span>
+              <span>{course?.creator.name} • {t("Instructor")}</span>
             </div>
             
           </div>
@@ -160,10 +161,11 @@ const ViewCourse = () => {
                     onClick={() => setActiveTab(tab.id)}
                   >
                     <Icon className="tab-icon" />
-                    <span>{tab.text}</span>
+                    <span>{t(tab.text)}</span>
                   </button>
                 );
               })}
+
             </div>
             <div className="course-content">
               {activeTab === "Overview" && (
@@ -192,8 +194,8 @@ const ViewCourse = () => {
                     <div className="review-card" key={i}>
                       <img src={picProfile} alt="" />
                       <div>
-                        <h4>User {i}</h4>
-                        <p>Amazing course! Highly recommended.</p>
+                        <h4>{t("User")} {i}</h4>
+                        <p>{t("Amazing course! Highly recommended.")}</p>
                       </div>
                     </div>
                   ))}
@@ -205,7 +207,7 @@ const ViewCourse = () => {
                     <img src={picProfile} alt="" />
                     <div>
                       <h3>{course?.creator.name}</h3>
-                      <span>Instructor</span>
+                      <span>{t("Instructor")}</span>
                     </div>
                   </div>
                   <p>
@@ -217,7 +219,7 @@ const ViewCourse = () => {
           </div>
           <div className="card-container">
             <div className="title-card">
-              <p>{course?.category}</p>
+              <p>{t(course?.category)}</p>
               {/* <div className="course-meta-info">
               <span>{buyersCount} Purchases</span>
             </div> */}
@@ -234,24 +236,24 @@ const ViewCourse = () => {
               </svg>
             </div>
             <div className="card-content">
-              <p className="title">{buyersCount} Purchases</p>
+              <p className="title">{buyersCount} {t("Purchases")}</p>
               <p className="plain">
                 <span>{course?.price}</span>
-                <span>EGP</span>
+                <span>{t("EGP")}</span>
               </p>
               <p className="description">
-                Unlock skills with practical lessons that make learning exciting!
+                {t("Unlock skills with practical lessons that make learning exciting!")}
               </p>
               <button
                 className="card-btn"
                 onClick={handlePayment}
                 disabled={loadingPayment || isEnrolled}
               >
-                {isEnrolled ? "Already Enrolled" : loadingPayment ? "Processing..." : "Enroll Now"}
+                {isEnrolled ? "Already Enrolled" : loadingPayment ? t("Processing...") : t("Enroll Now")}
               </button>
               <div className="card-separate">
                 <div className="separate"></div>
-                <p>FEATURES</p>
+                <p>{t("FEATURES")}</p>
                 <div className="separate"></div>
               </div>
               <div className="card-list-features">
@@ -273,7 +275,7 @@ const ViewCourse = () => {
                       <path d="m9 12l2.25 2L15 10"></path>
                     </g>
                   </svg>
-                  <p>Hands-on practical lessons</p>
+                  <p>{t("Hands-on practical lessons")}</p>
                 </div>
                 <div className="option">
                   <svg
@@ -293,7 +295,7 @@ const ViewCourse = () => {
                       <path d="m9 12l2.25 2L15 10"></path>
                     </g>
                   </svg>
-                  <p>Step-by-step tutorials</p>
+                  <p>{t("Step-by-step tutorials")}</p>
                 </div>
                 <div className="option">
                   <svg
@@ -313,7 +315,7 @@ const ViewCourse = () => {
                       <path d="m9 12l2.25 2L15 10"></path>
                     </g>
                   </svg>
-                  <p>Learn at your own pace</p>
+                  <p>{t("Learn at your own pace")}</p>
                 </div>
                 <div className="option">
                   <svg
@@ -333,7 +335,7 @@ const ViewCourse = () => {
                       <path d="m9 12l2.25 2L15 10"></path>
                     </g>
                   </svg>
-                  <p>Real-world projects</p>
+                  <p>{t("Real-world projects")}</p>
                 </div>
               </div>
             </div>

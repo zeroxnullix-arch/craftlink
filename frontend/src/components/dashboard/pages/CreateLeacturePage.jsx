@@ -12,6 +12,7 @@ import ThumbnailUpload from "../components/ThumbnailUpload";
 import { api } from "@services/api";
 import { FaPlay, } from "react-icons/fa";
 import { IoIosLock } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 const UPLOAD_PRESET = "CraftLink_Video";
 const CLOUDINARY_URL =
   "https://api.cloudinary.com/v1_1/dhynqaw42/video/upload?resource_type=video";
@@ -19,7 +20,7 @@ const CLOUDINARY_URL =
 const CreateLecturePage = () => {
   const { handleFocus, handleBlur } = useInputAnimation();
   const { courseId } = useParams();
-
+ const { i18n, t } = useTranslation();
   const [lectureTitle, setLectureTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
@@ -269,7 +270,7 @@ const CreateLecturePage = () => {
 
             <AuthInput
               type="text"
-              label="Lecture Title"
+              label={t("Lecture Title")}
               Icon={MdOutlineTitle}
               handleFocus={handleFocus}
               handleBlur={handleBlur}
@@ -278,7 +279,7 @@ const CreateLecturePage = () => {
             />
 
             <AuthInput
-              label="Lecture Description"
+              label={t("Lecture Description")}
               textarea
               Icon={FaInbox}
               handleFocus={handleFocus}
@@ -288,6 +289,10 @@ const CreateLecturePage = () => {
             />
 
             <div className="checkbox">
+              <label htmlFor="checkbox1" className="checkbox__label">
+                <p>{t("Free Preview Lecture")}</p>
+                <span className="checkbox__custom"></span>
+              </label>
               <input
                 id="checkbox1"
                 className="checkbox__input"
@@ -295,10 +300,6 @@ const CreateLecturePage = () => {
                 checked={isPreviewFree}
                 onChange={(e) => setIsPreviewFree(e.target.checked)}
               />
-              <label htmlFor="checkbox1" className="checkbox__label">
-                <span className="checkbox__custom"></span>
-                Free Preview Lecture
-              </label>
             </div>
             {editingLecture ? (
               <>
@@ -308,7 +309,7 @@ const CreateLecturePage = () => {
                   onClick={handleRemoveLecture}
                   disabled={loading}
                 >
-                  <span>{loading ? "Deleting..." : "Remove Lecture"}</span>
+                  <span>{loading ? t("Deleting...") : t("Remove Lecture")}</span>
                 </button>
                 <div className="create-btn-group">
                   <button
@@ -325,7 +326,7 @@ const CreateLecturePage = () => {
                       setResetUpload((prev) => !prev); // 🔥 ده الحل
                     }}
                   >
-                    Cancel
+                    {t("Cancel")}
                   </button>
                   <button
                     type="button"
@@ -334,7 +335,7 @@ const CreateLecturePage = () => {
                     disabled={loading}
                   >
                     <span className="button-content">
-                      {loading ? <ClipLoader size={20} color="white" /> : "Update Lecture"}
+                      {loading ? <ClipLoader size={20} color="white" /> : t("Update Lecture")}
                       <span className="button-icon">→</span>
                     </span>
                     <span className="button-background"></span>
@@ -349,7 +350,7 @@ const CreateLecturePage = () => {
                 disabled={loading}
               >
                 <span className="button-content">
-                  {loading ? <ClipLoader size={20} color="white" /> : "Create Lecture"}
+                  {loading ? <ClipLoader size={20} color="white" /> : t("Create Lecture")}
                   <span className="button-icon">→</span>
                 </span>
                 <span className="button-background"></span>
@@ -362,13 +363,13 @@ const CreateLecturePage = () => {
           <ul className="todo-list">
             <div className="order">
               <div className="head">
-                <h3>Lectures Added</h3>
+                <h3>{t("Lectures Added")}</h3>
               </div>
 
               <div className="lectures-list">
                 {lectures.length === 0 ? (
                   <li className="not-completed">
-                    <p>No lectures added yet</p>
+                    <p>{t("No lectures added yet")}</p>
                   </li>
                 ) : (
                   lectures.map((lecture, index) => (

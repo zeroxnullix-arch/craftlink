@@ -681,10 +681,20 @@ html[dir="rtl"] .footer-logo {
   -ms-transition: color 0.3s ease;
   -o-transition: color 0.3s ease;
 }
-
 html[dir="rtl"] .nav-link {
   margin-right: 5.5rem;
   margin-left: 0;
+}
+
+
+@media (max-width: 800px) {
+  html[dir="rtl"] header ul li:first-child {
+  display: none;
+}
+html[dir="rtl"] .nav-link {
+  margin-right: .5rem;
+  margin-left: 0;
+}
 }
 
 .nav-link:hover {
@@ -3225,6 +3235,7 @@ html[dir="rtl"] .cft-reviews .images img:not(:first-child) {
   font-weight: 600;
   cursor: pointer;
   color: var(--light-text-color);
+  font-family: inherit;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -3393,6 +3404,7 @@ html[dir="rtl"] .cft-reviews .images img:not(:first-child) {
       #78aafa 65%,
       #934cff 100%);
   padding: 1rem 0;
+    font-family: inherit;
   border: none;
   width: 100%;
   border-radius: 8px;
@@ -3415,6 +3427,7 @@ html[dir="rtl"] .cft-reviews .images img:not(:first-child) {
   color: #ffffff;
   text-shadow: 0 0 8px #fff;
   transform: scale(1.03);
+  font-family: inherit;
 }
 
 .card-container .card-content .card-btn:active {
@@ -4480,6 +4493,11 @@ html[dir="rtl"] #content main .table-data .head h3 {
   -o-transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+html[dir="rtl"] #content main .course-form form .checkbox {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 #content main .course-form form .checkbox__custom {
   position: absolute;
   top: 0;
@@ -4798,6 +4816,7 @@ textarea.section-main-input~.icon {
   cursor: pointer;
   font-size: 16px;
   font-weight: 300;
+  font-family: inherit;
 }
 
 .course-form .remove-lecture {
@@ -4808,6 +4827,7 @@ textarea.section-main-input~.icon {
   font-size: 1rem;
   text-decoration: underline;
   cursor: pointer;
+  font-family: inherit;
 }
 
 /* ====================================== */
@@ -4819,13 +4839,18 @@ textarea.section-main-input~.icon {
   position: relative;
   border: none;
   background: none;
-
+font-family: inherit;
   width: fit-content;
   transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
   transition-duration: 400ms;
   transition-property: color;
   display: flex;
   align-items: center;
+}
+
+html[dir="rtl"] .course-form .edit-lectures {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .course-form .edit-lectures:focus,
@@ -5495,6 +5520,11 @@ textarea.section-main-input~.icon {
   position: absolute;
 }
 
+html[dir="rtl"] .bookmark-category-wrapper {
+  right: 10px;
+  left: auto;
+}
+
 .course-feed-card .category {
   font-size: 0.8rem;
   font-weight: 920;
@@ -5747,6 +5777,11 @@ textarea.section-main-input~.icon {
   -o-border-radius: 5px;
   gap: 5px;
   cursor: pointer;
+}
+
+html[dir="rtl"] .course-feed-card .edit-course {
+  right: 10px;
+  left: auto;
 }
 
 .course-feed-card .content {
@@ -8503,6 +8538,11 @@ textarea.section-main-input~.icon {
   margin: 0 auto;
 }
 
+html[dir="rtl"] .button-content {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .button-background {
   position: absolute;
   inset: 0;
@@ -8778,7 +8818,7 @@ CHAT BOT
   overflow: hidden;
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: var(--nav-border);
   z-index: 999998;
 
   animation: slideUp 0.25s ease;
@@ -8799,7 +8839,7 @@ CHAT BOT
 /* header */
 .chatbot-header {
   padding: 15px;
-  background: #007bff;
+  background: var(--main-color);
   color: white;
   font-weight: bold;
 }
@@ -8809,7 +8849,7 @@ CHAT BOT
   flex: 1;
   overflow-y: auto;
   padding: 10px;
-  background: #f5f5f5;
+  background: var(--nav-border);
 
   display: flex;
   flex-direction: column;
@@ -8821,6 +8861,7 @@ CHAT BOT
   display: flex;
   align-items: flex-end;
   gap: 8px;
+
 }
 
 .chatbot-message.user {
@@ -8841,7 +8882,8 @@ CHAT BOT
 
 /* bot */
 .chatbot-message.bot .chatbot-bubble {
-  background: white;
+  background: var(--nav-bg);
+  color: var(--text-primary);
 }
 
 /* user */
@@ -8886,7 +8928,7 @@ CHAT BOT
 /* footer */
 .chatbot-footer {
   display: flex;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--nav-bg);
 }
 
 .chatbot-footer input {
@@ -8894,6 +8936,13 @@ CHAT BOT
   padding: 10px;
   border: none;
   outline: none;
+  background: var(--nav-bg);
+}
+
+@media (max-width: 440px) {
+  .logo h2, .footer-logo h2 {
+    display: none;
+  }
 }
 
 .chatbot-footer button {

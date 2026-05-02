@@ -198,7 +198,7 @@ const CreateCoursePage = () => {
               <div className="info">
                 <AuthInput
                   type="text"
-                  label="Course Title"
+                  label={t("Course Title")}
                   Icon={MdOutlineTitle}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
@@ -207,7 +207,7 @@ const CreateCoursePage = () => {
                 />
                 <AuthInput
                   type="text"
-                  label="Subtitle"
+                  label={t("Subtitle")}
                   Icon={PiSubtitles}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
@@ -216,7 +216,7 @@ const CreateCoursePage = () => {
                 />
                 <AuthInput
                   type="text"
-                  label="Course Price (EGP)"
+                  label={t("Course Price (EGP)")}
                   Icon={BsCurrencyPound}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
@@ -335,8 +335,8 @@ const CreateCoursePage = () => {
                     onChange={setCategory}
                   />
                   <SelectInput
-                    label="Select Level"
-                    options={["Beginner", "Intermediate", "Advanced"]}
+                    label={t("Select Level")}
+                    options={[t("Beginner"), t("Intermediate"), t("Advanced")]}
                     value={level}
                     onChange={setLevel}
                   />
@@ -344,7 +344,7 @@ const CreateCoursePage = () => {
               </div>
             </div>
             <AuthInput
-              label="Course Description"
+              label={t("Course Description")}
               textarea
               Icon={FaInbox}
               handleFocus={handleFocus}
@@ -354,7 +354,7 @@ const CreateCoursePage = () => {
             />
             {courseDataState ? (
               <button className="edit-lectures" onClick={() => navigate(`/createcourse/createLecture/${courseId}`)}>
-                <span>Edit Lectures</span>
+                <span>{t("Edit Lectures")}</span>
                 <span class="icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -376,7 +376,7 @@ const CreateCoursePage = () => {
                   className="cancel-btn"
                   onClick={handleDelete}
                 >
-                  Delete
+                  {t("Delete")}
                 </button>
               ) : null}
 
@@ -390,12 +390,12 @@ const CreateCoursePage = () => {
                   <ClipLoader size={20} color="white" />
                 ) : courseDataState ? (
                   <span class="button-content">
-                    <span className="button-text">Update Course</span>
+                    <span className="button-text">{t("Update Course")}</span>
                     <span className="button-icon">→</span>
                   </span>
                 ) : (
                   <span class="button-content">
-                    <span className="button-text">Create Course</span>
+                    <span className="button-text">{t("Create Course")}</span>
                     <span className="button-icon">→</span>
                   </span>
                 )}

@@ -118,7 +118,7 @@ const { i18n, t } = useTranslation();
                   {inputsMap[step].map((input, idx) => (
                     <AuthInput
                       key={idx}
-                      label={input.label}
+                      label={t(input.label)}
                       value={input.value}
                       onChange={input.onChange}
                       type={input.type}

@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import { LuCloudUpload } from "react-icons/lu";
-
+import { useTranslation } from "react-i18next";
 const ThumbnailUpload = ({
   setThumbnail,
   type = "image",
@@ -10,6 +10,7 @@ const ThumbnailUpload = ({
   currentVideoUrl = null,
   currentImageUrl = null,
 }) => {
+  const { i18n, t } = useTranslation();
   const inputRef = useRef(null);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -163,7 +164,7 @@ useEffect(() => {
         ) : (
           <div className="thumb-placeholder">
             <LuCloudUpload />
-            <p>{type === "video" ? "Upload Video" : "Upload Thumbnail"}</p>
+            <p>{type === "video" ? t("Upload Video") : t("Upload Thumbnail")}</p>
             <span>{type === "video" ? "MP4, WEBM, MOV" : "PNG, JPG, JPEG"}</span>
           </div>
         )}
