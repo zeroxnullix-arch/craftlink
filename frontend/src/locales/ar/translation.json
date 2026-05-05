@@ -648,5 +648,40 @@
   "Wallet number": "رقم المحفظة",
   "Sending...": "جارٍ الإرسال...",
   "Submit the request": "إرسال الطلب",
-  "Cancel": "إلغاء"
+  "Cancel": "إلغاء",
+  "Chats": "المحادثات",
+  "Welcome to your chats!": "مرحبًا بك في الدردشات!",
+  "Select a conversation or start a new one.": "اختر محادثة أو ابدأ محادثة جديدة.",
+  "Say hi 👋 and start chatting!": "قل مرحبًا 👋 وابدأ الدردشة!",
+  "🔒 Messages are end-to-end encrypted. Only people in this chat can read.": "🔒 الرسائل مشفرة من الطرف إلى الطرف. فقط الأشخاص في هذه الدردشة يمكنهم قراءتها.",
+    "Online": "متصل",
+  "Offline": "غير متصل",
+    "Phone Number": "رقم الهاتف",
+  "Subject": "الموضوع",
+  "Write your message": "اكتب رسالتك",
+    "Prev": "السابق",
+  "Next": "التالي",
+  "Admin Login": "تسجيل دخول الأدمن",
+  "Securely manage users, reports, and platform operations from one place.": "قم بإدارة المستخدمين والتقارير وعمليات المنصة بأمان من مكان واحد.",
+  "Payment Method": "طريقة الدفع",
+  "Account Name": "اسم الحساب",
+  "Wallet Number": "رقم المحفظة",
+  "Status": "الحالة",
+  "Note": "ملاحظة",
+  "confirm": "تأكيد",
+
+  "Users": "المستخدمين",
+  "Name": "الاسم",
+  "Join": "الانضمام",
+  "Date of joining": "تاريخ الانضمام",
+
+  "Income": "الدخل",
+  "Expenses": "المصروفات",
+
+  "Request": "طلبات",
+  "Approved": "تمت الموافقة",
+    "Approve": "الموافقة",
+  "Reject": "الرفض",
+  "Dashboard": "لوحة التحكم"
+
 }

@@ -646,6 +646,8 @@ const Profile = () => {
               </div> */}
 
 
+{
+  currentUser?.role === 2 &&
               <button
                 type="button"
                 className="join-button"
@@ -662,6 +664,7 @@ const Profile = () => {
                   {t("Create New Course")}
                 </span>
               </button>
+                }
             </div>
           </div>
         </main>

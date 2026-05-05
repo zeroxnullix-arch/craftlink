@@ -13,12 +13,13 @@ import userAvatar from "../../../assets/img/userAvatar.jpg";
 import { HiVideoCamera } from "react-icons/hi2";
 import { FaUsers } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
 const Dashboard = () => {
     const navigate = useNavigate();
     const { darkMode, setDarkMode } = useTheme();
     const [sidebarHide, setSidebarHide] = useState(false);
     const [searchShow, setSearchShow] = useState(false);
-
+const { i18n, t } = useTranslation();
     const [stats, setStats] = useState(null);
     const [withdrawals, setWithdrawals] = useState([]);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
@@ -94,20 +95,20 @@ const Dashboard = () => {
             );
 
             if (res.data?.success) {
-                toast.success("تم الموافقة على الطلب");
+                toast.success("approved withdrawal");
                 loadDashboardData();
             }
         } catch (error) {
             console.error("Error approving withdrawal:", error);
-            toast.error("فشل الموافقة على الطلب");
+            toast.error("failed to approve withdrawal");
         }
     };
 
     const handleRejectWithdrawal = async (withdrawalId) => {
-        const reason = prompt("أدخل سبب الرفض:");
+        const reason = prompt("enter rejection reason:");
 
         if (!reason || !reason.trim()) {
-            toast.error("لازم تكتب سبب الرفض");
+            toast.error("rejection reason is required");
             return;
         }
 
@@ -124,17 +125,17 @@ const Dashboard = () => {
             );
 
             if (res.data?.success) {
-                toast.success("تم رفض الطلب");
+                toast.success("successfully rejected withdrawal");
                 loadDashboardData();
             }
         } catch (error) {
             console.error("Error rejecting withdrawal:", error);
-            toast.error("فشل رفض الطلب");
+            toast.error("failed to reject withdrawal");
         }
     };
 
     const handleCompleteWithdrawal = async (withdrawalId) => {
-        const transactionId = prompt("أدخل رقم المعاملة (اختياري):");
+        const transactionId = prompt("enter transaction id:");
 
         try {
             const res = await api.post(
@@ -144,12 +145,12 @@ const Dashboard = () => {
             );
 
             if (res.data?.success) {
-                toast.success("تم إكمال التحويل");
+                toast.success("successfully completed withdrawal");
                 loadDashboardData();
             }
         } catch (error) {
             console.error("Error completing withdrawal:", error);
-            toast.error("فشل إكمال التحويل");
+            toast.error("failed to complete withdrawal");
         }
     };
 
@@ -167,7 +168,7 @@ const Dashboard = () => {
             }
         } catch (error) {
             console.error("Error toggling user status:", error);
-            toast.error("فشل تغيير حالة المستخدم");
+            toast.error("failed to toggle user status");
         }
     };
 
@@ -175,10 +176,6 @@ const Dashboard = () => {
         const roles = { 0: "Admin", 1: "Craftsman", 2: "Instructor", 3: "Client" };
         return roles[role] || "غير محدد";
     };
-
-    if (loading) {
-        return <div>جاري التحميل...</div>;
-    }
 
 
     const filteredWithdrawals = withdrawals.filter((w) => {
@@ -192,7 +189,7 @@ const Dashboard = () => {
                     <div className="withdrawal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="header">
 
-                            <h2>Details</h2>
+                            <h2>{t("Details")}</h2>
 
 
                             <AiFillCloseCircle className="close-btn"
@@ -216,38 +213,38 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <p>
-                                <strong>Amount:</strong>
+                                <strong>{t("Amount")}:</strong>
                                 <span>
-                                    {selectedWithdrawal.amount} EGP
+                                    {selectedWithdrawal.amount} {t("EGP")}
                                 </span>
                             </p>
                             <p>
-                                <strong>Payment Method:</strong>
+                                <strong>{t("Payment Method")}:</strong>
                                 <span>
                                     {selectedWithdrawal.provider || "---"}
                                 </span>
                             </p>
                             <p>
-                                <strong>Account Name:</strong>
+                                <strong>{t("Account Name")}:</strong>
                                 <span>
                                     {selectedWithdrawal.accountInfo?.name || "Unknown"}
                                 </span>
                             </p>
                             <p>
-                                <strong>Wallet Number:</strong>
+                                <strong>{t("Wallet Number")}:</strong>
                                 <span>
                                     {selectedWithdrawal.accountInfo?.vodafonePhone || "Unknown"}
                                 </span>
                             </p>
                             <p>
 
-                                <strong>Status:</strong>
+                                <strong>{t("Status")}:</strong>
                                 <span>
                                     {selectedWithdrawal.status}
                                 </span>
                             </p>
                             <p>
-                                <strong>Note:</strong>
+                                <strong>{t("Note")}:</strong>
                                 <span>
                                     {selectedWithdrawal.notes || "Nothing"}
                                 </span>
@@ -264,7 +261,7 @@ const Dashboard = () => {
                                             setShowWithdrawal(false)
                                         }}
                                     >
-                                        ✔ الموافقة
+                                         {t("Approve")}
                                     </button>
 
                                     <button
@@ -274,7 +271,7 @@ const Dashboard = () => {
                                             setShowWithdrawal(false)
                                         }}
                                     >
-                                        ✖ الرفض
+                                        {t("Reject")}
                                     </button>
 
                                 </>
@@ -288,7 +285,7 @@ const Dashboard = () => {
                                     }
                                     }
                                 >
-                                    confirm
+                                    {t("confirm")}
                                 </button>
                             )}
                         </div>
@@ -368,7 +365,7 @@ const Dashboard = () => {
                                                 <div className="stat-content">
                                                     <div>
 
-                                                        <h3>Users</h3>
+                                                        <h3>{t("Users")}</h3>
                                                         <p className="stat-number">{stats.users.total}</p>
                                                     </div>
                                                 </div>
@@ -380,7 +377,7 @@ const Dashboard = () => {
                                                 <div className="stat-content">
                                                     <div>
 
-                                                        <h3>Courses</h3>
+                                                        <h3>{t("Courses")}</h3>
                                                         <p className="stat-number">{stats.courses.total}</p>
                                                     </div>
                                                 </div>
@@ -406,9 +403,9 @@ const Dashboard = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Join</th>
-                                            <th>Date of joining</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Join")}</th>
+                                            <th>{t("Date of joining")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -431,24 +428,24 @@ const Dashboard = () => {
 
                             <div class="finmate-card">
                                 <div class="finmate-card-balance">
-                                    <p class="finmate-card-label">Available Balance</p>
-                                    <p class="finmate-card-amount">{stats.withdrawals?.totalAvailableBalance} EGP</p>
+                                    <p class="finmate-card-label">{t("Available Balance")}</p>
+                                    <p class="finmate-card-amount">{stats?.withdrawals?.totalAvailableBalance} {t("EGP")}</p>
                                 </div>
                                 <div class="finmate-card-summary">
                                     <div>
-                                        <p class="finmate-card-label">Income</p>
-                                        <p class="finmate-card-green">+ {stats.revenue.total} EGP</p>
+                                        <p class="finmate-card-label">{t("Income")}</p>
+                                        <p class="finmate-card-green">+ {stats?.revenue?.total} {t("EGP")}</p>
                                     </div>
                                     <div>
-                                        <p class="finmate-card-label">Expenses</p>
-                                        <p class="finmate-card-red">– {stats.withdrawals?.totalWithdrawn} EGP</p>
+                                        <p class="finmate-card-label">{t("Expenses")}</p>
+                                        <p class="finmate-card-red">– {stats?.withdrawals?.totalWithdrawn} {t("EGP")}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
 
-                                <h3 className="title">History</h3>
+                                <h3 className="title">{t("History")}</h3>
                                 <div className="history-list">
                                     <div className="radio-inputs">
                                         <label className="radio">
@@ -458,7 +455,7 @@ const Dashboard = () => {
                                                 checked={activeTab === "all"}
                                                 onChange={() => setActiveTab("all")}
                                             />
-                                            <span className="name">All</span>
+                                            <span className="name">{t("All")}</span>
                                         </label>
 
                                         <label className="radio">
@@ -468,7 +465,7 @@ const Dashboard = () => {
                                                 checked={activeTab === "pending"}
                                                 onChange={() => setActiveTab("pending")}
                                             />
-                                            <span className="name">Request</span>
+                                            <span className="name">{t("Request")}</span>
                                         </label>
                                         <label className="radio">
                                             <input
@@ -477,7 +474,7 @@ const Dashboard = () => {
                                                 checked={activeTab === "approved"}
                                                 onChange={() => setActiveTab("approved")}
                                             />
-                                            <span className="name">Approved</span>
+                                            <span className="name">{t("Approved")}</span>
                                         </label>
 
 
@@ -504,7 +501,7 @@ const Dashboard = () => {
                                                 </div>
                                                 <div className="history-amount">
                                                     <span>{w.amount}</span>
-                                                    <span className="currency"> EGP</span>
+                                                    <span className="currency"> {t("EGP")}</span>
                                                 </div>
                                                 {/* <div>
                                                     <div className="history-actions">

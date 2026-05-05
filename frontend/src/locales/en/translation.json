@@ -647,5 +647,38 @@
   "Wallet number": "Wallet number",
   "Sending...": "Sending...",
   "Submit the request": "Submit the request",
-   "Cancel": "Cancel"
+   "Cancel": "Cancel",
+   "Chats": "Chats",
+   "Welcome to your chats!": "Welcome to your chats!",
+  "Select a conversation or start a new one.": "Select a conversation or start a new one.",
+  "Say hi 👋 and start chatting!": "Say hi 👋 and start chatting!",
+  "🔒 Messages are end-to-end encrypted. Only people in this chat can read.": "🔒 Messages are end-to-end encrypted. Only people in this chat can read.",
+    "Online": "Online",
+  "Offline": "Offline",
+  "Phone Number": "Phone Number",
+  "Subject": "Subject",
+  "Write your message": "Write your message",
+    "Prev": "Prev",
+  "Next": "Next",
+  "Admin Login": "Admin Login",
+  "Securely manage users, reports, and platform operations from one place.": "Securely manage users, reports, and platform operations from one place.",
+  "Payment Method": "Payment Method",
+  "Account Name": "Account Name",
+  "Wallet Number": "Wallet Number",
+  "Status": "Status",
+  "Note": "Note",
+  "confirm": "confirm",
+
+  "Users": "Users",
+  "Name": "Name",
+  "Join": "Join",
+  "Date of joining": "Date of joining",
+
+  "Income": "Income",
+  "Expenses": "Expenses",
+
+  "Request": "Request",
+  "Approved": "Approved",
+  "Dashboard": "Dashboard"
+
 }

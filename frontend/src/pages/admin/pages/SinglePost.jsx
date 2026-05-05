@@ -169,7 +169,7 @@ const SinglePost = () => {
                     <div className="table-data">
             <div className="order timeline">
                     {/* Back Button */}
-                    <button
+                    {/* <button
                         onClick={() => navigate("/timeline")}
                         className="back-btn"
                         style={{
@@ -185,7 +185,7 @@ const SinglePost = () => {
                         }}
                     >
                         <BiArrowBack /> Back to Timeline
-                    </button>
+                    </button> */}
 
                     {/* Single Post Card - Larger */}
                     <div className="post-card">
@@ -221,7 +221,7 @@ const SinglePost = () => {
                         </div>
 
                         <div className="post-content">
-                            <p>{post.content}</p>
+                            <p  style={{ whiteSpace: "pre-line" }}>{post.content}</p>
                             {post.images?.length > 0 && (
                                 <div className={`post-images ${post.images.length === 1 ? "single" : "multiple"}`}>
                                     <PhotoProvider maskOpacity={0.8} speed={() => 300}>

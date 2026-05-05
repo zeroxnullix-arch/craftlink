@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUnreadCount } from "@/redux/messageSlice";
 import { IoBanOutline, GoDotFill, HiDotsHorizontal } from "@icons";
 import userAvatarPhoto from "../../../assets/img/userAvatar.jpg";
+import { useTranslation } from "react-i18next";
 const ConversationSidebar = ({
   visibleConversations,
   currentUser,
@@ -13,6 +14,7 @@ const ConversationSidebar = ({
   onlineUsers,
 }) => {
   const dispatch = useDispatch();
+  const { i18n, t } = useTranslation();
   const normalizeId = (id) => id?.toString();
   const unreadMap = useSelector((state) => state.messages.unreadMap || {});
   useEffect(() => {
@@ -21,7 +23,7 @@ const ConversationSidebar = ({
   }, [currentUser?._id, dispatch]);
   return (
     <div className="conversations-sidebar">
-      <h2>Chats</h2>
+      <h2>{t("Chats")}</h2>
       {!visibleConversations?.length ? (
         <div className="conversations-empty">
           <IoBanOutline />

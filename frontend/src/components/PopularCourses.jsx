@@ -66,7 +66,7 @@ const getTotalDuration = (lectures = []) => {
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(prev => prev - 1)}
           >
-            Prev
+            {t("Prev")}
           </button>
 
           {/* الصفحات */}
@@ -103,7 +103,7 @@ const getTotalDuration = (lectures = []) => {
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(prev => prev + 1)}
           >
-            Next
+            {t("Next")}
           </button>
         </div>
       )}

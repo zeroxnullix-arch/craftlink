@@ -9,6 +9,7 @@ import {
 import ChatMessage from "./ChatMessage";
 import AnimatedWrapper from "./AnimatedMessageWrapper";
 import userAvatarPhoto from "../../../assets/img/userAvatar.jpg";
+import { useTranslation } from "react-i18next";
 const ChatWindow = ({
   currentUser,
   activeConversation,
@@ -31,19 +32,21 @@ const ChatWindow = ({
   compressImage,
   onlineUsers,
 }) => {
+  const { i18n, t } = useTranslation();
+    const reversedMessages = useMemo(
+    () => displayMessages?.slice().reverse(),
+    [displayMessages],
+  );
   if (!receiverId || !activeConversation) {
     return (
       <div className="chat-empty">
         <RiChatSmileAiFill />
-        <h3>Welcome to your chats!</h3>
-        <p>Select a conversation or start a new one.</p>
+        <h3>{t("Welcome to your chats!")}</h3>
+        <p>{t("Select a conversation or start a new one.")}</p>
       </div>
     );
   }
-  const reversedMessages = useMemo(
-    () => displayMessages?.slice().reverse(),
-    [displayMessages],
-  );
+
   return (
     <div className="chat-window">
       <div className="chat-header">
@@ -68,9 +71,9 @@ const ChatWindow = ({
                   <span className="typing-dot"></span>
                 </>
               ) : onlineUsers.includes(currentOtherUser?._id) ? (
-                "Online"
+                t("Online")
               ) : (
-                "Offline"
+                t("Offline")
               )}
             </p>
           </div>
@@ -78,7 +81,7 @@ const ChatWindow = ({
       </div>
       {!displayMessages || displayMessages.length === 0 ? (
         <div className="no-messages">
-          <h3>Say hi 👋 and start chatting!</h3>
+          <h3>{t("Say hi 👋 and start chatting!")}</h3>
         </div>
       ) : (
         <PhotoProvider maskOpacity={0.8} speed={() => 300}>
@@ -122,8 +125,7 @@ const ChatWindow = ({
               </React.Fragment>
             ))}
             <div className="chat-fixed-info">
-              🔒 Messages are end-to-end encrypted. Only people in this chat can
-              read.
+              {t("🔒 Messages are end-to-end encrypted. Only people in this chat can read.")}
             </div>
           </div>
         </PhotoProvider>

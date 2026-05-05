@@ -69,7 +69,13 @@ const faqData = [
 export default function ContactUs() {
   const [activeIndex, setActiveIndex] = useState(null);
   const { i18n, t } = useTranslation();
-  const [title, setTitle] = useState("")
+const [firstName, setFirstName] = useState("");
+const [lastName, setLastName] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [department, setDepartment] = useState("");
+const [subject, setSubject] = useState("");
+const [message, setMessage] = useState("");
   const { handleFocus, handleBlur } = useInputAnimation();
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -143,42 +149,43 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
               <div className="form-row">
                 <AuthInput
                   type="text"
-                  label="First Name"
+                  label={t("First Name")}
                   Icon={BsPersonBoundingBox}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
-                  value={title}
-                  onChange={setTitle}
+                  value={firstName}
+                  onChange={setFirstName}
                 />
+
                 <AuthInput
                   type="text"
-                  label="Last Name"
+                  label={t("Last Name")}
                   Icon={BsPersonBoundingBox}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
-                  value={title}
-                  onChange={setTitle}
+                  value={lastName}
+                  onChange={setLastName}
                 />
               </div>
 
               <div className="form-row">
                 <AuthInput
                   type="email"
-                  label="Email"
+                  label={t("Email")}
                   Icon={MdEmail}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
-                  value={title}
-                  onChange={setTitle}
+                  value={email}
+                  onChange={setEmail}
                 />
                 <AuthInput
-                  type="tel"
-                  label="Phone Number"
+                  type="text"
+                  label={t("Phone Number")}
                   Icon={FaPhoneFlip}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
-                  value={title}
-                  onChange={setTitle}
+                  value={phone}
+                  onChange={setPhone}
                 />
               </div>
 
@@ -191,27 +198,27 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
                   t("Business Partnership"),
                   t("General Inquiry")
                 ]}
-                value={title}
-                onChange={setTitle}
+                value={department}
+                onChange={setDepartment}
               />
               <AuthInput
                 type="text"
-                label="Subject"
+                label={t("Subject")}
                 Icon={PiSubtitlesBold}
                 handleFocus={handleFocus}
                 handleBlur={handleBlur}
-                value={title}
-                onChange={setTitle}
+                value={subject}
+                onChange={setSubject}
               />
               <AuthInput
                 textarea
                 type="text"
-                label="Write your message"
+                label={t("Write your message")}
                 Icon={FaInbox}
                 handleFocus={handleFocus}
                 handleBlur={handleBlur}
-                value={title}
-                onChange={setTitle}
+                value={message}
+                onChange={setMessage}
               />
 
               <AuthButton type="submit">

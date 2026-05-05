@@ -132,7 +132,7 @@ const PostCard = ({ post, currentUserId, onPostDeleted }) => {
             </div>
 
             <div className="post-content">
-                <p>{post.content}</p>
+                <p style={{ whiteSpace: "pre-line" }}>{post.content}</p>
                 {post.images?.length > 0 && (
                     <div className={`post-images ${post.images.length === 1 ? "single" : "multiple"}`}>
                         <PhotoProvider maskOpacity={0.8} speed={() => 300}>

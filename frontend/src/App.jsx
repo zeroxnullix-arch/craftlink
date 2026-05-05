@@ -126,8 +126,8 @@ export default function App() {
         <Route path='/signup' element={<GuestRoute loading={loadingUser}><SignUp /></GuestRoute>} />
         <Route path='/signin' element={<GuestRoute loading={loadingUser}><SignIn /></GuestRoute>} />
         <Route path='/resetpassword' element={<GuestRoute loading={loadingUser}><ResetPassword /></GuestRoute>} />
-        <Route path="/profile/:userId" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
-        <Route path="/message/:userId" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
+        <Route path="/profile/:userId" element={<PrivateRoute allowedRoles={[0,1, 2, 3]}><Profile /></PrivateRoute>} />
+        <Route path="/message/:userId" element={<PrivateRoute allowedRoles={[0,1, 2, 3]}><Message /></PrivateRoute>} />
         <Route path="/message" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
         <Route path="/profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
         <Route path='/helpcenter' element={<HelpCenter />} />
