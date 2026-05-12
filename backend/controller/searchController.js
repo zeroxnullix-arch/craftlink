@@ -15,7 +15,7 @@ export const smartSearchCourses = async (req, res) => {
         _id: c._id.toString()
       }));
 
-    const response = await axios.post("http://localhost:5000/search", {
+    const response = await axios.post("https://craftlink-cfwv.vercel.app/search", {
       query,
       courses,
     });
