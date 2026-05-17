@@ -9,7 +9,13 @@ export const smartSearchCourses = async (req, res) => {
       return res.json([]);
     }
 
-    const courses = (await Course.find({ isPublished: true }).lean())
+    const courses = (await Course.find({ isPublished: true })
+      .populate({
+        path: "reviews",
+        select: "rating",
+        strictPopulate: false,
+      })
+      .lean())
       .map(c => ({
         ...c,
         _id: c._id.toString()

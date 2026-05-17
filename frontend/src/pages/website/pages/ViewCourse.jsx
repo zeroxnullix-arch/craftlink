@@ -25,7 +25,7 @@ const tabs = [
 ];
 const ViewCourse = () => {
   const { courseId } = useParams();
-const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -34,6 +34,112 @@ const { i18n, t } = useTranslation();
   const [paymentIframeUrl, setPaymentIframeUrl] = useState(null);
   const [loadingPayment, setLoadingPayment] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
+
+  const [reviewsList, setReviewsList] = useState([]);
+  const [newRating, setNewRating] = useState(5);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [newComment, setNewComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  useEffect(() => {
+    if (course) {
+      setReviewsList(course.reviews || []);
+    }
+  }, [course]);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    try {
+      setSubmittingReview(true);
+      const { data } = await api.post(`/api/course/${courseId}/reviews`, {
+        rating: newRating,
+        comment: newComment,
+      });
+
+      setReviewsList((prev) => {
+        const exists = prev.some((r) => r._id === data.review._id || r.user?._id === userData?._id);
+        if (exists) {
+          return prev.map((r) => (r._id === data.review._id || r.user?._id === userData?._id ? data.review : r));
+        } else {
+          return [data.review, ...prev];
+        }
+      });
+
+      setCourse((prev) => {
+        if (!prev) return prev;
+        const exists = prev.reviews?.some((r) => r._id === data.review._id || r.user?._id === userData?._id);
+        const updatedReviews = exists
+          ? prev.reviews.map((r) => (r._id === data.review._id || r.user?._id === userData?._id ? data.review : r))
+          : [data.review, ...(prev.reviews || [])];
+        return {
+          ...prev,
+          reviews: updatedReviews,
+        };
+      });
+
+      setNewComment("");
+      alert(t("Review submitted successfully!"));
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || t("Failed to submit review"));
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const renderStars = (rating) => {
+    return (
+      <div className="stars-display">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar
+            key={star}
+            className={`star-icon-small ${star <= rating ? "filled" : "empty"}`}
+            style={{ color: star <= rating ? "#ffc107" : "#e4e5e9", marginRight: "2px" }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const renderStarRatingInput = () => {
+    return (
+      <div className="star-rating-input" style={{ display: "flex", gap: "5px" }}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar
+            key={star}
+            className={`star-icon-input ${star <= (hoveredRating || newRating) ? "filled" : "empty"}`}
+            onClick={() => setNewRating(star)}
+            onMouseEnter={() => setHoveredRating(star)}
+            onMouseLeave={() => setHoveredRating(0)}
+            size={28}
+            style={{
+              cursor: "pointer",
+              transition: "color 0.2s ease, transform 0.1s ease",
+              color: star <= (hoveredRating || newRating) ? "#ffc107" : "#e4e5e9"
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const reviewsCount = reviewsList?.length || 0;
+  const averageRating = reviewsCount > 0
+    ? (reviewsList.reduce((acc, curr) => acc + curr.rating, 0) / reviewsCount).toFixed(1)
+    : 0;
+
+  const renderAverageStars = (avgRating) => {
+    const roundedRating = Math.round(avgRating || 5);
+    return (
+      <span className="stars" style={{ display: "inline-flex", gap: "2px" }}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar key={star} className={star <= roundedRating ? "filled" : "empty"} style={{ color: star <= roundedRating ? "#ffc107" : "#e4e5e9" }} />
+        ))}
+      </span>
+    );
+  };
 
   useEffect(() => {
     if (course && userData) {
@@ -133,20 +239,18 @@ const { i18n, t } = useTranslation();
               {course?.subTitle}
             </p>
             <div className="rating">
-              <span className="stars">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
+              {renderAverageStars(averageRating)}
+              <span>
+                {reviewsCount > 0
+                  ? `${averageRating} (${reviewsCount} ${t("Reviews")})`
+                  : `0.0 (0 ${t("Reviews")})`}
               </span>
-              <span>4.8 (12,500 {t("Reviews")})</span>
             </div>
             <div className="instructor">
               <img src={picProfile} alt="" />
               <span>{course?.creator.name} • {t("Instructor")}</span>
             </div>
-            
+
           </div>
         </div>
         <div className="course-grid">
@@ -189,16 +293,85 @@ const { i18n, t } = useTranslation();
                 </div>
               )}
               {activeTab === "Reviews" && (
-                <div className="reviews">
-                  {[1, 2, 3].map((i) => (
-                    <div className="review-card" key={i}>
-                      <img src={picProfile} alt="" />
-                      <div>
-                        <h4>{t("User")} {i}</h4>
-                        <p>{t("Amazing course! Highly recommended.")}</p>
+                <div className="reviews-tab-container" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <div className="reviews" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                    {reviewsList.length > 0 ? (
+                      reviewsList.map((review) => (
+                        <div className="review-card" key={review._id}>
+                          <img src={review.user?.photoUrl || picProfile} alt="" onError={(e) => { e.target.src = picProfile; }} />
+                          <div className="review-card-content" style={{ flex: 1 }}>
+                            <div className="review-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                              <h4 style={{ margin: 0 }}>{review.user?.name || t("Anonymous")}</h4>
+                              {renderStars(review.rating)}
+                            </div>
+                            <p style={{ margin: "5px 0" }}>{review.comment}</p>
+                            <span className="review-date" style={{ fontSize: "0.8rem", color: "var(--light-text-color)", display: "block", marginTop: "5px" }}>
+                              {new Date(review.createdAt).toLocaleDateString(i18n.language === 'ar' ? 'ar-EG' : 'en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="no-reviews" style={{ padding: "20px", textAlign: "center", background: "var(--input-bg)", borderRadius: "20px", color: "var(--light-text-color)" }}>
+                        <p>{t("No reviews yet. Be the first to review this course!")}</p>
                       </div>
+                    )}
+                  </div>
+
+                  {userData ? (
+                    <form onSubmit={handleReviewSubmit} className="add-review-form" style={{ marginTop: "20px", padding: "20px", background: "var(--input-bg)", borderRadius: "20px" }}>
+                      <h3 style={{ marginTop: 0, marginBottom: "15px" }}>{t("Add a Review")}</h3>
+                      <div className="rating-select-container" style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "15px" }}>
+                        <label style={{ fontWeight: "bold" }}>{t("Your Rating:")}</label>
+                        {renderStarRatingInput()}
+                      </div>
+                      <div className="comment-textarea-container" style={{ marginBottom: "15px" }}>
+                        <textarea
+                          placeholder={t("Write your review here...")}
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          required
+                          rows={4}
+                          style={{
+                            width: "100%",
+                            padding: "12px",
+                            borderRadius: "10px",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            background: "var(--bg-color)",
+                            color: "var(--text-color)",
+                            fontFamily: "inherit",
+                            outline: "none",
+                            resize: "vertical"
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={submittingReview}
+                        className="submit-review-btn"
+                        style={{
+                          background: "var(--main-color)",
+                          color: "white",
+                          padding: "10px 20px",
+                          border: "none",
+                          borderRadius: "8px",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          transition: "opacity 0.2s"
+                        }}
+                      >
+                        {submittingReview ? t("Submitting...") : t("Submit Review")}
+                      </button>
+                    </form>
+                  ) : (
+                    <div className="login-to-review" style={{ marginTop: "20px", padding: "20px", textAlign: "center", background: "var(--input-bg)", borderRadius: "20px", color: "var(--light-text-color)" }}>
+                      <p>{t("Please login to write a review and rate this course.")}</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
               {activeTab === "Instructor" && (
@@ -343,7 +516,7 @@ const { i18n, t } = useTranslation();
         </div>
       </section>
       <TestimonialsSwiper />
-<ChatBot/>
+      <ChatBot />
       <Footer />
     </>
   );

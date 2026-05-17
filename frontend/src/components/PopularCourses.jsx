@@ -55,6 +55,7 @@ const getTotalDuration = (lectures = []) => {
             price={course.price}
             tag={course.category}
             courseId={course._id}
+            reviews={course.reviews}
           />
         ))}
       </div>

@@ -3,6 +3,7 @@ import Course from "../model/courseModel.js";
 import Lecture from "../model/LectureModel.js";
 import User from "../model/userModel.js";
 import Payment from "../model/paymentModel.js";
+import Review from "../model/reviewModel.js";
 import mongoose from "mongoose";
 /**
  * Create a new course
@@ -51,6 +52,11 @@ export const getPublishedCourses = async (req, res) => {
       .populate({
         path: "creator",
         select: "name photoUrl",
+        strictPopulate: false,
+      })
+      .populate({
+        path: "reviews",
+        select: "rating",
         strictPopulate: false,
       })
       .sort({ createdAt: -1 });
@@ -153,7 +159,14 @@ export const getCourseById = async (req, res) => {
 
     const course = await Course.findById(courseId)
       .populate("creator", "name photoUrl description ") // 👈 بيانات المدرس
-      .populate("lectures"); // 👈 هيرجع كل المحاضرات
+      .populate("lectures") // 👈 هيرجع كل المحاضرات
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "user",
+          select: "name photoUrl role",
+        },
+      });
 
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
@@ -569,5 +582,90 @@ export const addLectureComment = async (req, res) => {
   } catch (error) {
     console.error("addLectureComment error:", error);
     return res.status(500).json({ message: "Failed to add comment" });
+  }
+};
+
+/**
+ * Add or update review for a course
+ */
+export const addCourseReview = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { rating, comment } = req.body;
+    const userId = req.userId;
+
+    if (!courseId || !mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({ message: "Invalid Course ID" });
+    }
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: "Rating must be between 1 and 5" });
+    }
+
+    if (!comment || comment.trim().length === 0) {
+      return res.status(400).json({ message: "Comment is required" });
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Check if the user already reviewed this course
+    let review = await Review.findOne({ user: userId, course: courseId });
+
+    if (review) {
+      // Update existing review
+      review.rating = rating;
+      review.comment = comment.trim();
+      await review.save();
+    } else {
+      // Create new review
+      review = await Review.create({
+        user: userId,
+        course: courseId,
+        rating,
+        comment: comment.trim(),
+      });
+
+      // Add review to course if it's not already there
+      if (!course.reviews.includes(review._id)) {
+        course.reviews.push(review._id);
+        await course.save();
+      }
+    }
+
+    // Populate user info for the returned review
+    const populatedReview = await Review.findById(review._id).populate("user", "name photoUrl role");
+
+    return res.status(200).json({
+      message: "Review submitted successfully",
+      review: populatedReview,
+    });
+  } catch (error) {
+    console.error("addCourseReview error:", error);
+    return res.status(500).json({ message: `Failed to submit review: ${error.message}` });
+  }
+};
+
+/**
+ * Get reviews for a course
+ */
+export const getCourseReviews = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+
+    if (!courseId || !mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({ message: "Invalid Course ID" });
+    }
+
+    const reviews = await Review.find({ course: courseId })
+      .populate("user", "name photoUrl role")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(reviews);
+  } catch (error) {
+    console.error("getCourseReviews error:", error);
+    return res.status(500).json({ message: "Failed to load course reviews" });
   }
 };

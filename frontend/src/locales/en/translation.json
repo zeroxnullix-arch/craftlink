@@ -679,6 +679,14 @@
 
   "Request": "Request",
   "Approved": "Approved",
-  "Dashboard": "Dashboard"
-
+  "Dashboard": "Dashboard",
+  "Add a Review": "Add a Review",
+  "Your Rating:": "Your Rating:",
+  "Write your review here...": "Write your review here...",
+  "Submitting...": "Submitting...",
+  "Submit Review": "Submit Review",
+  "Please login to write a review and rate this course.": "Please login to write a review and rate this course.",
+  "No reviews yet. Be the first to review this course!": "No reviews yet. Be the first to review this course!",
+  "Review submitted successfully!": "Review submitted successfully!",
+  "Failed to submit review": "Failed to submit review"
 }

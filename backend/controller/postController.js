@@ -1,5 +1,6 @@
 import Post from "../model/postModel.js";
 import User from "../model/userModel.js";
+import Certificate from "../model/certificateModel.js";
 
 // ==================== CREATE POST ====================
 export const createPost = async (req, res) => {
@@ -127,6 +128,21 @@ export const addComment = async (req, res) => {
     }
 
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Rule: Craftsman (role === 1) must have at least one course completion certificate to comment
+    if (user.role === 1) {
+      const certificateCount = await Certificate.countDocuments({ user: userId });
+      if (certificateCount === 0) {
+        return res.status(403).json({
+          message: "عذراً، يجب الحصول على شهادة إتمام كورس واحد على الأقل لتتمكن من التعليق على المنشورات.",
+          messageEn: "Sorry, you must obtain at least one course completion certificate to comment on posts."
+        });
+      }
+    }
+
     const comment = {
       userId,
       userName: user.name,

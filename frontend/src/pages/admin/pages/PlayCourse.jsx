@@ -5,6 +5,7 @@ import { api } from "@services/api";
 import { toast } from "react-toastify";
 import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
+import CertificateModal from "../../../components/CertificateModal";
 import { useTheme } from "../../../context/ThemeContext";
 import { MdVideoLibrary } from "react-icons/md";
 import { TiFlash } from "react-icons/ti";
@@ -47,6 +48,9 @@ const PlayCourse = () => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [watchedTime, setWatchedTime] = useState({}); // { lectureId: secondsWatched }
   const [currentLectureProgress, setCurrentLectureProgress] = useState(0);
+  const [certificate, setCertificate] = useState(null);
+  const [claiming, setClaiming] = useState(false);
+  const [showCertModal, setShowCertModal] = useState(false);
 
   const commentsContainerRef = useRef(null);
   const sidebarRef = useRef(null);
@@ -68,6 +72,25 @@ useEffect(() => {
   }
   scrollToBottom();
 }, [comments]);
+
+  // ========================================================================
+  // CLAIM CERTIFICATE
+  // ========================================================================
+  const handleClaimCertificate = async () => {
+    try {
+      setClaiming(true);
+      const res = await api.post("/api/user/certificate/claim", { courseId });
+      setCertificate(res.data.certificate);
+      toast.success(t("Certificate claimed successfully!"));
+      setShowCertModal(true);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || t("Failed to claim certificate"));
+    } finally {
+      setClaiming(false);
+    }
+  };
+
   // ========================================================================
   // FETCH COURSE & LECTURES
   // ========================================================================
@@ -85,6 +108,17 @@ useEffect(() => {
           setWatchedTime(progressRes.data || {});
         } catch (progressErr) {
           console.log("No progress found for this course");
+        }
+
+        // Fetch user certificates
+        try {
+          const certRes = await api.get("/api/user/certificates");
+          const foundCert = certRes.data?.find((c) => c.course?._id === courseId);
+          if (foundCert) {
+            setCertificate(foundCert);
+          }
+        } catch (certErr) {
+          console.log("No certificates found");
         }
 
         // Set first unlocked lecture
@@ -858,6 +892,60 @@ useEffect(() => {
                   <span style={{ fontSize: "0.9rem", color: "#999" }}>
                     {courseProgressPercent}% completed
                   </span>
+
+                  {/* CERTIFICATE CLAIM & VIEW BUTTON */}
+                  {courseProgressPercent >= 90 && (
+                    <div style={{ marginTop: "16px" }}>
+                      {certificate ? (
+                        <button
+                          onClick={() => setShowCertModal(true)}
+                          className="claim-cert-btn"
+                          style={{
+                            width: "100%",
+                            padding: "10px",
+                            background: "linear-gradient(135deg, #d4af37, #aa7c11)",
+                            color: "#fff",
+                            fontWeight: "bold",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "8px",
+                            boxShadow: "0 4px 10px rgba(212, 175, 55, 0.3)",
+                            transition: "all 0.3s ease",
+                          }}
+                        >
+                          🎓 {t("View Certificate")}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleClaimCertificate}
+                          disabled={claiming}
+                          className="claim-cert-btn"
+                          style={{
+                            width: "100%",
+                            padding: "10px",
+                            background: "linear-gradient(135deg, #2b7cff, #1a4e9a)",
+                            color: "#fff",
+                            fontWeight: "bold",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: claiming ? "not-allowed" : "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "8px",
+                            boxShadow: "0 4px 10px rgba(43, 124, 255, 0.3)",
+                            transition: "all 0.3s ease",
+                          }}
+                        >
+                          {claiming ? t("Claiming...") : `🎓 ${t("Claim Certificate")}`}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </aside>
 
@@ -878,6 +966,14 @@ useEffect(() => {
           </div>
         </main>
       </section>
+
+      {/* 🏆 REUSABLE CERTIFICATE MODAL */}
+      <CertificateModal
+        isOpen={showCertModal}
+        onClose={() => setShowCertModal(false)}
+        certificate={certificate}
+        courseFallback={course}
+      />
     </div>
   );
 };

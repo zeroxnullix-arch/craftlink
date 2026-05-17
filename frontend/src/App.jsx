@@ -102,8 +102,8 @@ import getCreatorCourse from './customHooks/getCreatorCourse';
 import useGetPublishedCourse from './customHooks/useGetPublishedCourse';
 import PrivateRoute from '../PrivateRoute';
 import GuestRoute from '../GuestRoute';
-
-export const serverUrl = "https://craftlink-production.up.railway.app"
+import { serverUrl as configServerUrl } from '../config/server';
+export const serverUrl = configServerUrl;
 
 export default function App() {
   getCreatorCourse();

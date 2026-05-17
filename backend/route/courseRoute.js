@@ -16,6 +16,8 @@ import {
   getInstructorSales,
   getLectureComments,
   addLectureComment,
+  getCourseReviews,
+  addCourseReview,
 } from "../controller/courseController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 const courseRouter = express.Router();
@@ -35,5 +37,7 @@ courseRouter.delete("/removelecture/:lectureId", authMiddleware, removeLecture);
 courseRouter.get("/lecture/:lectureId/comments", getLectureComments);
 courseRouter.post("/lecture/:lectureId/comments", authMiddleware, addLectureComment);
 courseRouter.post("/creator", authMiddleware, getCreatorById);
+courseRouter.get("/:courseId/reviews", getCourseReviews);
+courseRouter.post("/:courseId/reviews", authMiddleware, addCourseReview);
 
 export default courseRouter;

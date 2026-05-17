@@ -10,6 +10,7 @@ import LoadingFire from "./LoadingFire";
 import LoadingDouble from "./LoadingDouble";
 import ScrollToTop from "./ScrollToTop";
 import ChatMessage from "./dashboard/components/ChatMessage";
+import CertificateModal from "./CertificateModal";
 
 export {
     Header,
@@ -23,5 +24,6 @@ export {
     ScrollToTop,
     ChatMessage,
     LoadingDouble,
-    Footer
+    Footer,
+    CertificateModal
 }

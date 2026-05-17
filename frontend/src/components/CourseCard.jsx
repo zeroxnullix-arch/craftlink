@@ -4,9 +4,15 @@ import { FaStar } from "react-icons/fa";
 import { BsClockHistory } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-const CourseCard = ({ image, title, instructor, tag, hours, lectures, level,price,courseId }) => {
+const CourseCard = ({ image, title, instructor, tag, hours, lectures, level, price, courseId, reviews }) => {
     const navigate = useNavigate()
     const { i18n, t } = useTranslation();
+
+    const reviewsCount = reviews?.length || 0;
+    const averageRating = reviewsCount > 0
+        ? (reviews.reduce((acc, curr) => acc + (curr.rating || 0), 0) / reviewsCount).toFixed(1)
+        : "0.0";
+
     return (
         <div className="course-card">
             <div className="card-inner">
@@ -14,11 +20,11 @@ const CourseCard = ({ image, title, instructor, tag, hours, lectures, level,pric
                     <div className="imgBox">
                         <img className="inverted-radius" src={image} alt={title} />
                         <div className="icon iconBox">
-                            <HiArrowUpRight onClick={()=>navigate(`/viewcourse/${courseId}`)} />
+                            <HiArrowUpRight onClick={() => navigate(`/viewcourse/${courseId}`)} />
                         </div>
                         <div className="tag-star">
                             <span>#{t(tag)}</span>
-                            <span className="star"><FaStar/>4.5</span>
+                            <span className="star"><FaStar />{averageRating}</span>
                         </div>
                         <span className="hours"><BsClockHistory />{hours}</span>
                     </div>

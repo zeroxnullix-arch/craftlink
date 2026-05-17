@@ -1,9 +1,20 @@
 // Frontend server URL configuration
 // Priority:
 // 1. Vite env `import.meta.env.VITE_SERVER_URL` (recommended for builds)
-// 2. Fallback to the default local dev server
-// const DEFAULT_SERVER_URL = "http://192.168.1.2:8000";
-const DEFAULT_SERVER_URL = "https://craftlink-production.up.railway.app";
+// 2. Dynamic fallback based on current window location (localhost dev vs production)
+// 3. Fallback to production server
+
+const getFallbackServerUrl = () => {
+  if (typeof window !== "undefined" && window.location) {
+    const hostname = window.location.hostname;
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+  }
+  return "https://craftlink-production.up.railway.app";
+};
+
+const DEFAULT_SERVER_URL = getFallbackServerUrl();
 const resolvedServerUrl =
   (typeof import.meta !== "undefined" &&
     import.meta.env &&

@@ -6,6 +6,7 @@ import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
 import AuthInput from "../../../components/AuthInput";
 import LoadingDouble from "../../../components/LoadingDouble";
+import CertificateModal from "../../../components/CertificateModal";
 import PostCard from "./components/PostCard";
 // Icons
 import {
@@ -38,6 +39,8 @@ import image from "../../../assets/img/image.png";
 import { useTranslation } from "react-i18next";
 const Profile = () => {
   const { i18n, t } = useTranslation();
+  const [selectedCert, setSelectedCert] = React.useState(null);
+  const [showCertModal, setShowCertModal] = React.useState(false);
   const {
     navigate,
     darkMode,
@@ -97,6 +100,8 @@ const Profile = () => {
     purchasedCourses,
     postsLoading,
     purchasedLoading,
+    certificates,
+    certificatesLoading,
     currentUser,
     salesData,
     salesLoading,
@@ -278,6 +283,17 @@ const Profile = () => {
                         {t("Purchased Courses")}
                       </button>
                     )}
+                    {(certificates.length > 0 || isMyProfile) && (
+                      <button
+                        className={profileTab === "certificates" ? "active" : ""}
+                        onClick={() => {
+                          setActiveTab("certificates");
+                          setProfileTab("certificates");
+                        }}
+                      >
+                        {t("Certificates")}
+                      </button>
+                    )}
                   </div>
                   {isInstructor && isOwner && (
                     <button className="sort" onClick={() => setShowSort(true)}>
@@ -339,6 +355,95 @@ const Profile = () => {
                           </div>
                         </div>
                       ))
+                    )}
+                  </div>
+                )}
+
+                {/* CERTIFICATES TAB */}
+                {profileTab === "certificates" && (
+                  <div className="certificates-tab" style={{ padding: "20px 0" }}>
+                    <h3 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "var(--text-primary)" }}>
+                      🎓 {t("Earned Certificates")}
+                    </h3>
+                    {certificatesLoading ? (
+                      <LoadingDouble />
+                    ) : certificates.length === 0 ? (
+                      <div className="failed-load" style={{ padding: "40px 0" }}>
+                        <span style={{ fontSize: "4rem" }}>🎓</span>
+                        <p className="failed-text" style={{ marginTop: "10px" }}>
+                          {t("No certificates earned yet.")}
+                        </p>
+                      </div>
+                    ) : (
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+                        {certificates.map((cert) => (
+                          <div
+                            key={cert._id}
+                            className="certificate-card"
+                            style={{
+                              background: "var(--card-bg)",
+                              border: "1px solid var(--border-color)",
+                              borderRadius: "16px",
+                              overflow: "hidden",
+                              boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                              transition: "all 0.3s ease",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <div style={{ padding: "20px" }}>
+                              {/* Course mini thumbnail */}
+                              <div style={{ width: "100%", height: "140px", borderRadius: "12px", overflow: "hidden", marginBottom: "16px" }}>
+                                <img
+                                  src={cert.course?.thumbnail || image}
+                                  alt={cert.course?.title}
+                                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                />
+                              </div>
+                              <h4 style={{ fontSize: "1.15rem", fontWeight: "bold", color: "var(--text-primary)", marginBottom: "8px" }}>
+                                {cert.course?.title}
+                              </h4>
+                              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "12px" }}>
+                                {t("Verification ID:")}{" "}
+                                <span style={{ fontFamily: "monospace", color: "var(--primary-color)", fontWeight: "bold" }}>
+                                  {cert.certificateId}
+                                </span>
+                              </p>
+                              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                                📅 {t("Date of Issue:")}{" "}
+                                <strong>{new Date(cert.issueDate || cert.createdAt).toLocaleDateString()}</strong>
+                              </p>
+                            </div>
+                            <div style={{ padding: "0 20px 20px 20px" }}>
+                              <button
+                                onClick={() => {
+                                  setSelectedCert(cert);
+                                  setShowCertModal(true);
+                                }}
+                                style={{
+                                  width: "100%",
+                                  padding: "10px",
+                                  background: "linear-gradient(135deg, #d4af37, #aa7c11)",
+                                  color: "#fff",
+                                  fontWeight: "bold",
+                                  border: "none",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  gap: "8px",
+                                  boxShadow: "0 4px 10px rgba(212, 175, 55, 0.3)",
+                                  transition: "all 0.3s ease",
+                                }}
+                              >
+                                🎓 {t("View & Print")}
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 )}
@@ -669,6 +774,16 @@ const Profile = () => {
           </div>
         </main>
       </section>
+
+      {/* 🏆 REUSABLE CERTIFICATE MODAL */}
+      <CertificateModal
+        isOpen={showCertModal}
+        onClose={() => {
+          setShowCertModal(false);
+          setSelectedCert(null);
+        }}
+        certificate={selectedCert}
+      />
     </div>
   );
 };

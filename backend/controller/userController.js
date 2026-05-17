@@ -1,6 +1,7 @@
 import User from "../model/userModel.js";
 import Course from "../model/courseModel.js";
 import Payment from "../model/paymentModel.js";
+import Certificate from "../model/certificateModel.js";
 import bcrypt from "bcryptjs";
 
 export const getCurrentUser = async (req, res) => {
@@ -177,6 +178,184 @@ export const getUserById = async (req, res) => {
       message: "Get user by id error",
       error: error.message,
     });
+  }
+};
+
+// ==================== COURSE COMPLETION CERTIFICATES ====================
+
+/**
+ * Claim a course completion certificate if progress >= 90%
+ */
+export const claimCertificate = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { courseId } = req.body;
+
+    if (!userId || !courseId) {
+      return res.status(400).json({ message: "User ID and Course ID are required" });
+    }
+
+    // 1. Check if user already has a certificate for this course
+    const existingCert = await Certificate.findOne({ user: userId, course: courseId })
+      .populate("course", "title category level thumbnail")
+      .populate("user", "name photoUrl");
+
+    if (existingCert) {
+      return res.status(200).json({
+        message: "Certificate already claimed",
+        certificate: existingCert,
+      });
+    }
+
+    // 2. Fetch course and populated lectures
+    const course = await Course.findById(courseId).populate("lectures");
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    const lectures = course.lectures || [];
+    if (lectures.length === 0) {
+      return res.status(400).json({ message: "Course has no lectures" });
+    }
+
+    // 3. Fetch user progress
+    const user = await User.findById(userId);
+    const userProgress = user.progress?.[courseId] || {};
+
+    let totalProgress = 0;
+    lectures.forEach((lec) => {
+      const watched = userProgress[lec._id.toString()] || 0;
+      const total = lec.duration || 1;
+      const pct = Math.min((watched / total) * 100, 100);
+      totalProgress += pct;
+    });
+
+    const progressPercent = Math.round(totalProgress / lectures.length);
+
+    // 4. Require at least 90% progress to claim certificate
+    if (progressPercent < 90) {
+      return res.status(400).json({
+        message: `You must complete at least 90% of the course. Your current progress: ${progressPercent}%`,
+      });
+    }
+
+    // 5. Generate a unique, premium certificate ID
+    const randomChars = Math.random().toString(36).substr(2, 9).toUpperCase();
+    const tsCode = Date.now().toString().slice(-4);
+    const certificateId = `CL-CERT-${randomChars}-${tsCode}`;
+
+    // 6. Create and save certificate
+    const certificate = new Certificate({
+      certificateId,
+      user: userId,
+      course: courseId,
+    });
+
+    await certificate.save();
+    await certificate.populate({
+      path: "course",
+      select: "title category level thumbnail creator",
+      populate: {
+        path: "creator",
+        select: "name",
+      },
+    });
+    await certificate.populate("user", "name photoUrl");
+
+    return res.status(201).json({
+      message: "Certificate successfully claimed!",
+      certificate,
+    });
+  } catch (error) {
+    console.error("claimCertificate error:", error);
+    return res.status(500).json({ message: "Failed to claim certificate" });
+  }
+};
+
+/**
+ * Get all certificates claimed by the authenticated user
+ */
+export const getUserCertificates = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const certificates = await Certificate.find({ user: userId })
+      .populate({
+        path: "course",
+        select: "title category level thumbnail creator",
+        populate: {
+          path: "creator",
+          select: "name",
+        },
+      })
+      .populate("user", "name photoUrl")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(certificates || []);
+  } catch (error) {
+    console.error("getUserCertificates error:", error);
+    return res.status(500).json({ message: "Failed to load certificates" });
+  }
+};
+
+/**
+ * Validate / Fetch a certificate by its unique certificateId or MongoDB _id
+ */
+export const verifyCertificate = async (req, res) => {
+  try {
+    const { key } = req.params;
+
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(key);
+    let query = {};
+    if (isObjectId) {
+      query = { $or: [{ _id: key }, { certificateId: key }] };
+    } else {
+      query = { certificateId: key };
+    }
+
+    const certificate = await Certificate.findOne(query)
+      .populate({
+        path: "course",
+        select: "title category level thumbnail creator",
+        populate: {
+          path: "creator",
+          select: "name",
+        },
+      })
+      .populate("user", "name photoUrl role");
+
+    if (!certificate) {
+      return res.status(404).json({ message: "Certificate not found or invalid" });
+    }
+
+    return res.status(200).json({ valid: true, certificate });
+  } catch (error) {
+    console.error("verifyCertificate error:", error);
+    return res.status(500).json({ message: "Failed to verify certificate" });
+  }
+};
+
+/**
+ * Get public certificates for a specific user ID
+ */
+export const getPublicCertificates = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const certificates = await Certificate.find({ user: id })
+      .populate({
+        path: "course",
+        select: "title category level thumbnail creator",
+        populate: {
+          path: "creator",
+          select: "name",
+        },
+      })
+      .populate("user", "name photoUrl")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(certificates || []);
+  } catch (error) {
+    console.error("getPublicCertificates error:", error);
+    return res.status(500).json({ message: "Failed to load public certificates" });
   }
 };
 

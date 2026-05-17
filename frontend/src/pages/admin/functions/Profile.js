@@ -68,6 +68,8 @@ const encryptionKeysRef = useRef({});
   const [purchasedCourses, setPurchasedCourses] = useState([]);
   const [postsLoading, setPostsLoading] = useState(false);
   const [purchasedLoading, setPurchasedLoading] = useState(false);
+  const [certificates, setCertificates] = useState([]);
+  const [certificatesLoading, setCertificatesLoading] = useState(false);
   // ========================================================================
   // STATE - FORMS
   // ========================================================================
@@ -505,6 +507,29 @@ const last3Conversations = useMemo(() => {
     fetchPurchasedCourses();
   }, [isOwner]);
 
+  // ========================================================================
+  // EFFECTS - FETCH USER CERTIFICATES
+  // ========================================================================
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchCertificates = async () => {
+      try {
+        setCertificatesLoading(true);
+        const res = await api.get(`/api/user/${userId}/certificates`, {
+          withCredentials: true,
+        });
+        setCertificates(res.data || []);
+      } catch (err) {
+        console.error("Failed to load user certificates", err?.message || err);
+      } finally {
+        setCertificatesLoading(false);
+      }
+    };
+
+    fetchCertificates();
+  }, [userId]);
+
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (!file?.type.startsWith("image/")) return toast.error("Please select an image");
@@ -669,6 +694,8 @@ const last3Conversations = useMemo(() => {
     purchasedCourses,
     postsLoading,
     purchasedLoading,
+    certificates,
+    certificatesLoading,
     currentUser,
     salesData,
     salesLoading,
