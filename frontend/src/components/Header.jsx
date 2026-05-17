@@ -18,16 +18,16 @@ const Header = () => {
   const toggleTheme = () => {
     setDarkMode(prev => !prev);
   };
-const toggleLanguage = () => {
-  const newLang = i18n.language === "en" ? "ar" : "en";
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "ar" : "en";
 
-  i18n.changeLanguage(newLang);
+    i18n.changeLanguage(newLang);
 
-  localStorage.setItem("lang", newLang);
+    localStorage.setItem("lang", newLang);
 
-  document.documentElement.dir =
-    newLang === "ar" ? "rtl" : "ltr";
-};
+    document.documentElement.dir =
+      newLang === "ar" ? "rtl" : "ltr";
+  };
   return (
     <header>
       <div className="section-layout">
@@ -35,54 +35,54 @@ const toggleLanguage = () => {
           <img src={logo} className="logo-CraftLink" alt="craftlink" />
           <h2>{t("craflink")}<span>.</span></h2>
         </div>
-  <ul>
-  <li>
-    <span
-      className="nav-link pointer"
-      onClick={() => navigate("/")}
-    >
-      {t("home")}
-    </span>
-  </li>
+        <ul>
+          <li>
+            <span
+              className="nav-link pointer"
+              onClick={() => navigate("/")}
+            >
+              {t("home")}
+            </span>
+          </li>
 
-  <li>
-    {!userData ? (
-      <span
-        className="nav-link pointer"
-        onClick={() => navigate("/signup")}
-      >
-        {t("join")}
-      </span>
-    ) : (
-      <span
-        className="nav-link pointer"
-        onClick={() => navigate(`/profile/${userData._id}`)}
-      >
-        {t("profile")}
-      </span>
-    )}
-  </li>
+          <li>
+            {!userData ? (
+              <span
+                className="nav-link pointer"
+                onClick={() => navigate("/signup")}
+              >
+                {t("join")}
+              </span>
+            ) : (
+              <span
+                className="nav-link pointer"
+                onClick={() => navigate(`/profile/${userData._id}`)}
+              >
+                {t("profile")}
+              </span>
+            )}
+          </li>
 
-  {/* Language Button */}
-  <li>
-    <span
-      className="nav-link pointer"
-      onClick={toggleLanguage}
-    >
-      {i18n.language === "en" ? "AR" : "EN"}
-    </span>
-  </li>
+          {/* Language Button */}
+          <li>
+            <span
+              className="nav-link pointer"
+              onClick={toggleLanguage}
+            >
+              {i18n.language === "en" ? "AR" : "EN"}
+            </span>
+          </li>
 
-  {/* Theme Toggle */}
-  <li>
-    <span
-      className="nav-link theme-toggle pointer"
-      onClick={toggleTheme}
-    >
-      {darkMode ? <MdSunny /> : <RiMoonClearFill />}
-    </span>
-  </li>
-</ul>
+          {/* Theme Toggle */}
+          <li>
+            <span
+              className="nav-link theme-toggle pointer"
+              onClick={toggleTheme}
+            >
+              {darkMode ? <MdSunny /> : <RiMoonClearFill />}
+            </span>
+          </li>
+        </ul>
       </div>
     </header>
   );

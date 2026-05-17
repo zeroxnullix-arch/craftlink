@@ -36,9 +36,9 @@ const paymentSchema = new mongoose.Schema(
       default: "",
     },
     isCredited: {
-  type: Boolean,
-  default: false,
-},
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

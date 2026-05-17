@@ -21,20 +21,6 @@ const app = express();
 const port = Number(process.env.PORT) || 8000;
 app.use(express.json());
 app.use(cookieParser());
-// const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
-//   .split(",")
-//   .map((s) => s.trim())
-//   .filter(Boolean);
-// app.use(
-//   cors({
-//     origin: (origin, cb) => {
-//       if (!origin) return cb(null, true);
-//       if (allowedOrigins.includes(origin)) return cb(null, true);
-//       return cb(new Error("CORS not allowed"), false);
-//     },
-//     credentials: true,
-//   })
-// );
 import net from "net";
 
 const socket = net.createConnection(587, "smtp.gmail.com");
@@ -74,11 +60,7 @@ app.use("/api", searchRoutes);
 app.get("/", (req, res) => res.send("Server Running 🚀"));
 const server = http.createServer(app);
 const io = new Server(server, {
-  // cors: {
-  //   origin: allowedOrigins,
-  //   credentials: true,
-  // },
-    cors: {
+  cors: {
     origin: true,
     credentials: true,
   },

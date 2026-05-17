@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../services/api"; // axios instance
+import api from "../services/api";
 
 export const changePassword = createAsyncThunk(
   "user/changePassword",

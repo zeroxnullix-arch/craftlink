@@ -97,17 +97,17 @@ const Main = () => {
             >
               {TopCategories.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <TopCategoriesCard 
-                  img={item.img}
-                  text={t(item.text)}
-                   />
+                  <TopCategoriesCard
+                    img={item.img}
+                    text={t(item.text)}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
           ) : (
             <div className="TopCategories-grid">
               {TopCategories.map((item, index) => (
-                <TopCategoriesCard key={index}  img={item.img}
+                <TopCategoriesCard key={index} img={item.img}
                   text={t(item.text)} />
               ))}
             </div>

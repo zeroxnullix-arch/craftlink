@@ -28,7 +28,7 @@ import "swiper/css/pagination";
 import { useTranslation } from "react-i18next";
 
 const team = [
-    {
+  {
     name: "Rodina Samy",
     role: "UI/UX Designer",
     img: RodinaSamy,
@@ -83,7 +83,7 @@ const team = [
     role: "Back-end Developer",
     img: ShahdMahmoud,
   },
- {
+  {
     name: "Radwa Alaa",
     role: "Back-end Developer",
     img: RadwaAlaa,
@@ -148,14 +148,14 @@ export default function OurTeam() {
         slidesPerView={1}
         // autoplay={{ delay: 3000 }}
         loop={true}
-breakpoints={{
-  0: { slidesPerView: 1 },
-  320: { slidesPerView: 1.2 },
-  480: { slidesPerView: 1.5 },
-  640: { slidesPerView: 2 },
-  768: { slidesPerView: 2.5 },
-  1024: { slidesPerView: 4 },
-}}
+        breakpoints={{
+          0: { slidesPerView: 1 },
+          320: { slidesPerView: 1.2 },
+          480: { slidesPerView: 1.5 },
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 2.5 },
+          1024: { slidesPerView: 4 },
+        }}
       >
         {team.map((member, i) => (
           <SwiperSlide key={i}>

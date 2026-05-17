@@ -62,20 +62,20 @@ const TestimonialsSwiper = () => {
       <h2>
         {t("What Our Users Say")}<span>{t("?")}</span>
       </h2>
-<Swiper
-  key={i18n.language}
-  dir={i18n.language === "ar" ? "rtl" : "ltr"}
-  modules={[Autoplay, Pagination]}
-  spaceBetween={20}
-  slidesPerView={1}
-  autoplay={{ delay: 3000, disableOnInteraction: false }}
-  pagination={{ clickable: true }}
-  breakpoints={{
-    768: { slidesPerView: 2 },
-    1100: { slidesPerView: 3 },
-  }}
-  className="testimonials-swiper"
->
+      <Swiper
+        key={i18n.language}
+        dir={i18n.language === "ar" ? "rtl" : "ltr"}
+        modules={[Autoplay, Pagination]}
+        spaceBetween={20}
+        slidesPerView={1}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        breakpoints={{
+          768: { slidesPerView: 2 },
+          1100: { slidesPerView: 3 },
+        }}
+        className="testimonials-swiper"
+      >
         {testimonials.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="testimonial-card">

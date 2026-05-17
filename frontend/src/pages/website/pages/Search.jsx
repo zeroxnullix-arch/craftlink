@@ -11,7 +11,7 @@ const AICourseSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [lang, setLang] = useState("auto");
- const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const courses = useSelector((s) => Object.values(s.course.courseData));
   const debounceRef = useRef(null);
   const abortRef = useRef(null);
@@ -38,7 +38,7 @@ const AICourseSearch = () => {
       } catch (err) {
         console.error(err);
       }
-    }, 350); // 👈 خليها 300–500ms أفضل أداء
+    }, 350);
   };
 
   const startVoiceSearch = () => {
@@ -136,10 +136,9 @@ const AICourseSearch = () => {
             <div className="btn-search-actions">
 
               <button onClick={startVoiceSearch} className="btn-search-voice"><BsStars /></button>
-              {/* <button onClick={startVoiceSearch} className="btn-search-voice"><HiMiniLanguage/></button> */}
               <div className="lang-dropdown">
                 <button className="lang-active-btn">
-                  <HiMiniLanguage/>
+                  <HiMiniLanguage />
                   {lang === "auto"
                     ? t("Auto Detect")
                     : lang === "ar"
@@ -184,22 +183,7 @@ const AICourseSearch = () => {
             </defs>
           </svg>
         </div>
-
       </div>
-
-
-
-
-      {/* <div className="container" style={{ marginTop: 20 }}>
-        <h1>AI Smart Search</h1>
-        <select value={lang} onChange={(e) => setLang(e.target.value)}>
-          <option value="auto">Auto Detect</option>
-          <option value="ar">Arabic</option>
-          <option value="en">English</option>
-        </select>
-
-
-      </div> */}
       <PopularCourses
         courses={results.length ? results : courses}
         title={t("Results")}

@@ -180,7 +180,7 @@ const messageSlice = createSlice({
         const { conversationId, currentUserId } = action.payload;
         state.messages = state.messages.map((msg) =>
           msg.conversationId === conversationId &&
-          msg.sender?._id !== currentUserId
+            msg.sender?._id !== currentUserId
             ? { ...msg, status: "seen" }
             : msg,
         );

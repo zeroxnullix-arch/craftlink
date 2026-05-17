@@ -46,7 +46,7 @@ const PlayCourse = () => {
   const [comments, setComments] = useState([]);
   const [commentLoading, setCommentLoading] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [watchedTime, setWatchedTime] = useState({}); // { lectureId: secondsWatched }
+  const [watchedTime, setWatchedTime] = useState({});
   const [currentLectureProgress, setCurrentLectureProgress] = useState(0);
   const [certificate, setCertificate] = useState(null);
   const [claiming, setClaiming] = useState(false);
@@ -56,22 +56,22 @@ const PlayCourse = () => {
   const sidebarRef = useRef(null);
   const activeLectureRef = useRef(null);
   const videoRef = useRef(null);
-  const videoInitializedRef = useRef(null); // Track which lecture video was initialized
-const scrollToBottom = () => {
-  if (commentsContainerRef.current) {
-    commentsContainerRef.current.scrollTop =
-      commentsContainerRef.current.scrollHeight;
-  }
-};
-const isFirstLoad = useRef(true);
+  const videoInitializedRef = useRef(null);
+  const scrollToBottom = () => {
+    if (commentsContainerRef.current) {
+      commentsContainerRef.current.scrollTop =
+        commentsContainerRef.current.scrollHeight;
+    }
+  };
+  const isFirstLoad = useRef(true);
 
-useEffect(() => {
-  if (isFirstLoad.current) {
-    isFirstLoad.current = false;
-    return;
-  }
-  scrollToBottom();
-}, [comments]);
+  useEffect(() => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return;
+    }
+    scrollToBottom();
+  }, [comments]);
 
   // ========================================================================
   // CLAIM CERTIFICATE
@@ -182,7 +182,7 @@ useEffect(() => {
         {
           ...res.data,
           userId: {
-            ...userData, // أو أي data عندك في redux
+            ...userData,
           },
         },
       ]);
@@ -214,12 +214,10 @@ useEffect(() => {
   const handleVideoEnd = () => {
     if (!currentLecture) return;
 
-    // Mark as completed
     if (!completed.includes(currentLecture._id)) {
       setCompleted((prev) => [...prev, currentLecture._id]);
     }
 
-    // Play next lecture
     const idx = lectures.findIndex((l) => l._id === currentLecture._id);
     if (idx !== -1 && idx < lectures.length - 1) {
       const next = lectures[idx + 1];
@@ -479,9 +477,6 @@ useEffect(() => {
               style={{
                 flex: 1,
                 flexBasis: "500px",
-                // display: "flex",
-                // flexDirection: "column",
-                // gap: "24px",
                 background: "transparent",
                 padding: 0,
               }}
@@ -566,11 +561,6 @@ useEffect(() => {
                     <img src={course.creator?.photoUrl} alt="" style={{ width: "32px", height: "32px", borderRadius: "50px" }} />
                     <span>By: {course.creator?.name}</span>
                   </div>
-
-                  {/* <span>{formatDuration(currentLecture?.duration)}</span>
-                  {currentLecture && !currentLecture.isLocked && (
-                    <span>Progress: {currentLectureProgressPercent}%</span>
-                  )} */}
                 </div>
                 <p style={{ color: "var(--text-muted)", lineHeight: 1.6, wordBreak: "break-all" }}>
                   {currentLecture?.description}
@@ -636,50 +626,6 @@ useEffect(() => {
                     <p style={{ color: "#999" }}>No comments yet</p>
                   ) : (
                     comments.map((c, index) => (
-                      // <div
-                      //   key={c._id}
-                      //   style={{
-                      //     background: "var(--bg-color)",
-                      //     borderRadius: "6px",
-                      //     padding: "8px 12px",
-                      //     marginBottom: "8px",
-                      //   }}
-                      // >
-                      //   <img src={c.userId?.photoUrl} alt="" style={{ width: "32px", height: "32px", borderRadius: "50%", marginRight: "8px" }} />
-                      //   <div className="l">
-
-                      //   <span
-                      //     style={{
-                      //       fontWeight: 600,
-                      //       marginRight: "8px",
-                      //       color: "var(--text-primary)",
-                      //     }}
-                      //   >
-                      //     {c.userName}
-                      //   </span>
-                      //   <span
-                      //     style={{
-                      //       fontSize: "0.85rem",
-                      //       color: "#999",
-                      //       marginLeft: "8px",
-                      //       color: "var(--text-muted)",
-                      //     }}
-                      //   >
-                      //     {new Date(c.createdAt).toLocaleDateString()}
-                      //   </span>
-                      // </div>
-
-                      //   <div
-                      //     style={{
-                      //       marginTop: "4px",
-                      //       color: "var(--text-primary)",
-                      //       wordBreak: "break-word",
-                      //     }}
-                      //   >
-                      //     {c.text}
-                      //   </div>
-                      // </div>
-
                       <div key={`${c.userId?._id}-${c.createdAt}-${index}`} className="comment">
                         <img
                           src={c.userId?.photoUrl || userAvatar}
@@ -706,60 +652,26 @@ useEffect(() => {
                   )}
 
                 </div>
-
-
-
-                {/* <form
-                  onSubmit={handleAddComment}
-                  style={{ display: "flex", gap: "8px" }}
-                >
+                <form onSubmit={handleAddComment} className="comment-form">
                   <input
                     name="comment"
-                    placeholder="Add a comment..."
-                    style={{
-                      flex: 1,
-                      borderRadius: "6px",
-                      border: "none",
-                      padding: "8px 10px",
-                      fontSize: "1rem",
-                      outline: "none",
-                    }}
+                    type="text"
+                    placeholder="Write your comment..."
+                    className="comment-input"
+                    disabled={loading}
                   />
                   <button
                     type="submit"
+                    className="comment-submit-btn"
                     disabled={commentLoading}
-                    style={{
-                      background: commentLoading ? "#ccc" : "#2b7cff",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "6px",
-                      padding: "8px 16px",
-                      cursor: commentLoading ? "not-allowed" : "pointer",
-                    }}
                   >
-                    {commentLoading ? "Posting..." : "Post"}
+                    {commentLoading ?
+                      <BsThreeDots />
+                      :
+                      <SiTelegram />
+                    }
                   </button>
-                </form> */}
-                         <form onSubmit={handleAddComment} className="comment-form">
-                                        <input
-                                        name="comment"
-                                            type="text"
-                                            placeholder="Write your comment..."
-                                            className="comment-input"
-                                            disabled={loading}
-                                        />
-                                        <button
-                                            type="submit"
-                                            className="comment-submit-btn"
-                                            disabled={commentLoading}
-                                        >
-                                            {commentLoading ?
-                                                <BsThreeDots />
-                                                :
-                                                <SiTelegram />
-                                            }
-                                        </button>
-                                    </form>
+                </form>
               </div>
             </div>
 
@@ -801,13 +713,11 @@ useEffect(() => {
                             color: isActive
                               ? "var(--text-primary)"
                               : "var(--text-secondary)",
-                            // padding: "12px",
                             borderRadius: "10px",
                             cursor: lec.isLocked ? "not-allowed" : "pointer",
                             opacity: lec.isLocked ? 0.6 : 1,
                             transition: "all 0.2s",
                             display: "flex",
-                            // border: isActive ? "2px solid #1a4e9a" : "none",
                           }}
                         >
                           <div style={{ width: "100px", borderRadius: "6px" }}>
@@ -843,10 +753,6 @@ useEffect(() => {
                               </div>
                             )}
                           </div>
-
-
-
-
                           <div
                             style={{
                               fontSize: "0.9rem",
@@ -856,7 +762,6 @@ useEffect(() => {
                               marginBottom: "8px",
                             }}
                           >
-
                             {lec.isLocked && <span>🔒</span>}
                             {isCompleted && <span>✔</span>}
                           </div>
@@ -966,7 +871,6 @@ useEffect(() => {
           </div>
         </main>
       </section>
-
       {/* 🏆 REUSABLE CERTIFICATE MODAL */}
       <CertificateModal
         isOpen={showCertModal}

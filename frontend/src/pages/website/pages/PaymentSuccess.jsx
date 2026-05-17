@@ -86,49 +86,49 @@ const PaymentSuccess = () => {
 
   return (
     <>
-    <div className="full-width">
+      <div className="full-width">
 
-      <Header />
-    </div>
-    <div className="pay-container">
-  <div className="pay-card">
+        <Header />
+      </div>
+      <div className="pay-container">
+        <div className="pay-card">
 
-    {status === "verifying" && (
-      <>
-        <div className="pay-spinner"></div>
-        <h2 className="pay-title">Processing Payment</h2>
-        <p className="pay-text">Please wait while we verify your payment...</p>
-      </>
-    )}
+          {status === "verifying" && (
+            <>
+              <div className="pay-spinner"></div>
+              <h2 className="pay-title">Processing Payment</h2>
+              <p className="pay-text">Please wait while we verify your payment...</p>
+            </>
+          )}
 
-    {status === "success" && (
-      <>
-        <div className="pay-icon success">
-          ✓
+          {status === "success" && (
+            <>
+              <div className="pay-icon success">
+                ✓
+              </div>
+              <h1 className="pay-title">Payment Successful!</h1>
+              <p className="pay-text">
+                Thank you for your purchase. You now have access to the course.
+              </p>
+              <p className="pay-small-text">Redirecting to course page...</p>
+            </>
+          )}
+
+          {status === "failed" && (
+            <>
+              <div className="pay-icon error">
+                ✕
+              </div>
+              <h1 className="pay-title">Payment Failed</h1>
+              <p className="pay-text">
+                {error || "We couldn't verify your payment. Please try again."}
+              </p>
+              <p className="pay-small-text">Redirecting to home page...</p>
+            </>
+          )}
+
         </div>
-        <h1 className="pay-title">Payment Successful!</h1>
-        <p className="pay-text">
-          Thank you for your purchase. You now have access to the course.
-        </p>
-        <p className="pay-small-text">Redirecting to course page...</p>
-      </>
-    )}
-
-    {status === "failed" && (
-      <>
-        <div className="pay-icon error">
-          ✕
-        </div>
-        <h1 className="pay-title">Payment Failed</h1>
-        <p className="pay-text">
-          {error || "We couldn't verify your payment. Please try again."}
-        </p>
-        <p className="pay-small-text">Redirecting to home page...</p>
-      </>
-    )}
-
-  </div>
-</div>
+      </div>
       <Footer />
     </>
   );

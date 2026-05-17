@@ -23,43 +23,41 @@ const ThumbnailUpload = ({
       ? "video/mp4,video/webm,video/ogg,video/quicktime"
       : "image/*";
 
-  // تغيير الملف
-const handleFileChange = (e) => {
-  const selectedFile = e.target.files[0];
-  if (!selectedFile) return;
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  // Always clear preview and revoke blob if present
-  if (preview && preview.startsWith("blob:")) {
-    try { URL.revokeObjectURL(preview); } catch {}
-  }
-  setPreview(null);
-if (type === "video") {
-  setFile(selectedFile);
+    // Always clear preview and revoke blob if present
+    if (preview && preview.startsWith("blob:")) {
+      try { URL.revokeObjectURL(preview); } catch { }
+    }
+    setPreview(null);
+    if (type === "video") {
+      setFile(selectedFile);
 
-}
-  setThumbnail(selectedFile);
+    }
+    setThumbnail(selectedFile);
 
-  // Reset input value to allow uploading the same file again
-  if (inputRef.current) inputRef.current.value = "";
+    // Reset input value to allow uploading the same file again
+    if (inputRef.current) inputRef.current.value = "";
 
-  // For images, we can load preview here
-  if (type === "image") {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-      setLoading(false);
-    };
-    reader.readAsDataURL(selectedFile);
-  } else {
-    setLoading(false); // let useEffect handle video preview
-  }
-};
-  // إزالة الملف
+    // For images, we can load preview here
+    if (type === "image") {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+        setLoading(false);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setLoading(false); // let useEffect handle video preview
+    }
+  };
   const handleRemove = () => {
     if (preview && preview.startsWith("blob:")) {
-      try { URL.revokeObjectURL(preview); } catch {}
+      try { URL.revokeObjectURL(preview); } catch { }
     }
     setFile(null);
     setPreview(null);
@@ -68,73 +66,65 @@ if (type === "video") {
     if (inputRef.current) inputRef.current.value = "";
   };
 
-  // التعامل مع Reset أو URLs من السيرفر
-
   // Full reset logic: always clear everything on reset
-useEffect(() => {
-  if (!reset) return;
+  useEffect(() => {
+    if (!reset) return;
 
-  // ❌ متلمسش file هنا
-  // setFile(null); ❌ احذفها
-
-  if (preview && preview.startsWith("blob:")) {
-    try { URL.revokeObjectURL(preview); } catch {}
-  }
-
-  // ✅ بس حدث الـ preview
-  if (type === "video") {
-    if (currentVideoUrl) {
-      setPreview(currentVideoUrl);
-      setVideoKey(Date.now() + Math.random());
-    } else {
-      setPreview(null);
+    if (preview && preview.startsWith("blob:")) {
+      try { URL.revokeObjectURL(preview); } catch { }
     }
-  } else {
-    if (currentImageUrl) {
-       setFile(null);
-  setPreview(currentImageUrl || null);
+
+    if (type === "video") {
+      if (currentVideoUrl) {
+        setPreview(currentVideoUrl);
+        setVideoKey(Date.now() + Math.random());
+      } else {
+        setPreview(null);
+      }
     } else {
-      setPreview(null);
+      if (currentImageUrl) {
+        setFile(null);
+        setPreview(currentImageUrl || null);
+      } else {
+        setPreview(null);
+      }
     }
-  }
 
-  if (inputRef.current) inputRef.current.value = "";
+    if (inputRef.current) inputRef.current.value = "";
 
-}, [reset, currentVideoUrl, currentImageUrl, type]);
+  }, [reset, currentVideoUrl, currentImageUrl, type]);
   // Always sync preview with file
-useEffect(() => {
-  if (file) {
-    if (type === "image") {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result); // الصورة الجديدة فقط
+  useEffect(() => {
+    if (file) {
+      if (type === "image") {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result);
+          setLoading(false);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const videoUrl = URL.createObjectURL(file);
+        setPreview(videoUrl);
+        setVideoKey(Date.now() + Math.random());
         setLoading(false);
-      };
-      reader.readAsDataURL(file);
+      }
     } else {
-      const videoUrl = URL.createObjectURL(file);
-      setPreview(videoUrl);
-      setVideoKey(Date.now() + Math.random());
+      if (type === "video") {
+        setPreview(currentVideoUrl || null);
+        setVideoKey(Date.now() + Math.random());
+      } else {
+        setPreview(currentImageUrl || null);
+      }
       setLoading(false);
     }
-  } else {
-    // لو مفيش file → اعرض URL من السيرفر
-    if (type === "video") {
-      setPreview(currentVideoUrl || null);
-      setVideoKey(Date.now() + Math.random());
-    } else {
-      setPreview(currentImageUrl || null);
-    }
-    setLoading(false);
-  }
 
-  // Cleanup لو فيه blob قديم
-  return () => {
-    if (preview && preview.startsWith("blob:")) {
-      try { URL.revokeObjectURL(preview); } catch {}
-    }
-  };
-}, [file, currentVideoUrl, currentImageUrl, type]);
+    return () => {
+      if (preview && preview.startsWith("blob:")) {
+        try { URL.revokeObjectURL(preview); } catch { }
+      }
+    };
+  }, [file, currentVideoUrl, currentImageUrl, type]);
 
   const displaySrc = preview;
 
@@ -156,7 +146,7 @@ useEffect(() => {
               src={displaySrc}
               width="100%"
               preload="auto"
-              // controls
+            // controls
             />
           ) : (
             <img src={displaySrc} alt="thumbnail" />
@@ -170,7 +160,6 @@ useEffect(() => {
         )}
       </div>
 
-      {/* إزالة الصورة القديمة */}
       {preview && !file && (
         <button
           type="button"
@@ -181,7 +170,6 @@ useEffect(() => {
         </button>
       )}
 
-      {/* عرض الملف الجديد */}
       {file && (
         <>
           <div className="thumb-info">

@@ -45,7 +45,7 @@ const CreateCourse = () => {
           setDarkMode={setDarkMode}
         />
 
-<CreateCoursePage/>
+        <CreateCoursePage />
       </section>
     </div>
   );

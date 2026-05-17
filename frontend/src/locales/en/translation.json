@@ -172,13 +172,13 @@
   "Set price: free or paid. Paid courses require a payment setup.": "Set price: free or paid. Paid courses require a payment setup.",
   "Publish the course or save as draft to edit later.": "Publish the course or save as draft to edit later.",
   "You can update content, price, and title anytime from dashboard.": "You can update content, price, and title anytime from dashboard.",
-   "Create Lecture": "Create Lecture",
+  "Create Lecture": "Create Lecture",
   "Inside your course, click 'Add Lecture'.": "Inside your course, click 'Add Lecture'.",
   "Enter lecture title, description, duration, and upload video/documents.": "Enter lecture title, description, duration, and upload video/documents.",
   "You can also attach additional resources: PDFs, slides, or exercises.": "You can also attach additional resources: PDFs, slides, or exercises.",
   "Save the lecture. Edit or reorder lectures anytime.": "Save the lecture. Edit or reorder lectures anytime.",
   "Preview lecture before publishing to ensure quality.": "Preview lecture before publishing to ensure quality.",
-   "Payment Methods": "Payment Methods",
+  "Payment Methods": "Payment Methods",
   "Use credit/debit card, PayPal, or other available methods.": "Use credit/debit card, PayPal, or other available methods.",
   "All transactions are encrypted and secure.": "All transactions are encrypted and secure.",
   "Payment for courses unlocks access immediately.": "Payment for courses unlocks access immediately.",
@@ -212,7 +212,7 @@
   "Interested in collaboration?": "Interested in collaboration?",
   "Media & Press": "Media & Press",
   "Press or media inquiries.": "Press or media inquiries.",
-    "Select Department": "Select Department",
+  "Select Department": "Select Department",
   "Technical Issue": "Technical Issue",
   "Business Partnership": "Business Partnership",
   "General Inquiry": "General Inquiry",
@@ -225,7 +225,7 @@
   "Email": "Email",
   "Working Hours": "Working Hours",
   "Sunday – Thursday": "Sunday – Thursday",
-    "Let’s Start a Conversation": "Let’s Start a Conversation",
+  "Let’s Start a Conversation": "Let’s Start a Conversation",
   "Whether you're a customer, artisan, or potential partner, we would love to hear from you.": "Whether you're a customer, artisan, or potential partner, we would love to hear from you.",
   "Contact Support": "Contact Support",
   "FAQ": "FAQ",
@@ -237,304 +237,176 @@
   "Currently CraftLink is expanding across Egypt, starting with major cities and gradually covering more areas.": "Currently CraftLink is expanding across Egypt, starting with major cities and gradually covering more areas.",
   "How do customers find professionals?": "How do customers find professionals?",
   "Customers can search by service category, location, rating, and availability to find the best professional for their needs.": "Customers can search by service category, location, rating, and availability to find the best professional for their needs.",
-
   "How does the rating system work?": "How does the rating system work?",
   "After completing a job, customers can rate and review the professional based on their experience.": "After completing a job, customers can rate and review the professional based on their experience.",
-
   "Is CraftLink free to use?": "Is CraftLink free to use?",
   "Creating an account and browsing services is free. Some premium features for professionals may require a subscription.": "Creating an account and browsing services is free. Some premium features for professionals may require a subscription.",
-
   "How do I report a problem?": "How do I report a problem?",
   "You can contact our support team through the contact form or email support@craftlink.com.": "You can contact our support team through the contact form or email support@craftlink.com.",
-
   "How long does support take to respond?": "How long does support take to respond?",
   "Our support team usually responds within 24 hours during working days.": "Our support team usually responds within 24 hours during working days.",
-
   "Can I cancel a service request?": "Can I cancel a service request?",
   "Yes, you can cancel a request before the professional confirms the booking.": "Yes, you can cancel a request before the professional confirms the booking.",
-
   "Where is CraftLink located?": "Where is CraftLink located?",
   "Our main office is located in Mansoura, Dakahlia, Egypt.": "Our main office is located in Mansoura, Dakahlia, Egypt.",
   "Last Updated: March 2026": "Last Updated: March 2026",
   "Welcome to CraftLink. Your privacy is extremely important to us. This Privacy Policy explains in detail how CraftLink collects, processes, uses, stores, and protects your personal information when you access or use our website, mobile applications, and related services.": "Welcome to CraftLink. Your privacy is extremely important to us. This Privacy Policy explains in detail how CraftLink collects, processes, uses, stores, and protects your personal information when you access or use our website, mobile applications, and related services.",
-
   "CraftLink is a platform designed to connect customers with skilled artisans and service providers.In order to provide these services, certain information must be collected and processed.This document explains exactly what information we collect, why we collect it, how it is used, and what rights you have regarding your personal data.": "CraftLink is a platform designed to connect customers with skilled artisans and service providers.In order to provide these services, certain information must be collected and processed.This document explains exactly what information we collect, why we collect it, how it is used, and what rights you have regarding your personal data.",
-
   "By creating an account or using any part of the CraftLink platform, you acknowledge that you have read and understood this Privacy Policy and agree to the practices described in it.": "By creating an account or using any part of the CraftLink platform, you acknowledge that you have read and understood this Privacy Policy and agree to the practices described in it.",
   "Information We Collect": "Information We Collect",
   "In order to operate effectively and provide a reliable service, CraftLink collects different categories of information from users. The information we collect may include personal information, service-related information, technical data, and usage data.": "In order to operate effectively and provide a reliable service, CraftLink collects different categories of information from users. The information we collect may include personal information, service-related information, technical data, and usage data.",
   "Personal Information": "Personal Information",
-
   "Personal information refers to information that can identify an individual directly or indirectly. When users register for a CraftLink account, they may be required to provide personal details that allow us to create and manage their accounts.": "Personal information refers to information that can identify an individual directly or indirectly. When users register for a CraftLink account, they may be required to provide personal details that allow us to create and manage their accounts.",
-
   "This information may include the user's full name, email address, phone number, and login credentials. In some cases, users may voluntarily provide additional profile information such as profile photos, descriptions, or professional details if they are registering as artisans.": "This information may include the user's full name, email address, phone number, and login credentials. In some cases, users may voluntarily provide additional profile information such as profile photos, descriptions, or professional details if they are registering as artisans.",
-
   "We collect this information to ensure that each user account is unique, secure, and capable of interacting properly with other users on the platform.": "We collect this information to ensure that each user account is unique, secure, and capable of interacting properly with other users on the platform.",
-
   "Account and Profile Information": "Account and Profile Information",
-
   "Users who create artisan profiles may provide additional professional information to showcase their services. This information helps customers understand the skills and experience of artisans before requesting a service.": "Users who create artisan profiles may provide additional professional information to showcase their services. This information helps customers understand the skills and experience of artisans before requesting a service.",
-
   "Examples of this information may include service categories, work experience, service descriptions, previous work images, service areas, and availability schedules.": "Examples of this information may include service categories, work experience, service descriptions, previous work images, service areas, and availability schedules.",
-
   "This data is displayed on the platform so customers can make informed decisions when selecting a service provider.": "This data is displayed on the platform so customers can make informed decisions when selecting a service provider.",
   "Service Request Information": "Service Request Information",
-
   "When customers submit service requests, CraftLink collects certain information related to the service being requested. This information may include a description of the service, images related to the job, location details, and communication messages exchanged between customers and artisans.": "When customers submit service requests, CraftLink collects certain information related to the service being requested. This information may include a description of the service, images related to the job, location details, and communication messages exchanged between customers and artisans.",
-
   "These details are necessary to ensure that artisans clearly understand the customer's needs and can respond appropriately to service requests.": "These details are necessary to ensure that artisans clearly understand the customer's needs and can respond appropriately to service requests.",
-
   "Device and Technical Information": "Device and Technical Information",
-
   "When users access the CraftLink platform, certain technical information is automatically collected by our systems. This information helps us understand how the platform is being used and allows us to improve performance and security.": "When users access the CraftLink platform, certain technical information is automatically collected by our systems. This information helps us understand how the platform is being used and allows us to improve performance and security.",
-
   "This technical data may include the user's IP address, device type, browser type, operating system, language preferences, pages visited, session duration, and interaction patterns within the platform.": "This technical data may include the user's IP address, device type, browser type, operating system, language preferences, pages visited, session duration, and interaction patterns within the platform.",
   "Usage Data": "Usage Data",
-
   "Usage data includes information about how users interact with the platform. This may include actions such as browsing service categories, sending messages, creating service requests, leaving reviews, or updating profile information.": "Usage data includes information about how users interact with the platform. This may include actions such as browsing service categories, sending messages, creating service requests, leaving reviews, or updating profile information.",
-
   "Analyzing this data helps us improve the user experience, optimize system performance, and identify areas where the platform can be enhanced.": "Analyzing this data helps us improve the user experience, optimize system performance, and identify areas where the platform can be enhanced.",
-
   "How We Use Your Information": "How We Use Your Information",
-
   "CraftLink uses collected information for multiple operational, functional, and security purposes.": "CraftLink uses collected information for multiple operational, functional, and security purposes.",
-
   "The primary purpose of collecting user information is to provide the core functionality of the CraftLink platform. This includes connecting customers with artisans, enabling communication between users, and facilitating service requests.": "The primary purpose of collecting user information is to provide the core functionality of the CraftLink platform. This includes connecting customers with artisans, enabling communication between users, and facilitating service requests.",
-
   "In addition, we use user data to improve our services, enhance system performance, analyze user behavior, detect suspicious activity, and ensure compliance with applicable laws and regulations.": "In addition, we use user data to improve our services, enhance system performance, analyze user behavior, detect suspicious activity, and ensure compliance with applicable laws and regulations.",
-
   "CraftLink may send users various types of communications related to their accounts and platform activity.": "CraftLink may send users various types of communications related to their accounts and platform activity.",
-
   "These communications may include account notifications, service request updates, security alerts, password reset instructions, customer support responses, and important platform announcements.": "These communications may include account notifications, service request updates, security alerts, password reset instructions, customer support responses, and important platform announcements.",
-
   "Some communications are essential for the operation of the platform and cannot be disabled. However, users may have the option to manage certain non-essential notifications through their account settings.": "Some communications are essential for the operation of the platform and cannot be disabled. However, users may have the option to manage certain non-essential notifications through their account settings.",
-
   "Information Sharing": "Information Sharing",
-
   "CraftLink does not sell personal data to third parties. However, certain information may be shared in specific situations to ensure that the platform functions properly.": "CraftLink does not sell personal data to third parties. However, certain information may be shared in specific situations to ensure that the platform functions properly.",
-
   "Sharing Between Customers and Artisans": "Sharing Between Customers and Artisans",
-
   "In order for services to be completed successfully, certain information must be shared between customers and artisans.": "In order for services to be completed successfully, certain information must be shared between customers and artisans.",
-
   "This may include names, service descriptions, job locations, and communication messages related to the service request.": "This may include names, service descriptions, job locations, and communication messages related to the service request.",
   "Third-Party Service Providers": "Third-Party Service Providers",
-
   "CraftLink may work with trusted third-party companies that help us operate the platform. These providers may assist with cloud hosting, data storage, analytics, messaging services, or payment processing.": "CraftLink may work with trusted third-party companies that help us operate the platform. These providers may assist with cloud hosting, data storage, analytics, messaging services, or payment processing.",
-
   "These service providers only have access to the information necessary to perform their specific functions and are obligated to protect user data.": "These service providers only have access to the information necessary to perform their specific functions and are obligated to protect user data.",
-
   "Data Security": "Data Security",
-
   "CraftLink takes the protection of user data seriously and implements multiple security measures designed to safeguard personal information.": "CraftLink takes the protection of user data seriously and implements multiple security measures designed to safeguard personal information.",
-
   "These measures may include encrypted communications, secure servers, access controls, monitoring systems, and regular security reviews.": "These measures may include encrypted communications, secure servers, access controls, monitoring systems, and regular security reviews.",
-
   "While we strive to protect all user information, it is important to understand that no online system can guarantee complete security.": "While we strive to protect all user information, it is important to understand that no online system can guarantee complete security.",
   "Data Retention": "Data Retention",
-
   "CraftLink retains personal information only for as long as necessary to fulfill the purposes described in this Privacy Policy.": "CraftLink retains personal information only for as long as necessary to fulfill the purposes described in this Privacy Policy.",
-
   "Data may also be retained to comply with legal obligations, resolve disputes, enforce agreements, or maintain platform integrity.": "Data may also be retained to comply with legal obligations, resolve disputes, enforce agreements, or maintain platform integrity.",
-
   "User Rights": "User Rights",
-
   "Users have certain rights regarding their personal information. These rights may include the ability to access, update, correct, or request deletion of their personal data.": "Users have certain rights regarding their personal information. These rights may include the ability to access, update, correct, or request deletion of their personal data.",
-
   "Users may also request information about how their data is being used and stored.": "Users may also request information about how their data is being used and stored.",
-
   "Cookies and Tracking Technologies": "Cookies and Tracking Technologies",
-
   "CraftLink uses cookies and similar tracking technologies to enhance the functionality of the platform and improve the browsing experience.": "CraftLink uses cookies and similar tracking technologies to enhance the functionality of the platform and improve the browsing experience.",
-
   "Cookies allow the platform to remember user preferences, analyze traffic patterns, and provide personalized experiences for returning users.": "Cookies allow the platform to remember user preferences, analyze traffic patterns, and provide personalized experiences for returning users.",
-
   "Third-Party Links": "Third-Party Links",
-
   "The CraftLink platform may contain links to external websites or services that are not operated by us.": "The CraftLink platform may contain links to external websites or services that are not operated by us.",
-
   "We are not responsible for the privacy practices of these third-party services.": "We are not responsible for the privacy practices of these third-party services.",
   "Children's Privacy": "Children's Privacy",
-
   "CraftLink services are intended for adults and individuals who are legally able to enter into service agreements.": "CraftLink services are intended for adults and individuals who are legally able to enter into service agreements.",
-
   "We do not knowingly collect personal information from children under the age of 18.": "We do not knowingly collect personal information from children under the age of 18.",
-
   "Changes to This Privacy Policy": "Changes to This Privacy Policy",
-
   "CraftLink may update this Privacy Policy from time to time to reflect changes in technology, legal requirements, or platform features.": "CraftLink may update this Privacy Policy from time to time to reflect changes in technology, legal requirements, or platform features.",
-
   "Any updates will be published on this page with an updated revision date.": "Any updates will be published on this page with an updated revision date.",
-
   "Contact Information": "Contact Information",
-
   "If you have any questions regarding this Privacy Policy or how your information is handled, please contact our support team.": "If you have any questions regarding this Privacy Policy or how your information is handled, please contact our support team.",
   "CraftLink Terms of Use": "CraftLink Terms of Use",
-
   "Last Updated: March 13, 2026": "Last Updated: March 13, 2026",
-
   "Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients. These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.": "Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients. These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.",
   "1. Platform Purpose": "1. Platform Purpose",
-
   "CraftLink is designed to provide a reliable, secure, and professional environment by connecting the following parties:": "CraftLink is designed to provide a reliable, secure, and professional environment by connecting the following parties:",
-
   "Instructors: Individuals who create, design, and publish training courses on the platform to teach skills and knowledge in a structured way.": "Instructors: Individuals who create, design, and publish training courses on the platform to teach skills and knowledge in a structured way.",
-
   "Craftsmen / Trainees: Individuals seeking to improve their practical skills by learning from instructors’ courses or by acquiring direct services.": "Craftsmen / Trainees: Individuals seeking to improve their practical skills by learning from instructors’ courses or by acquiring direct services.",
-
   "Clients: Individuals or companies requesting specific practical services from trained craftsmen through the platform.": "Clients: Individuals or companies requesting specific practical services from trained craftsmen through the platform.",
-
   "CraftLink strictly functions as an intermediary platform and does not act as an employer, staffing agency, or guarantee employment outcomes. The platform only facilitates connections, communications, and transactions between parties.": "CraftLink strictly functions as an intermediary platform and does not act as an employer, staffing agency, or guarantee employment outcomes. The platform only facilitates connections, communications, and transactions between parties.",
-
   "2. User Responsibilities": "2. User Responsibilities",
-
   "All users of CraftLink are expected to adhere to the following responsibilities to maintain trust, fairness, and legality on the platform:": "All users of CraftLink are expected to adhere to the following responsibilities to maintain trust, fairness, and legality on the platform:",
-
   "Provide accurate and complete personal and professional information when creating accounts, including legal name, email, phone number, and any professional credentials relevant to the platform.": "Provide accurate and complete personal and professional information when creating accounts, including legal name, email, phone number, and any professional credentials relevant to the platform.",
-
   "Maintain ethical and lawful use of the platform, avoiding any activities that violate local, national, or international laws.": "Maintain ethical and lawful use of the platform, avoiding any activities that violate local, national, or international laws.",
-
   "Avoid posting, sharing, or transmitting content that is harmful, offensive, discriminatory, illegal, or otherwise inappropriate.": "Avoid posting, sharing, or transmitting content that is harmful, offensive, discriminatory, illegal, or otherwise inappropriate.",
-
   "Not attempt to access accounts, systems, or content of other users without explicit permission (i.e., hacking, phishing, or exploiting system vulnerabilities).": "Not attempt to access accounts, systems, or content of other users without explicit permission (i.e., hacking, phishing, or exploiting system vulnerabilities).",
-
   "Respect other users’ privacy and personal information; any misuse may result in suspension or permanent banning.": "Respect other users’ privacy and personal information; any misuse may result in suspension or permanent banning.",
   "3. Instructor (Trainer) Obligations": "3. Instructor (Trainer) Obligations",
-
   "Instructors creating courses on CraftLink must comply with the following:": "Instructors creating courses on CraftLink must comply with the following:",
-
   "Ensure all course content is original, authentic, and not copied from other sources unless permission is granted.": "Ensure all course content is original, authentic, and not copied from other sources unless permission is granted.",
-
   "Do not publish illegal content, adult content, or copyrighted material without authorization.": "Do not publish illegal content, adult content, or copyrighted material without authorization.",
-
   "Provide clear learning objectives, structured lessons, and practical examples where applicable.": "Provide clear learning objectives, structured lessons, and practical examples where applicable.",
-
   "Maintain professional communication with trainees, responding politely and promptly to questions or concerns.": "Maintain professional communication with trainees, responding politely and promptly to questions or concerns.",
-
   "Offer refunds or corrections if a course fails to meet platform quality standards, according to CraftLink’s review policies.": "Offer refunds or corrections if a course fails to meet platform quality standards, according to CraftLink’s review policies.",
-
   "CraftLink reserves the right to remove courses that violate these standards, issue warnings, or suspend instructors temporarily or permanently.": "CraftLink reserves the right to remove courses that violate these standards, issue warnings, or suspend instructors temporarily or permanently.",
-
   "4. Craftsman / Trainee Responsibilities": "4. Craftsman / Trainee Responsibilities",
-
   "Users learning skills or purchasing courses must understand and agree to the following responsibilities:": "Users learning skills or purchasing courses must understand and agree to the following responsibilities:",
-
   "Provide accurate information during registration and course purchases.": "Provide accurate information during registration and course purchases.",
-
   "Do not distribute course content outside the platform or share login credentials with others.": "Do not distribute course content outside the platform or share login credentials with others.",
-
   "Do not resell or redistribute any training videos, texts, or materials provided by instructors.": "Do not resell or redistribute any training videos, texts, or materials provided by instructors.",
-
   "Understand that skill improvement depends on their own practice, effort, and commitment to applying knowledge learned.": "Understand that skill improvement depends on their own practice, effort, and commitment to applying knowledge learned.",
-
   "Give fair feedback and ratings to instructors, avoiding false or malicious reviews.": "Give fair feedback and ratings to instructors, avoiding false or malicious reviews.",
-
   "CraftLink does not guarantee personal progress or skill mastery. Users assume responsibility for their own learning outcomes.": "CraftLink does not guarantee personal progress or skill mastery. Users assume responsibility for their own learning outcomes.",
   "5. Client Responsibilities": "5. Client Responsibilities",
-
   "Clients requesting services from craftsmen agree to:": "Clients requesting services from craftsmen agree to:",
-
   "Provide detailed and accurate descriptions of requested work, including project scope, deadlines, and special requirements.": "Provide detailed and accurate descriptions of requested work, including project scope, deadlines, and special requirements.",
-
   "Pay agreed amounts fairly, using the platform’s secure payment methods whenever available.": "Pay agreed amounts fairly, using the platform’s secure payment methods whenever available.",
-
   "Communicate professionally, politely, and clearly with craftsmen to avoid misunderstandings.": "Communicate professionally, politely, and clearly with craftsmen to avoid misunderstandings.",
-
   "Avoid fraudulent requests, scams, or attempts to manipulate the service provider.": "Avoid fraudulent requests, scams, or attempts to manipulate the service provider.",
-
   "CraftLink is not responsible for disputes arising between clients and craftsmen. However, we may intervene in cases of clear violation of policies or fraud.": "CraftLink is not responsible for disputes arising between clients and craftsmen. However, we may intervene in cases of clear violation of policies or fraud.",
-
   "6. Payments and Refunds": "6. Payments and Refunds",
-
   "Financial transactions must comply with the following rules:": "Financial transactions must comply with the following rules:",
-
   "Users must pay the full amount for courses or services before access is granted.": "Users must pay the full amount for courses or services before access is granted.",
-
   "Refunds are only considered in cases where:": "Refunds are only considered in cases where:",
-
   "The course is defective, misleading, or incomplete": "The course is defective, misleading, or incomplete",
-
   "The instructor provides false information or violates platform policies": "The instructor provides false information or violates platform policies",
-
   "The client receives a service significantly different from the agreed terms": "The client receives a service significantly different from the agreed terms",
-
   "Partial refunds may be offered at CraftLink’s discretion after review.": "Partial refunds may be offered at CraftLink’s discretion after review.",
-
   "All refund requests are reviewed individually. CraftLink has the right to approve, partially approve, or deny refunds based on evidence and fairness.": "All refund requests are reviewed individually. CraftLink has the right to approve, partially approve, or deny refunds based on evidence and fairness.",
   "7. Content Ownership and Intellectual Property": "7. Content Ownership and Intellectual Property",
-
   "All intellectual property (IP) rules include:": "All intellectual property (IP) rules include:",
-
   "All course materials, videos, texts, graphics, and images uploaded to CraftLink remain property of the creator or rights holder.": "All course materials, videos, texts, graphics, and images uploaded to CraftLink remain property of the creator or rights holder.",
-
   "Users are strictly prohibited from downloading, copying, sharing, re-uploading, or selling content without explicit permission.": "Users are strictly prohibited from downloading, copying, sharing, re-uploading, or selling content without explicit permission.",
-
   "Violations of IP rights may result in permanent suspension, legal action, or reporting to relevant authorities.": "Violations of IP rights may result in permanent suspension, legal action, or reporting to relevant authorities.",
-
   "CraftLink may use aggregated, anonymized data for analytics, marketing, or internal reporting without identifying individual users.": "CraftLink may use aggregated, anonymized data for analytics, marketing, or internal reporting without identifying individual users.",
-
   "Respecting copyright and intellectual property is mandatory for all users.": "Respecting copyright and intellectual property is mandatory for all users.",
-
   "8. Platform Disclaimer": "8. Platform Disclaimer",
-
   "CraftLink provides services as a facilitator only and does not guarantee:": "CraftLink provides services as a facilitator only and does not guarantee:",
-
   "Employment opportunities or job placement for any user": "Employment opportunities or job placement for any user",
-
   "Income generation from learning or services": "Income generation from learning or services",
-
   "Improvement of skill levels or professional capabilities": "Improvement of skill levels or professional capabilities",
-
   "Accuracy, completeness, or relevance of course or service content": "Accuracy, completeness, or relevance of course or service content",
-
   "Satisfaction or success of any service request": "Satisfaction or success of any service request",
-
   "Users participate at their own risk, and CraftLink is not liable for personal or financial outcomes.": "Users participate at their own risk, and CraftLink is not liable for personal or financial outcomes.",
   "9. Liability Limitation": "9. Liability Limitation",
-
   "CraftLink is not liable for:": "CraftLink is not liable for:",
-
   "Personal losses, injuries, or damages experienced while using the platform": "Personal losses, injuries, or damages experienced while using the platform",
-
   "Financial or business-related losses from transactions on the platform": "Financial or business-related losses from transactions on the platform",
-
   "Misuse of information exchanged through the platform": "Misuse of information exchanged through the platform",
-
   "Disputes between different user types (Instructor, Trainee, Client)": "Disputes between different user types (Instructor, Trainee, Client)",
-
   "CraftLink only provides an environment for communication, learning, and service facilitation.": "CraftLink only provides an environment for communication, learning, and service facilitation.",
-
   "10. Changes to Terms": "10. Changes to Terms",
-
   "CraftLink may update these Terms of Use at any time:": "CraftLink may update these Terms of Use at any time:",
-
   "Changes may include new rules, modifications, or clarifications.": "Changes may include new rules, modifications, or clarifications.",
-
   "Users are responsible for regularly reviewing the Terms of Use.": "Users are responsible for regularly reviewing the Terms of Use.",
-
   "Continued use of the platform after updates constitutes agreement to new terms.": "Continued use of the platform after updates constitutes agreement to new terms.",
-
   "CraftLink may notify users of significant changes via email or platform notifications.": "CraftLink may notify users of significant changes via email or platform notifications.",
   "Create new account": "Create new account",
   "One account to learn, teach, or hire skilled professionals.": "One account to learn, teach, or hire skilled professionals.",
-    "First Name": "First Name",
+  "First Name": "First Name",
   "Last Name": "Last Name",
   "Create Password": "Create Password",
   "Re-Password": "Re-Password",
   "Sign Up With Google": "Sign Up With Google",
   "Already have an account?": "Already have an account?",
   "Or continue with": "Or continue with",
-   "I agree to the": "I agree to the",
+  "I agree to the": "I agree to the",
   "Terms of Use": "Terms of Use",
-    "craftsman": "craftsman",
+  "craftsman": "craftsman",
   "instructor": "instructor",
   "client": "client",
-    "TimeLine": "TimeLine",
+  "TimeLine": "TimeLine",
   "My Profile": "My Profile",
   "Wallet": "Wallet",
   "Logout": "Logout",
   "Sorting & Filtering": "Sorting & Filtering",
-    "all": "all",
+  "all": "all",
   "published": "published",
   "unpublished": "unpublished",
   "Available Balance": "Available Balance",
@@ -550,35 +422,35 @@
   "Edit": "Edit",
   "Saving...": "Saving...",
   "Save": "Save",
-    "Unpublished Courses": "Unpublished Courses",
+  "Unpublished Courses": "Unpublished Courses",
   "Published Courses": "Published Courses",
   "Change Password": "Change Password",
-    "Instructor": "Instructor",
+  "Instructor": "Instructor",
   "Craftsman": "Craftsman",
   "Client": "Client",
-    "Current Password": "Current Password",
+  "Current Password": "Current Password",
   "New Password": "New Password",
   "Confirm Password": "Confirm Password",
-    "Edit Profile": "Edit Profile",
+  "Edit Profile": "Edit Profile",
   "Role": "Role",
   "Bio": "Bio",
   "No conversations yet.": "No conversations yet.",
   "Loading...": "Loading...",
   "Create New Course": "Create New Course",
-    "Admin - System administrator": "Admin - System administrator",
+  "Admin - System administrator": "Admin - System administrator",
   "Craftsman - Provide skilled services": "Craftsman - Provide skilled services",
   "Instructor - Create and teach courses": "Instructor - Create and teach courses",
   "Client - Hire professionals and learn": "Client - Hire professionals and learn",
   "No courses created yet.": "No courses created yet.",
-    "Ads": "Ads",
+  "Ads": "Ads",
   "Easy For Everyone": "Easy For Everyone",
-"Craftsmen Jobs Ad": "Your opportunity starts here Real job opportunities for craftsmen in all fields — work, showcase your skills, and start earning a stable income from your craft today.",
-"Search courses placeholder": "Search for courses, skills...",
+  "Craftsmen Jobs Ad": "Your opportunity starts here Real job opportunities for craftsmen in all fields — work, showcase your skills, and start earning a stable income from your craft today.",
+  "Search courses placeholder": "Search for courses, skills...",
   "Auto Detect": "Auto Detect",
   "Arabic": "Arabic",
   "English": "English",
   "Results": "Results",
-   "Welcome Back": "Welcome Back,",
+  "Welcome Back": "Welcome Back,",
   "Access your account and explore new opportunities.": "Access your account and explore new opportunities.",
   "Forget Password?": "Forgot Password?",
   "Sign In With Google": "Sign In With Google",
@@ -621,15 +493,15 @@
   "Update Course": "Update Course",
   "Upload Video": "Upload Video",
   "Upload Thumbnail": "Upload Thumbnail",
-    "Lecture Title": "Lecture Title",
+  "Lecture Title": "Lecture Title",
   "Lecture Description": "Lecture Description",
-    "Lectures Added": "Lectures Added",
+  "Lectures Added": "Lectures Added",
   "No lectures added yet": "No lectures added yet",
   "Free Preview Lecture": "Free Preview Lecture",
-    "Deleting...": "Deleting...",
+  "Deleting...": "Deleting...",
   "Remove Lecture": "Remove Lecture",
   "Update Lecture": "Update Lecture",
-   "Total Revenue": "Total Revenue",
+  "Total Revenue": "Total Revenue",
   "Completed": "Completed",
   "Withdrawal log status": "Withdrawal log status",
   "Balance Distribution": "Balance Distribution",
@@ -640,25 +512,25 @@
   "Order date": "Order date",
   "Date of approval": "Date of approval",
   "Reason for rejection": "Reason for rejection",
-   "Amount (EGP)": "Amount (EGP)",
+  "Amount (EGP)": "Amount (EGP)",
   "Full Name": "Full Name",
   "Vodafone Cash number": "Vodafone Cash number",
   "E-mail": "E-mail",
   "Wallet number": "Wallet number",
   "Sending...": "Sending...",
   "Submit the request": "Submit the request",
-   "Cancel": "Cancel",
-   "Chats": "Chats",
-   "Welcome to your chats!": "Welcome to your chats!",
+  "Cancel": "Cancel",
+  "Chats": "Chats",
+  "Welcome to your chats!": "Welcome to your chats!",
   "Select a conversation or start a new one.": "Select a conversation or start a new one.",
   "Say hi 👋 and start chatting!": "Say hi 👋 and start chatting!",
   "🔒 Messages are end-to-end encrypted. Only people in this chat can read.": "🔒 Messages are end-to-end encrypted. Only people in this chat can read.",
-    "Online": "Online",
+  "Online": "Online",
   "Offline": "Offline",
   "Phone Number": "Phone Number",
   "Subject": "Subject",
   "Write your message": "Write your message",
-    "Prev": "Prev",
+  "Prev": "Prev",
   "Next": "Next",
   "Admin Login": "Admin Login",
   "Securely manage users, reports, and platform operations from one place.": "Securely manage users, reports, and platform operations from one place.",
@@ -668,15 +540,12 @@
   "Status": "Status",
   "Note": "Note",
   "confirm": "confirm",
-
   "Users": "Users",
   "Name": "Name",
   "Join": "Join",
   "Date of joining": "Date of joining",
-
   "Income": "Income",
   "Expenses": "Expenses",
-
   "Request": "Request",
   "Approved": "Approved",
   "Dashboard": "Dashboard",

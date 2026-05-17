@@ -5,10 +5,8 @@ import { BsRobot } from "react-icons/bs";
 const ChatBot = () => {
   const chatEndRef = useRef(null);
 
-  // 🔘 فتح/قفل الشات
   const [open, setOpen] = useState(false);
 
-  // 🧠 messages (localStorage)
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem("chat_messages");
     return saved
@@ -19,12 +17,10 @@ const ChatBot = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 💾 save to localStorage
   useEffect(() => {
     localStorage.setItem("chat_messages", JSON.stringify(messages));
   }, [messages]);
 
-  // 🔽 auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -70,18 +66,14 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* 💬 Floating Button */}
       <button className="chatbot-fab" onClick={() => setOpen(!open)}>
-        {open ? "✖" : <BsRobot/>}
+        {open ? "✖" : <BsRobot />}
       </button>
 
-      {/* 💬 Chat Window */}
       {open && (
         <div className="chatbot-container">
-          {/* Header */}
           <div className="chatbot-header">🤖 AI Support</div>
 
-          {/* Body */}
           <div className="chatbot-body">
             {messages.map((msg, i) => (
               <div key={i} className={`chatbot-message ${msg.from}`}>
@@ -97,7 +89,6 @@ const ChatBot = () => {
               </div>
             ))}
 
-            {/* typing */}
             {loading && (
               <div className="chatbot-message bot">
                 <div className="chatbot-avatar">
@@ -115,7 +106,6 @@ const ChatBot = () => {
             <div ref={chatEndRef}></div>
           </div>
 
-          {/* Footer */}
           <div className="chatbot-footer">
             <input
               placeholder="Type a message..."

@@ -189,11 +189,6 @@ const HelpCenter = () => {
       </div>
       <div className="modern-help-container">
         {/* Sidebar */}
-        {/* <aside className="help-sidebar">
-        <h2>Sections</h2>
-     
-      </aside> */}
-
         {/* Main Content */}
         <main className="help-main">
           <div className="wavy-help-center">
@@ -231,39 +226,39 @@ const HelpCenter = () => {
           <div className="help-section-container">
             {sectionsToRender.length === 0 ? (
               <dive className="no-results">
-              <LuSearchX/>
-              <p>{t("No topics found.")}</p>
+                <LuSearchX />
+                <p>{t("No topics found.")}</p>
               </dive>
             ) : (
               sectionsToRender.map((section, idx) => (
                 <div key={idx} className="help-section">
                   <h2>{t(section.sectionTitle)}</h2>
                   <div className="accordion-container">
-                  {section.topics.map((topic, tIdx) => {
-                    const topicKey = `${section.sectionTitle}-${tIdx}`;
-                    return (
-                      <div
-                        key={topicKey}
-                        className={`accordion-item ${activeTopic === topicKey ? "active" : ""
-                          }`}
-                      >
+                    {section.topics.map((topic, tIdx) => {
+                      const topicKey = `${section.sectionTitle}-${tIdx}`;
+                      return (
                         <div
-                          className="accordion-header"
-                          onClick={() => toggleTopic(topicKey)}
+                          key={topicKey}
+                          className={`accordion-item ${activeTopic === topicKey ? "active" : ""
+                            }`}
                         >
-                          <h3>{t(highlightText(topic.title, searchTerm))}</h3>
-                          <span>{activeTopic === topicKey ? "-" : "+"}</span>
+                          <div
+                            className="accordion-header"
+                            onClick={() => toggleTopic(topicKey)}
+                          >
+                            <h3>{t(highlightText(topic.title, searchTerm))}</h3>
+                            <span>{activeTopic === topicKey ? "-" : "+"}</span>
+                          </div>
+                          <div className="accordion-content">
+                            <ul>
+                              {topic.content.map((item, i) => (
+                                <li key={i}>{t(highlightText(item, searchTerm))}</li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                        <div className="accordion-content">
-                          <ul>
-                            {topic.content.map((item, i) => (
-                              <li key={i}>{t(highlightText(item, searchTerm))}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                   </div>
                 </div>
               ))

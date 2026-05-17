@@ -13,7 +13,7 @@ import { useSignInLogic } from "../functions";
 import { useTranslation } from "react-i18next";
 export default function SignIn() {
   const logic = useSignInLogic();
-const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   // Destructure for clarity
   const {
     email,

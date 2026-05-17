@@ -105,7 +105,7 @@ const PostCard = ({ post, currentUserId, onPostDeleted }) => {
                         src={post.author.photoUrl || userAvatar}
                         alt="user"
                         className="post-user-avatar"
-                        onClick={()=>navigate(`/profile/${post.author.id}`)}
+                        onClick={() => navigate(`/profile/${post.author.id}`)}
                     />
                     <div className="user-details">
                         <h3 className="post-author-name">{post.author.name}</h3>
@@ -137,20 +137,18 @@ const PostCard = ({ post, currentUserId, onPostDeleted }) => {
                     <div className={`post-images ${post.images.length === 1 ? "single" : "multiple"}`}>
                         <PhotoProvider maskOpacity={0.8} speed={() => 300}>
                             {post.images.map((image, index) => {
-                                // نخلي أول صورتين تظهر، الباقي مخفية
                                 const isVisible = index < 2;
 
                                 return (
                                     <div
                                         className="post-image-wrapper"
                                         key={image}
-                                        style={{ display: isVisible ? "block" : "none" }} // مخفي لو أكبر من 2
+                                        style={{ display: isVisible ? "block" : "none" }}
                                     >
                                         <PhotoView src={image}>
                                             <img src={image} alt={`post-${index}`} />
                                         </PhotoView>
 
-                                        {/* Overlay لو فيه صور زيادة */}
                                         {index === 1 && post.images.length > 2 && (
                                             <div className="more-overlay">+{post.images.length - 2}</div>
                                         )}

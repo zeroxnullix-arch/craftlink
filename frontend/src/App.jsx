@@ -83,9 +83,6 @@ const PlayCourse = lazy(() =>
 const Dashboard = lazy(() =>
   import('@pages/admin').then(m => ({ default: m.Dashboard }))
 );
-const AdminDashboard = lazy(() =>
-  import('@pages/admin').then(m => ({ default: m.AdminDashboard }))
-);
 
 const InstructorWithdraw = lazy(() =>
   import('@pages/admin').then(m => ({ default: m.InstructorWithdraw }))
@@ -120,35 +117,34 @@ export default function App() {
       <ToastContainer />
       <ScrollToTop />
       <Suspense fallback={<LoadingFire />}>
-      <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/signup' element={<GuestRoute loading={loadingUser}><SignUp /></GuestRoute>} />
-        <Route path='/signin' element={<GuestRoute loading={loadingUser}><SignIn /></GuestRoute>} />
-        <Route path='/resetpassword' element={<GuestRoute loading={loadingUser}><ResetPassword /></GuestRoute>} />
-        <Route path="/profile/:userId" element={<PrivateRoute allowedRoles={[0,1, 2, 3]}><Profile /></PrivateRoute>} />
-        <Route path="/message/:userId" element={<PrivateRoute allowedRoles={[0,1, 2, 3]}><Message /></PrivateRoute>} />
-        <Route path="/message" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
-        <Route path="/profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
-        <Route path='/helpcenter' element={<HelpCenter />} />
-        <Route path='/viewcourse/:courseId' element={<ViewCourse />} />
-        <Route path='/createcourse' element={<CreateCourse />} />
-        <Route path="/createcourse/:courseId" element={<CreateCourse />} />
-        <Route path="/payment-success" element={<PaymentSuccess />} />
-        <Route path="/payment/fail" element={<PaymentFail />} />
-        <Route path='createcourse/createLecture/:courseId' element={<CreateLecture />} />
-        <Route path='about' element={<About />} />
-        <Route path='contactus' element={<ContactUs />} />
-        <Route path='privacy-policy' element={<PrivacyPolicy />} />
-        <Route path='terms' element={<TermsPage />} />
-        <Route path='timeline' element={<TimeLine />} />
-        <Route path='timeline/post/:postId' element={<SinglePost />} />
-        <Route path='/playCourse/:courseId' element={<PlayCourse />} />
-        <Route path='/admin-login' element={<GuestRoute loading={loadingUser}><AdminLogin /></GuestRoute>} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/admin-dashboard' element={<AdminDashboard />} />
-        <Route path='/instructor-withdraw' element={<PrivateRoute allowedRoles={[2]}><InstructorWithdraw /></PrivateRoute>} />
-      </Routes>
+        <Routes>
+          <Route path='/' element={<Main />} />
+          <Route path='/search' element={<Search />} />
+          <Route path='/signup' element={<GuestRoute loading={loadingUser}><SignUp /></GuestRoute>} />
+          <Route path='/signin' element={<GuestRoute loading={loadingUser}><SignIn /></GuestRoute>} />
+          <Route path='/resetpassword' element={<GuestRoute loading={loadingUser}><ResetPassword /></GuestRoute>} />
+          <Route path="/profile/:userId" element={<PrivateRoute allowedRoles={[0, 1, 2, 3]}><Profile /></PrivateRoute>} />
+          <Route path="/message/:userId" element={<PrivateRoute allowedRoles={[0, 1, 2, 3]}><Message /></PrivateRoute>} />
+          <Route path="/message" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Message /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
+          <Route path='/helpcenter' element={<HelpCenter />} />
+          <Route path='/viewcourse/:courseId' element={<ViewCourse />} />
+          <Route path='/createcourse' element={<CreateCourse />} />
+          <Route path="/createcourse/:courseId" element={<CreateCourse />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment/fail" element={<PaymentFail />} />
+          <Route path='createcourse/createLecture/:courseId' element={<CreateLecture />} />
+          <Route path='about' element={<About />} />
+          <Route path='contactus' element={<ContactUs />} />
+          <Route path='privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='terms' element={<TermsPage />} />
+          <Route path='timeline' element={<TimeLine />} />
+          <Route path='timeline/post/:postId' element={<SinglePost />} />
+          <Route path='/playCourse/:courseId' element={<PlayCourse />} />
+          <Route path='/admin-login' element={<GuestRoute loading={loadingUser}><AdminLogin /></GuestRoute>} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/instructor-withdraw' element={<PrivateRoute allowedRoles={[2]}><InstructorWithdraw /></PrivateRoute>} />
+        </Routes>
       </Suspense>
     </>
   )

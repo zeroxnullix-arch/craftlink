@@ -167,173 +167,152 @@ const SinglePost = () => {
 
                 <main>
                     <div className="table-data">
-            <div className="order timeline">
-                    {/* Back Button */}
-                    {/* <button
-                        onClick={() => navigate("/timeline")}
-                        className="back-btn"
-                        style={{
-                            background: "none",
-                            border: "none",
-                            color: "#007bff",
-                            cursor: "pointer",
-                            fontSize: "16px",
-                            marginBottom: "20px",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px"
-                        }}
-                    >
-                        <BiArrowBack /> Back to Timeline
-                    </button> */}
-
-                    {/* Single Post Card - Larger */}
-                    <div className="post-card">
-                        <div className="post-card-header">
-                            <div className="post-user-info">
-                                <img
-                                    src={post.author.photoUrl || userAvatar}
-                                    alt="user"
-                                    className="post-user-avatar"
-                                />
-                                <div className="user-details">
-                                    <h3 className="post-author-name">{post.author.name}</h3>
-                                    <p className="post-time">{formatDate(post.createdAt)}</p>
-                                </div>
-                            </div>
-                            {isAuthor && (
-                                <div className="post-menu-container">
-                                    <button
-                                        className="post-menu-btn"
-                                        onClick={() => setShowMenu(!showMenu)}
-                                    >
-                                        ⋮
-                                    </button>
-                                    {showMenu && (
-                                        <div className="post-menu">
-                                            <button onClick={handleDeletePost} className="menu-item delete">
-                                                Delete Post
+                        <div className="order timeline">
+                            {/* Back Button */}
+                            {/* Single Post Card - Larger */}
+                            <div className="post-card">
+                                <div className="post-card-header">
+                                    <div className="post-user-info">
+                                        <img
+                                            src={post.author.photoUrl || userAvatar}
+                                            alt="user"
+                                            className="post-user-avatar"
+                                        />
+                                        <div className="user-details">
+                                            <h3 className="post-author-name">{post.author.name}</h3>
+                                            <p className="post-time">{formatDate(post.createdAt)}</p>
+                                        </div>
+                                    </div>
+                                    {isAuthor && (
+                                        <div className="post-menu-container">
+                                            <button
+                                                className="post-menu-btn"
+                                                onClick={() => setShowMenu(!showMenu)}
+                                            >
+                                                ⋮
                                             </button>
+                                            {showMenu && (
+                                                <div className="post-menu">
+                                                    <button onClick={handleDeletePost} className="menu-item delete">
+                                                        Delete Post
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
-                            )}
-                        </div>
 
-                        <div className="post-content">
-                            <p  style={{ whiteSpace: "pre-line" }}>{post.content}</p>
-                            {post.images?.length > 0 && (
-                                <div className={`post-images ${post.images.length === 1 ? "single" : "multiple"}`}>
-                                    <PhotoProvider maskOpacity={0.8} speed={() => 300}>
-                                        {post.images.map((image, index) => {
-                                            // نخلي أول صورتين تظهر، الباقي مخفية
-                                            const isVisible = index < 2;
+                                <div className="post-content">
+                                    <p style={{ whiteSpace: "pre-line" }}>{post.content}</p>
+                                    {post.images?.length > 0 && (
+                                        <div className={`post-images ${post.images.length === 1 ? "single" : "multiple"}`}>
+                                            <PhotoProvider maskOpacity={0.8} speed={() => 300}>
+                                                {post.images.map((image, index) => {
+                                                    const isVisible = index < 2;
 
-                                            return (
-                                                <div
-                                                    className="image-wrapper"
-                                                    key={image}
-                                                    style={{ display: isVisible ? "block" : "none" }} // مخفي لو أكبر من 2
-                                                >
-                                                    <PhotoView src={image}>
-                                                        <img src={image} alt={`post-${index}`} />
-                                                    </PhotoView>
-
-                                                    {/* Overlay لو فيه صور زيادة */}
-                                                    {index === 1 && post.images.length > 2 && (
-                                                        <div className="more-overlay">+{post.images.length - 2}</div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </PhotoProvider>
+                                                    return (
+                                                        <div
+                                                            className="image-wrapper"
+                                                            key={image}
+                                                            style={{ display: isVisible ? "block" : "none" }}
+                                                        >
+                                                            <PhotoView src={image}>
+                                                                <img src={image} alt={`post-${index}`} />
+                                                            </PhotoView>
+                                                            {index === 1 && post.images.length > 2 && (
+                                                                <div className="more-overlay">+{post.images.length - 2}</div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </PhotoProvider>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
 
-                        <div className="post-stats">
-                            <span className="stat">{post.likes.length} likes</span>
-                            <span className="stat">•</span>
-                            <span className="stat">{post.comments.length} comments</span>
-                        </div>
+                                <div className="post-stats">
+                                    <span className="stat">{post.likes.length} likes</span>
+                                    <span className="stat">•</span>
+                                    <span className="stat">{post.comments.length} comments</span>
+                                </div>
 
-                        <div className="post-actions-container">
-                            <button
-                                className={`post-action ${isLiked ? "active" : ""}`}
-                                onClick={handleLike}
-                            >
-                                {isLiked ? <BiSolidLike /> : <BiLike />}
-                            </button>
-                            <button className="post-action">
-                                <BiComment />
-                            </button>
-                        </div>
+                                <div className="post-actions-container">
+                                    <button
+                                        className={`post-action ${isLiked ? "active" : ""}`}
+                                        onClick={handleLike}
+                                    >
+                                        {isLiked ? <BiSolidLike /> : <BiLike />}
+                                    </button>
+                                    <button className="post-action">
+                                        <BiComment />
+                                    </button>
+                                </div>
 
-                        {/* Comments Section - Expanded */}
-                        <div className="comments-section expanded">
-                            <form onSubmit={handleAddComment} className="comment-form">
-                                <img
-                                    src={currentUser?.photoUrl || userAvatar}
-                                    alt="user"
-                                    className="comment-avatar"
-                                    style={{ width: "32px", height: "32px", marginRight: "10px" }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Write a comment..."
-                                    value={commentText}
-                                    onChange={(e) => setCommentText(e.target.value)}
-                                    className="comment-input"
-                                    disabled={loading}
-                                    style={{ flex: 1, marginRight: "10px" }}
-                                />
-                                <button
-                                    type="submit"
-                                    className="comment-submit-btn"
-                                    disabled={loading || !commentText.trim()}
-                                >
-                                    {loading ? <BsThreeDots /> : <SiTelegram />}
-                                </button>
-                            </form>
-
-                            <div className="comments-list">
-                                {post.comments.map((comment) => (
-                                    <div key={comment._id} className="comment expanded">
+                                {/* Comments Section - Expanded */}
+                                <div className="comments-section expanded">
+                                    <form onSubmit={handleAddComment} className="comment-form">
                                         <img
-                                            src={comment.userPhoto || userAvatar}
+                                            src={currentUser?.photoUrl || userAvatar}
                                             alt="user"
                                             className="comment-avatar"
+                                            style={{ width: "32px", height: "32px", marginRight: "10px" }}
                                         />
-                                        <div className="comment-content">
-                                            <div className="comment-text">
-                                                <div className="comment-user-container">
-                                                    <div className="comment-user">
-                                                        <strong>{comment.userName}</strong>
-                                                        <span className="stat">•</span>
-                                                        <span className="comment-time">
-                                                            {formatDate(comment.createdAt)}
-                                                        </span>
-                                                    </div>
-                                                    <div className="comment-actions">
-                                                        {comment.userId._id === currentUser?.id && (
-                                                            <button
-                                                                onClick={() => handleDeleteComment(comment._id)}
-                                                                className="delete-comment-btn"
-                                                            >
-                                                                <BsThreeDots />
-                                                            </button>
-                                                        )}
+                                        <input
+                                            type="text"
+                                            placeholder="Write a comment..."
+                                            value={commentText}
+                                            onChange={(e) => setCommentText(e.target.value)}
+                                            className="comment-input"
+                                            disabled={loading}
+                                            style={{ flex: 1, marginRight: "10px" }}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="comment-submit-btn"
+                                            disabled={loading || !commentText.trim()}
+                                        >
+                                            {loading ? <BsThreeDots /> : <SiTelegram />}
+                                        </button>
+                                    </form>
+
+                                    <div className="comments-list">
+                                        {post.comments.map((comment) => (
+                                            <div key={comment._id} className="comment expanded">
+                                                <img
+                                                    src={comment.userPhoto || userAvatar}
+                                                    alt="user"
+                                                    className="comment-avatar"
+                                                />
+                                                <div className="comment-content">
+                                                    <div className="comment-text">
+                                                        <div className="comment-user-container">
+                                                            <div className="comment-user">
+                                                                <strong>{comment.userName}</strong>
+                                                                <span className="stat">•</span>
+                                                                <span className="comment-time">
+                                                                    {formatDate(comment.createdAt)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="comment-actions">
+                                                                {comment.userId._id === currentUser?.id && (
+                                                                    <button
+                                                                        onClick={() => handleDeleteComment(comment._id)}
+                                                                        className="delete-comment-btn"
+                                                                    >
+                                                                        <BsThreeDots />
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <p>{comment.text}</p>
                                                     </div>
                                                 </div>
-                                                <p>{comment.text}</p>
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
                         <div className="todo ads">
                             <div className="head">
                                 <FaBuysellads />
@@ -372,8 +351,6 @@ const SinglePost = () => {
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div></div>
                 </main>

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useInputAnimation } from "../../../hooks/useInputAnimation";
 import {
   BsPersonBoundingBox,
-MdEmail,
-FaPhoneFlip,
-PiSubtitlesBold,
-FaInbox,
- } from "@icons"
+  MdEmail,
+  FaPhoneFlip,
+  PiSubtitlesBold,
+  FaInbox,
+} from "@icons"
 import SelectInput from "../../../components/dashboard/components/SelectInput";
 import {
   Header,
@@ -69,20 +69,20 @@ const faqData = [
 export default function ContactUs() {
   const [activeIndex, setActiveIndex] = useState(null);
   const { i18n, t } = useTranslation();
-const [firstName, setFirstName] = useState("");
-const [lastName, setLastName] = useState("");
-const [email, setEmail] = useState("");
-const [phone, setPhone] = useState("");
-const [department, setDepartment] = useState("");
-const [subject, setSubject] = useState("");
-const [message, setMessage] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [department, setDepartment] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const { handleFocus, handleBlur } = useInputAnimation();
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
   const leftFaq = faqData.slice(0, Math.ceil(faqData.length / 2));
-const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
+  const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
   return (
     <>
       <div className="full-width">
@@ -260,55 +260,55 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
 
         {/* FAQ */}
 
-<section className="faq-section">
-  <h2>{t("FAQ")}</h2>
+        <section className="faq-section">
+          <h2>{t("FAQ")}</h2>
 
-  <div className="faq-container">
+          <div className="faq-container">
 
-    <div className="faq-column">
-      {leftFaq.map((faq, index) => (
-        <div
-          key={index}
-          className={`faq-item ${activeIndex === index ? "active" : ""}`}
-        >
-          <div
-            className="faq-question"
-            onClick={() => toggleFAQ(index)}
-          >
-            {t(faq.question)}
-            <span>{activeIndex === index ? "-" : "+"}</span>
+            <div className="faq-column">
+              {leftFaq.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`faq-item ${activeIndex === index ? "active" : ""}`}
+                >
+                  <div
+                    className="faq-question"
+                    onClick={() => toggleFAQ(index)}
+                  >
+                    {t(faq.question)}
+                    <span>{activeIndex === index ? "-" : "+"}</span>
+                  </div>
+
+                  <div className="faq-answer">
+                    <p>{t(faq.answer)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="faq-column">
+              {rightFaq.map((faq, index) => (
+                <div
+                  key={index + leftFaq.length}
+                  className={`faq-item ${activeIndex === index + leftFaq.length ? "active" : ""}`}
+                >
+                  <div
+                    className="faq-question"
+                    onClick={() => toggleFAQ(index + leftFaq.length)}
+                  >
+                    {t(faq.question)}
+                    <span>{activeIndex === index + leftFaq.length ? "-" : "+"}</span>
+                  </div>
+
+                  <div className="faq-answer">
+                    <p>{t(faq.answer)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
-
-          <div className="faq-answer">
-            <p>{t(faq.answer)}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div className="faq-column">
-      {rightFaq.map((faq, index) => (
-        <div
-          key={index + leftFaq.length}
-          className={`faq-item ${activeIndex === index + leftFaq.length ? "active" : ""}`}
-        >
-          <div
-            className="faq-question"
-            onClick={() => toggleFAQ(index + leftFaq.length)}
-          >
-            {t(faq.question)}
-            <span>{activeIndex === index + leftFaq.length ? "-" : "+"}</span>
-          </div>
-
-          <div className="faq-answer">
-            <p>{t(faq.answer)}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-
-  </div>
-</section>
+        </section>
 
         {/* MAP */}
 
@@ -328,9 +328,9 @@ const rightFaq = faqData.slice(Math.ceil(faqData.length / 2));
             {t("Whether you're a customer, artisan, or potential partner, we would love to hear from you.")}
           </p>
 
-         <button class="button">
-  <span>{t("Contact Support")}</span>
-</button>
+          <button class="button">
+            <span>{t("Contact Support")}</span>
+          </button>
         </section>
       </div>
       <Footer />

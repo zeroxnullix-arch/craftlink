@@ -48,7 +48,7 @@ const SideBar = ({ sidebarHide }) => {
   const menuItems = [
     {
       name: "Dashboard",
-      icon: LuLayoutDashboard ,
+      icon: LuLayoutDashboard,
       path: "/dashboard",
       roles: [0],
     },

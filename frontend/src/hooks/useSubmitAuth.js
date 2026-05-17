@@ -18,7 +18,6 @@ export const useSubmitAuth = (setLoading) => {
         { withCredentials: true }
       );
 
-      // 💥 FIX هنا
       const user = res.data.user || res.data;
 
       dispatch(setUserData(user));

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { IoNotifications } from "react-icons/io5";
 import userAvatar from "../../../assets/img/userAvatar.jpg";
-import {RiSearchLine} from "@icons";
+import { RiSearchLine } from "@icons";
 import { useNavigate } from "react-router-dom";
 function Nav({
   sidebarHide,
@@ -30,23 +30,7 @@ function Nav({
           <path className="line" d="M7 16 27 16"></path>
         </svg>
       </label>
-
       <form className={searchShow ? "show" : ""}>
-        {/* <div className="form-input">
-          <input type="search" placeholder="Search..." />
-          <button
-            type="submit"
-            className="search-btn"
-            onClick={(e) => {
-              if (window.innerWidth < 576) {
-                e.preventDefault();
-                setSearchShow(!searchShow);
-              }
-            }}
-          >
-            <RiSearchLine color="white" className="bx"/>
-          </button>
-        </div> */}
       </form>
       <input
         type="checkbox"
@@ -60,7 +44,7 @@ function Nav({
         <IoNotifications className="bx" />
         <span className="num">8</span>
       </a>
-      <button onClick={()=>navigate("/profile")} className="profile">
+      <button onClick={() => navigate("/profile")} className="profile">
         <img src={currentUser?.photoUrl || userAvatar} alt="profile" />
       </button>
     </nav>

@@ -17,15 +17,15 @@ const PrivacyPolicy = () => {
 
           <p>
             {t("Welcome to CraftLink. Your privacy is extremely important to us. This Privacy Policy explains in detail how CraftLink collects, processes, uses, stores, and protects your personal information when you access or use our website, mobile applications, and related services.")}
-        </p>
+          </p>
 
           <p>
             {t("CraftLink is a platform designed to connect customers with skilled artisans and service providers.In order to provide these services, certain information must be collected and processed.This document explains exactly what information we collect, why we collect it, how it is used, and what rights you have regarding your personal data.")}
-        </p>
+          </p>
 
           <p>
             {t("By creating an account or using any part of the CraftLink platform, you acknowledge that you have read and understood this Privacy Policy and agree to the practices described in it.")}
-        </p>
+          </p>
 
           <h2>1. {t("Information We Collect")}</h2>
 

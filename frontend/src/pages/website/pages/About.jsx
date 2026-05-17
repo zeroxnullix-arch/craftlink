@@ -62,8 +62,6 @@ const Search = () => {
                         </button>
                     </div>
                 </div>
-
-
             </section>
             <div className="our-purpose">
                 <h3>{t("our purpose")}</h3>
@@ -91,37 +89,37 @@ const Search = () => {
                     </div>
                 </div>
             </div>
-         <section className="features why-choose">
-          <h2>{t("Why Choose CraftLink")}<span>{t("?")}</span></h2>
-          <p>{t("A platform built to simplify learning, teaching, and getting work done.")}</p>
+            <section className="features why-choose">
+                <h2>{t("Why Choose CraftLink")}<span>{t("?")}</span></h2>
+                <p>{t("A platform built to simplify learning, teaching, and getting work done.")}</p>
 
-          {isMobile ? (
-            <Swiper
-              className="TopCategories-swiper"
-              slidesPerView={"auto"}
-              spaceBetween={16}
-            >
-              {features.map((item, index) => (
-                <SwiperSlide key={index}>
-                  <FeatureCard
-                    icon={item.icon}
-                    text={t(item.text)}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          ) : (
-            <div className="features-grid">
-              {features.map((item, index) => (
-                <FeatureCard
-                  key={index}
-                  icon={item.icon}
-                  text={t(item.text)}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+                {isMobile ? (
+                    <Swiper
+                        className="TopCategories-swiper"
+                        slidesPerView={"auto"}
+                        spaceBetween={16}
+                    >
+                        {features.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <FeatureCard
+                                    icon={item.icon}
+                                    text={t(item.text)}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                ) : (
+                    <div className="features-grid">
+                        {features.map((item, index) => (
+                            <FeatureCard
+                                key={index}
+                                icon={item.icon}
+                                text={t(item.text)}
+                            />
+                        ))}
+                    </div>
+                )}
+            </section>
             <OurTeam />
             <TestimonialsSwiper />
             <Footer />

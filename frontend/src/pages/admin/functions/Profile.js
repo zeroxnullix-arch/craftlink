@@ -23,7 +23,7 @@ export const useProfileLogic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userId } = useParams();
-const encryptionKeysRef = useRef({});
+  const encryptionKeysRef = useRef({});
   const { darkMode, setDarkMode } = useTheme();
   const { handleFocus, handleBlur } = useInputAnimation();
   const { showPass, togglePass, inputType } = usePasswordToggle();
@@ -90,7 +90,7 @@ const encryptionKeysRef = useRef({});
     totalEarnings: 0,
     totalWithdrawn: 0,
     availableBalance: 0,
-    computedAvailable: 0,   // 🔥 جديد
+    computedAvailable: 0,
     pendingAmount: 0,
     approvedAmount: 0,
     reservedAmount: 0,
@@ -232,53 +232,51 @@ const encryptionKeysRef = useRef({});
 
     let isMounted = true;
 
-const fetchConversations = async () => {
-  try {
-    setConversationsLoading(true);
+    const fetchConversations = async () => {
+      try {
+        setConversationsLoading(true);
 
-    const res = await api.get("/api/message/conversation", {
-      withCredentials: true,
-    });
+        const res = await api.get("/api/message/conversation", {
+          withCredentials: true,
+        });
 
-    const convs = res.data;
+        const convs = res.data;
 
-    const processed = convs.map((conv) => {
-      // خزّن المفتاح
-      if (conv.encryptionKey) {
-        encryptionKeysRef.current[conv._id] = conv.encryptionKey;
-      }
+        const processed = convs.map((conv) => {
+          if (conv.encryptionKey) {
+            encryptionKeysRef.current[conv._id] = conv.encryptionKey;
+          }
 
-      const lastMsg = conv.lastMessage;
+          const lastMsg = conv.lastMessage;
 
-      // فك التشفير
-      if (lastMsg?.text && encryptionKeysRef.current[conv._id]) {
-        try {
-          return {
-            ...conv,
-            lastMessage: {
-              ...lastMsg,
-              text: decrypt(
-                lastMsg.text,
-                encryptionKeysRef.current[conv._id]
-              ),
-            },
-          };
-        } catch (err) {
-          console.error("decrypt failed", err);
+          if (lastMsg?.text && encryptionKeysRef.current[conv._id]) {
+            try {
+              return {
+                ...conv,
+                lastMessage: {
+                  ...lastMsg,
+                  text: decrypt(
+                    lastMsg.text,
+                    encryptionKeysRef.current[conv._id]
+                  ),
+                },
+              };
+            } catch (err) {
+              console.error("decrypt failed", err);
+              return conv;
+            }
+          }
+
           return conv;
-        }
+        });
+
+        setConversations(processed);
+      } catch (err) {
+        console.error("Failed to load conversations", err);
+      } finally {
+        setConversationsLoading(false);
       }
-
-      return conv;
-    });
-
-    setConversations(processed);
-  } catch (err) {
-    console.error("Failed to load conversations", err);
-  } finally {
-    setConversationsLoading(false);
-  }
-};
+    };
 
     fetchConversations();
 
@@ -286,15 +284,15 @@ const fetchConversations = async () => {
       isMounted = false;
     };
   }, [currentUser]);
-const last3Conversations = useMemo(() => {
-  return [...conversations]
-    .sort(
-      (a, b) =>
-        new Date(b.lastMessage?.createdAt || 0) -
-        new Date(a.lastMessage?.createdAt || 0)
-    )
-    .slice(0, 3);
-}, [conversations]);
+  const last3Conversations = useMemo(() => {
+    return [...conversations]
+      .sort(
+        (a, b) =>
+          new Date(b.lastMessage?.createdAt || 0) -
+          new Date(a.lastMessage?.createdAt || 0)
+      )
+      .slice(0, 3);
+  }, [conversations]);
   // ========================================================================
   // EFFECTS - INITIALIZE PROFILE FIELDS
   // ========================================================================
@@ -334,7 +332,6 @@ const last3Conversations = useMemo(() => {
   // EFFECTS - FETCH INSTRUCTOR COURSES
   // ========================================================================
   useEffect(() => {
-    // 🔥 أهم شرط
     if (!userId) return;
 
     const fetchCourses = async () => {
@@ -372,7 +369,6 @@ const last3Conversations = useMemo(() => {
 
   // ========================================================================
   // EFFECTS - FETCH INSTRUCTOR SALES DATA
-  // ✅ استخدم currentUser مباشرة بدل isInstructor
   useEffect(() => {
     if (!isOwner || currentUser?.role !== 2) return;
 
@@ -413,7 +409,7 @@ const last3Conversations = useMemo(() => {
     fetchSalesData();
     return () => { isMounted = false; };
 
-  }, [isOwner, currentUser]); // ✅ currentUser بدل isInstructor
+  }, [isOwner, currentUser]);
   // ========================================================================
   // EFFECTS - FETCH INSTRUCTOR EARNINGS DATA
   // ========================================================================
@@ -435,15 +431,14 @@ const last3Conversations = useMemo(() => {
             totalEarnings: res.data.totalEarnings || 0,
             totalWithdrawn: res.data.totalWithdrawn || 0,
             availableBalance: res.data.availableBalance || 0,
-            computedAvailable: res.data.computedAvailable || 0, // 🔥
+            computedAvailable: res.data.computedAvailable || 0,
             pendingAmount: res.data.pendingAmount || 0,
             approvedAmount: res.data.approvedAmount || 0,
-            reservedAmount: res.data.reservedAmount || 0, // 🔥
+            reservedAmount: res.data.reservedAmount || 0,
           };
 
           setEarningsData(data);
 
-          // 🔥 DEBUG مهم جدًا
           if (data.availableBalance !== data.computedAvailable) {
             console.warn("⚠️ Balance mismatch detected!", {
               dbBalance: data.availableBalance,
@@ -572,7 +567,6 @@ const last3Conversations = useMemo(() => {
         { withCredentials: true }
       );
 
-      // دمج بيانات الـ creator القديم مع البيانات الجديدة
       const updatedCourse = { ...course, ...res.data };
 
       dispatch(

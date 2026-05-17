@@ -6,8 +6,6 @@ import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
 import { useTheme } from "../../../context/ThemeContext";
 import { useMessageLogic } from "../functions";
-import LoadingFire from "@components/LoadingFire";
-import LoadingDouble from "../../../components/LoadingDouble";
 import ChatWindow from "../../../components/dashboard/components/ChatWindow";
 import ConversationSidebar from "../../../components/dashboard/components/ConversationSidebar";
 import { compressImage } from "@hooks";

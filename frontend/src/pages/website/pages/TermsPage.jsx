@@ -5,7 +5,7 @@ import {
 } from "@components";
 import { useTranslation } from "react-i18next";
 const TermsPage = () => {
- const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const termsData = [
     {
       title: "1. Platform Purpose",
@@ -68,7 +68,8 @@ const TermsPage = () => {
       subTitle: "Financial transactions must comply with the following rules:",
       items: [
         { text: "Users must pay the full amount for courses or services before access is granted." },
-        { text: "Refunds are only considered in cases where:" ,
+        {
+          text: "Refunds are only considered in cases where:",
           subItems: [
             "The course is defective, misleading, or incomplete",
             "The instructor provides false information or violates platform policies",
@@ -127,46 +128,46 @@ const TermsPage = () => {
 
   return (
     <>
-    <div className="full-width">
-        <Header/>
-    </div>
-    <section className="terms-page">
-      <div className="terms-container">
-
-        <h1>{t("CraftLink Terms of Use")}</h1>
-        <span className="last-update">{t("Last Updated: March 13, 2026")}</span>
-
-        <p>
-          {t("Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients. These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.")}
-        </p>
-
-        {termsData.map((section, index) => (
-          <div key={index} className="terms-section">
-            <h3>{t(section.title)}</h3>
-            {section.subTitle && <p className="sub-title">{t(section.subTitle)}</p>}
-            {section.items && (
-              <ul className="main-list">
-                {section.items.map((item, idx) => (
-                  <li key={idx}>
-                    {t(item.text)}
-                    {item.subItems && (
-                      <ul className="sub-list">
-                        {item.subItems.map((sub, subIdx) => (
-                          <li key={subIdx}>{t(sub)}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {section.note && <p className="note">{t(section.note)}</p>}
-          </div>
-        ))}
-
+      <div className="full-width">
+        <Header />
       </div>
-    </section>
-    <Footer/>
+      <section className="terms-page">
+        <div className="terms-container">
+
+          <h1>{t("CraftLink Terms of Use")}</h1>
+          <span className="last-update">{t("Last Updated: March 13, 2026")}</span>
+
+          <p>
+            {t("Welcome to CraftLink, a platform connecting Instructors, Craftsmen / Trainees, and Clients. These Terms of Use explain in extreme detail the rules, responsibilities, rights, and limitations of each user type on the platform. By using CraftLink, you agree to comply fully with these Terms.")}
+          </p>
+
+          {termsData.map((section, index) => (
+            <div key={index} className="terms-section">
+              <h3>{t(section.title)}</h3>
+              {section.subTitle && <p className="sub-title">{t(section.subTitle)}</p>}
+              {section.items && (
+                <ul className="main-list">
+                  {section.items.map((item, idx) => (
+                    <li key={idx}>
+                      {t(item.text)}
+                      {item.subItems && (
+                        <ul className="sub-list">
+                          {item.subItems.map((sub, subIdx) => (
+                            <li key={subIdx}>{t(sub)}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {section.note && <p className="note">{t(section.note)}</p>}
+            </div>
+          ))}
+
+        </div>
+      </section>
+      <Footer />
     </>
   );
 };

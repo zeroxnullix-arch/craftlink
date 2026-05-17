@@ -16,7 +16,6 @@ const CreatePost = ({ userPhoto, userName }) => {
     const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // ✅ اختيار الصور + preview
     const handleImageChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
 
@@ -31,13 +30,11 @@ const CreatePost = ({ userPhoto, userName }) => {
         });
     };
 
-    // ✅ حذف صورة
     const removeImage = (index) => {
         setPreviewImages((prev) => prev.filter((_, i) => i !== index));
         setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
-    // ✅ رفع الصور على Cloudinary (parallel upload)
     const uploadImagesToCloudinary = async () => {
         if (files.length === 0) return [];
 
@@ -64,7 +61,6 @@ const CreatePost = ({ userPhoto, userName }) => {
         }
     };
 
-    // ✅ إنشاء البوست
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -76,7 +72,6 @@ const CreatePost = ({ userPhoto, userName }) => {
         try {
             setLoading(true);
 
-            // 🔥 رفع الصور على Cloudinary
             const images = await uploadImagesToCloudinary();
 
             const result = await dispatch(
@@ -126,7 +121,7 @@ const CreatePost = ({ userPhoto, userName }) => {
                             onChange={(e) => setContent(e.target.value)}
                             rows="3"
                         />
-  
+
                         <div className="action-buttons">
                             <label className="action-btn">
                                 <input
@@ -140,23 +135,23 @@ const CreatePost = ({ userPhoto, userName }) => {
                             </label>
                         </div>
                     </div>
-                                {/* Preview Images */}
-          {previewImages.length > 0 && (
-            <div className="image-preview-container">
-              {previewImages.map((image, index) => (
-                <div key={index} className="image-preview">
-                  <img src={image} alt={`preview-${index}`} />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="remove-image-btn"
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+                    {/* Preview Images */}
+                    {previewImages.length > 0 && (
+                        <div className="image-preview-container">
+                            {previewImages.map((image, index) => (
+                                <div key={index} className="image-preview">
+                                    <img src={image} alt={`preview-${index}`} />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeImage(index)}
+                                        className="remove-image-btn"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {/* Actions */}
                     <div className="post-actions">

@@ -7,7 +7,7 @@ export const useInputAnimation = () => {
     const parent = e.target.parentNode;
     if (!e.target.value) parent.classList.remove("not-empty");
     parent.classList.remove("focus");
-    
+
   };
   return { handleFocus, handleBlur };
 };

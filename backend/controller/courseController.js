@@ -77,7 +77,7 @@ export const togglePublishCourse = async (req, res) => {
 
     const course = await Course.findById(courseId)
       .populate("lectures")
-      .populate("creator", "name photoUrl"); // 👈 الحل هنا
+      .populate("creator", "name photoUrl");
 
     if (!course) return res.status(404).json({ message: "Course not found" });
 
@@ -158,8 +158,8 @@ export const getCourseById = async (req, res) => {
     }
 
     const course = await Course.findById(courseId)
-      .populate("creator", "name photoUrl description ") // 👈 بيانات المدرس
-      .populate("lectures") // 👈 هيرجع كل المحاضرات
+      .populate("creator", "name photoUrl description ")
+      .populate("lectures")
       .populate({
         path: "reviews",
         populate: {
@@ -196,7 +196,7 @@ export const editCourse = async (req, res) => {
       level,
       isPublished,
       price,
-      thumbnail: thumbnailFromBody, // 👈 استقبل الـ URL هنا
+      thumbnail: thumbnailFromBody,
     } = req.body;
 
     const course = await Course.findById(courseId);
@@ -210,7 +210,6 @@ export const editCourse = async (req, res) => {
         .json({ message: "Not authorized to edit this course" });
     }
 
-    // 👇 اعتمد على الـ URL اللي جاي من الفرونت
     let thumbnail = course.thumbnail;
 
     if (thumbnailFromBody) {
@@ -227,7 +226,6 @@ export const editCourse = async (req, res) => {
     if (price !== undefined) updateData.price = price;
     if (isPublished !== undefined) updateData.isPublished = isPublished;
 
-    // 👇 أهم سطر
     if (thumbnail) updateData.thumbnail = thumbnail;
 
     const updatedCourse = await Course.findByIdAndUpdate(
@@ -259,7 +257,6 @@ export const removeCourse = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    // 👇 مهم جدًا
     if (course.creator.toString() !== req.userId) {
       return res.status(403).json({ message: "Not authorized" });
     }
@@ -295,7 +292,7 @@ export const createLecture = async (req, res) => {
       lectureTitle,
       description: description || "",
       videoUrl: videoUrl || null,
-       duration,
+      duration,
       isPreviewFree: isPreviewFree === "true" || isPreviewFree === true,
     });
     course.lectures.push(lecture._id);
@@ -349,7 +346,7 @@ export const getCourseLecture = async (req, res) => {
 export const editLecture = async (req, res) => {
   try {
     const { lectureId } = req.params;
-    const { lectureTitle, description, videoUrl, isPreviewFree,duration  } = req.body;
+    const { lectureTitle, description, videoUrl, isPreviewFree, duration } = req.body;
     const lecture = await Lecture.findById(lectureId);
     if (!lecture) {
       return res.status(404).json({ message: "Lecture not found" });
@@ -390,7 +387,6 @@ export const removeLecture = async (req, res) => {
       course.lectures.pull(lectureId);
       course.lecturesCount = course.lectures.length;
 
-      // 🔥 الحل هنا
       if (course.lectures.length === 0) {
         course.isPublished = false;
       }
@@ -435,7 +431,6 @@ export const getInstructorCourses = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    // 🔥 حماية ضد undefined و invalid ObjectId
     if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Invalid User ID" });
     }
@@ -478,11 +473,10 @@ export const getInstructorSales = async (req, res) => {
 
     const courseIds = courses.map((course) => course._id);
 
-// ✅
-const payments = await Payment.find({
-  course: { $in: courseIds },
-  status: { $in: ["success", "paid"] },
-});
+    const payments = await Payment.find({
+      course: { $in: courseIds },
+      status: { $in: ["success", "paid"] },
+    });
 
     const totalRevenue = payments.reduce(
       (sum, payment) => sum + (payment.amount || 0),
@@ -499,15 +493,15 @@ const payments = await Payment.find({
       0,
     );
 
- res.status(200).json({
-  success: true,
-  data: {
-    totalRevenue,
-    totalBuyers,
-    totalCourses,
-    totalCourseBuyers,
-  }
-});
+    res.status(200).json({
+      success: true,
+      data: {
+        totalRevenue,
+        totalBuyers,
+        totalCourses,
+        totalCourseBuyers,
+      }
+    });
   } catch (error) {
     console.error("getInstructorSales error:", error);
     res.status(500).json({ message: "Failed to load instructor sales" });

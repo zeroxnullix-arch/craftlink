@@ -139,10 +139,10 @@ export const createPayment = async (req, res) => {
     try {
       const authToken = await getAuthToken();
       console.log("Auth token obtained");
-      
+
       const orderId = await createOrder(authToken, amount, userId, courseId);
       console.log("Order created with ID:", orderId);
-      
+
       const paymentKey = await createPaymentKey(authToken, orderId, amount);
       console.log("Payment key obtained");
 
@@ -208,17 +208,17 @@ export const verifyPayment = async (req, res) => {
     if (["paid", "success"].includes(payment.status)) {
       // Ensure enrollment
       await enrollUserInCourse(userId, payment.course);
-      
+
       // Credit trainer if not already (idempotent)
       const course = await Course.findById(payment.course).populate('creator');
       if (course?.creator?.role === 2) {
-        await User.findByIdAndUpdate(course.creator._id, 
+        await User.findByIdAndUpdate(course.creator._id,
           { $inc: { balance: payment.amount } },
           { new: true }
         );
         console.log(`✅ Credited ${payment.amount} EGP to trainer ${course.creator._id}`);
       }
-      
+
       return res.json({
         success: true,
         course: payment.course,
@@ -332,20 +332,20 @@ export const verifyPaymobTransaction = async (req, res) => {
         // Find payment by transactionId and update it
         let payment = await Payment.findOneAndUpdate(
           { transactionId: String(transactionId) },
-          { 
-            status: "success", 
+          {
+            status: "success",
             paymentResponse: transaction,
             transactionId: String(transactionId)
           },
           { new: true }
         );
-        
+
         // Credit trainer if payment found
         if (payment) {
           try {
             const course = await Course.findById(payment.course).populate('creator');
             if (course?.creator?.role === 2) {
-              await User.findByIdAndUpdate(course.creator._id, 
+              await User.findByIdAndUpdate(course.creator._id,
                 { $inc: { balance: payment.amount } },
                 { new: true }
               );
@@ -361,8 +361,8 @@ export const verifyPaymobTransaction = async (req, res) => {
         if (!payment && transaction.order && transaction.order.id) {
           payment = await Payment.findOneAndUpdate(
             { orderId: String(transaction.order.id) },
-            { 
-              status: "paid", 
+            {
+              status: "paid",
               paymentResponse: transaction,
               transactionId: String(transactionId)
             },
@@ -451,7 +451,7 @@ export const paymentCallback = async (req, res) => {
     const data = req.body;
     console.log("Payment callback received:", JSON.stringify(data, null, 2));
 
-      // Similar logic to webhook
+    // Similar logic to webhook
     if (data.success === true) {
       const orderId = data.order.id;
       const transactionId = data.id;
@@ -468,12 +468,12 @@ export const paymentCallback = async (req, res) => {
       await payment.save();
 
       await enrollUserInCourse(payment.user, payment.course);
-      
+
       // Credit trainer balance
       try {
         const course = await Course.findById(payment.course).populate('creator');
         if (course?.creator?.role === 2) {
-          await User.findByIdAndUpdate(course.creator._id, 
+          await User.findByIdAndUpdate(course.creator._id,
             { $inc: { balance: payment.amount } },
             { new: true }
           );

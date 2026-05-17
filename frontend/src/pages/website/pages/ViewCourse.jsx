@@ -30,7 +30,7 @@ const ViewCourse = () => {
   const [loading, setLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [activeTab, setActiveTab] = useState("Overview");
-  const { userData } = useSelector(state => state.user); // لو عندك Redux للـ user
+  const { userData } = useSelector(state => state.user);
   const [paymentIframeUrl, setPaymentIframeUrl] = useState(null);
   const [loadingPayment, setLoadingPayment] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
@@ -158,7 +158,6 @@ const ViewCourse = () => {
         const { data } = await api.get(`/api/course/getcourse/${courseId}`);
         setCourse(data);
 
-        // 🔥 تشغيل أول فيديو تلقائي
         const firstFree = data.lectures?.find(l => l.isFree);
         if (firstFree) {
           setCurrentVideo(firstFree.videoUrl);
@@ -393,9 +392,6 @@ const ViewCourse = () => {
           <div className="card-container">
             <div className="title-card">
               <p>{t(course?.category)}</p>
-              {/* <div className="course-meta-info">
-              <span>{buyersCount} Purchases</span>
-            </div> */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

@@ -56,9 +56,9 @@ const ConversationSidebar = ({
           }
           const formattedTime = lastMessage?.createdAt
             ? new Date(lastMessage.createdAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
+              hour: "2-digit",
+              minute: "2-digit",
+            })
             : "";
           const unreadCount = unreadMap[String(conversation._id)] ?? 0;
           console.log(unreadCount);
@@ -75,9 +75,8 @@ const ConversationSidebar = ({
                   className="conv-user-avatar"
                 />
                 <GoDotFill
-                  className={`status ${
-                    onlineUsers.includes(otherUser?._id) ? "online" : "offline"
-                  }`}
+                  className={`status ${onlineUsers.includes(otherUser?._id) ? "online" : "offline"
+                    }`}
                 />
               </div>
               <div className="conversation-right">

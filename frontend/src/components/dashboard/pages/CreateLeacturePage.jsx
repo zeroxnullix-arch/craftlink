@@ -20,7 +20,7 @@ const CLOUDINARY_URL =
 const CreateLecturePage = () => {
   const { handleFocus, handleBlur } = useInputAnimation();
   const { courseId } = useParams();
- const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [lectureTitle, setLectureTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
@@ -186,12 +186,10 @@ const CreateLecturePage = () => {
 
       toast.success("Lecture deleted successfully 🗑️");
 
-      // 🔥 امسحه من الليست
       setLectures((prev) =>
         prev.filter((lec) => lec._id !== editingLecture._id)
       );
 
-      // 🔥 reset الفورم
       setEditingLecture(null);
       setLectureTitle("");
       setDescription("");
@@ -223,16 +221,15 @@ const CreateLecturePage = () => {
   }, [courseId]);
 
   const handleEditClick = (lecture) => {
-  if (editingLecture?._id === lecture._id) return;
+    if (editingLecture?._id === lecture._id) return;
 
-  setEditingLecture(lecture);
-  setLectureTitle(lecture.lectureTitle);
-  setDescription(lecture.description);
-  setIsPreviewFree(lecture.isPreviewFree);
-
-  setVideoFile(null); // مهم
-  setVideoUrl(lecture.videoUrl || "");
-};
+    setEditingLecture(lecture);
+    setLectureTitle(lecture.lectureTitle);
+    setDescription(lecture.description);
+    setIsPreviewFree(lecture.isPreviewFree);
+    setVideoFile(null);
+    setVideoUrl(lecture.videoUrl || "");
+  };
 
   const formatDuration = (seconds) => {
     if (!seconds) return "00:00";
@@ -259,13 +256,13 @@ const CreateLecturePage = () => {
 
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="create-thumb">
-    <ThumbnailUpload
-    key={resetUpload}
-  type="video"
-  setThumbnail={setVideoFile}
-  reset={resetUpload}
-  currentVideoUrl={editingLecture ? videoUrl : null}
-/>
+              <ThumbnailUpload
+                key={resetUpload}
+                type="video"
+                setThumbnail={setVideoFile}
+                reset={resetUpload}
+                currentVideoUrl={editingLecture ? videoUrl : null}
+              />
             </div>
 
             <AuthInput
@@ -323,7 +320,7 @@ const CreateLecturePage = () => {
                       setIsPreviewFree(false);
                       setVideoUrl("");
 
-                      setResetUpload((prev) => !prev); // 🔥 ده الحل
+                      setResetUpload((prev) => !prev);
                     }}
                   >
                     {t("Cancel")}

@@ -21,7 +21,7 @@ const TimeLine = () => {
   const [activeMenu, setActiveMenu] = useState(0);
   const [sidebarHide, setSidebarHide] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
- const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const posts = useSelector((state) => state.posts.posts);
   const postsStatus = useSelector((state) => state.posts.status);
   const createStatus = useSelector((state) => state.posts.createStatus);
@@ -108,14 +108,14 @@ const TimeLine = () => {
             </div>
             <div className="todo ads">
               <div className="head">
-                <FaBuysellads/>
+                <FaBuysellads />
                 <h3> {t("Ads")}</h3>
               </div>
               <div className="todo-list">
                 <div class="card sweeperCard o-hidden">
                   <div class="containers">
                     <div class="icon">
-                      <SiGoogleadsense/>
+                      <SiGoogleadsense />
                     </div>
                     <div class="title my-3">{t("Easy For Everyone")}</div>
                     <div class="subtitle">
@@ -123,14 +123,14 @@ const TimeLine = () => {
                     </div>
                     <div class="linkMore mt-3">
                       {t("Learn More")}
-                     <TbExternalLink/>
+                      <TbExternalLink />
                     </div>
                   </div>
                 </div>
                 <div class="card sweeperCard o-hidden">
                   <div class="containers">
                     <div class="icon">
-                      <SiGoogleadsense/>
+                      <SiGoogleadsense />
                     </div>
                     <div class="title my-3">{t("Easy For Everyone")}</div>
                     <div class="subtitle">
@@ -138,12 +138,10 @@ const TimeLine = () => {
                     </div>
                     <div class="linkMore mt-3">
                       {t("Learn More")}
-                     <TbExternalLink/>
+                      <TbExternalLink />
                     </div>
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>

@@ -20,56 +20,55 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../../redux/userSlice";
 export default function AdminLogin() {
   const navigate = useNavigate();
-const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [showPass, setShowPass] = useState(false);
 
   const togglePass = () => {
     setShowPass((prev) => !prev);
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!username || !password) {
-    return toast.error("Please enter your username and password.");
-  }
-
-  try {
-    setLoading(true);
-
-    const res = await api.post(
-      "/api/auth/admin-login",
-      { username, password },
-      { withCredentials: true }
-    );
-
-    // 💥 أهم سطر (ربط Redux)
-    const user = res.data?.user || res.data;
-
-    if (user) {
-      dispatch(setUserData(user)); // 🔥 هنا الحل
-
-      toast.success("Successfully logged in");
-
-      navigate("/dashboard");
-    } else {
-      toast.error(res.data?.message || "Failed to log in");
+    if (!username || !password) {
+      return toast.error("Please enter your username and password.");
     }
 
-  } catch (error) {
-    console.error(error);
+    try {
+      setLoading(true);
 
-    toast.error(
-      error.response?.data?.message || "Failed to log in"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      const res = await api.post(
+        "/api/auth/admin-login",
+        { username, password },
+        { withCredentials: true }
+      );
+
+      const user = res.data?.user || res.data;
+
+      if (user) {
+        dispatch(setUserData(user));
+
+        toast.success("Successfully logged in");
+
+        navigate("/dashboard");
+      } else {
+        toast.error(res.data?.message || "Failed to log in");
+      }
+
+    } catch (error) {
+      console.error(error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to log in"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const inputs = useMemo(
     () => [
@@ -145,9 +144,7 @@ const handleSubmit = async (e) => {
 
               </div>
             </div>
-
             <SideImg src={bg} />
-
           </div>
         </section>
       </main>

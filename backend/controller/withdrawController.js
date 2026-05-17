@@ -44,7 +44,6 @@ export const getInstructorEarnings = async (req, res) => {
     // ================== COMPUTE & SYNC BALANCE ==================
     const computedAvailable = totalEarnings - totalWithdrawn - reservedAmount;
 
-    // 🔥 زامن الـ balance في DB مع الحساب الحقيقي
     await User.findByIdAndUpdate(instructorId, {
       $set: { balance: computedAvailable },
     });
@@ -57,7 +56,7 @@ export const getInstructorEarnings = async (req, res) => {
       pendingAmount,
       approvedAmount,
       reservedAmount,
-      availableBalance: computedAvailable, // مصدر واحد للحقيقة
+      availableBalance: computedAvailable,
       withdrawals,
     });
   } catch (err) {
@@ -109,7 +108,6 @@ export const requestWithdrawal = async (req, res) => {
     }
 
     // Deduct amount from balance (reserve it)
-    // ✅ الصح
     const pendingRequest = await Withdrawal.findOne({
       instructor: instructorId,
       status: "pending",
@@ -120,7 +118,6 @@ export const requestWithdrawal = async (req, res) => {
         .json({ message: "You already have a pending withdrawal request" });
     }
 
-    // بعدين الخصم
     await User.findByIdAndUpdate(instructorId, {
       $inc: { balance: -Number(amount) },
     });
@@ -166,7 +163,6 @@ export const getWithdrawalHistory = async (req, res) => {
 // Get dashboard statistics
 export const getDashboardStats = async (req, res) => {
   try {
-    // التأكد من صلاحية المستخدم
     if (req.user?.role !== 0) {
       return res.status(403).json({ message: "Access denied" });
     }
@@ -193,7 +189,6 @@ export const getDashboardStats = async (req, res) => {
     const totalRevenue = totalRevenueAgg[0]?.total || 0;
 
     // ================== Withdrawals ==================
-    // نجمع كل الحالات مرة واحدة لتجنب مشاكل الـ aggregation الفارغ
     const withdrawalStats = await Withdrawal.aggregate([
       {
         $group: {
@@ -354,7 +349,6 @@ export const rejectWithdrawal = async (req, res) => {
     withdrawal.approvalDate = new Date();
     await withdrawal.save();
 
-    // إرجاع المبلغ للمستخدم
     await User.findByIdAndUpdate(withdrawal.instructor, {
       $inc: { balance: withdrawal.amount },
     });

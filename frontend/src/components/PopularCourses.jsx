@@ -2,33 +2,33 @@ import React, { useState } from "react";
 import CourseCard from "./CourseCard";
 import { useTranslation } from "react-i18next";
 const PopularCourses = ({ courses = [], title = "Popular Courses", limit = 12 }) => {
-   const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(courses.length / limit);
   const startIndex = (currentPage - 1) * limit;
   const currentCourses = courses.slice(startIndex, startIndex + limit);
 
-const getTotalDuration = (lectures = []) => {
-  const totalSeconds = lectures.reduce((acc, lec) => {
-    const duration = Number(lec?.duration || 0);
-    return acc + duration;
-  }, 0);
+  const getTotalDuration = (lectures = []) => {
+    const totalSeconds = lectures.reduce((acc, lec) => {
+      const duration = Number(lec?.duration || 0);
+      return acc + duration;
+    }, 0);
 
-  if (totalSeconds <= 0) return "0s";
+    if (totalSeconds <= 0) return "0s";
 
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = Math.floor(totalSeconds % 60);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
 
-  let result = "";
+    let result = "";
 
-  if (hours > 0) result += `${hours}h `;
-  if (minutes > 0) result += `${minutes}m `;
-  if (seconds > 0 || (!hours && !minutes)) result += `${seconds}s`;
+    if (hours > 0) result += `${hours}h `;
+    if (minutes > 0) result += `${minutes}m `;
+    if (seconds > 0 || (!hours && !minutes)) result += `${seconds}s`;
 
-  return result.trim();
-};
+    return result.trim();
+  };
   const maxVisible = 3;
 
   let startPage = Math.max(currentPage - 1, 1);
@@ -60,7 +60,6 @@ const getTotalDuration = (lectures = []) => {
         ))}
       </div>
 
-      {/* 🔥 Pagination بدل See More */}
       {totalPages > 1 && (
         <div className="pagination">
           <button
@@ -70,7 +69,6 @@ const getTotalDuration = (lectures = []) => {
             {t("Prev")}
           </button>
 
-          {/* الصفحات */}
           {startPage > 1 && (
             <>
               <button onClick={() => setCurrentPage(1)}>1</button>

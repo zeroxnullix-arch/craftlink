@@ -23,11 +23,11 @@ def query_huggingface(payload):
         print("❌ HF_TOKEN is missing!")
         return None
         
-    for _ in range(3): # محاولة 3 مرات في حال كان الموديل يحمل
+    for _ in range(3):
         response = requests.post(API_URL, headers=headers, json=payload)
         if response.status_code == 200:
             return response.json()
-        elif response.status_code == 503: # الموديل بيحمل
+        elif response.status_code == 503:
             time.sleep(5)
             continue
         else:

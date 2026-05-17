@@ -30,8 +30,8 @@ const withdrawalSchema = new mongoose.Schema(
       default: "pending",
     },
     reason: {
-  type: String,
-}, // For rejection reason
+      type: String,
+    }, // For rejection reason
     requestDate: {
       type: Date,
       default: Date.now,

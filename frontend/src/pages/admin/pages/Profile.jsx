@@ -236,8 +236,6 @@ const Profile = () => {
                   </div>
                 )}
               </div>
-
-
               <div className="courses-feed">
                 <div className="content-header">
                   <div className="action-tab">
@@ -499,9 +497,6 @@ const Profile = () => {
                             <span>
                               {course.lecturesCount || 0} Lectures • {course.level}
                             </span>
-                            {/* <span className="enrolled-count">
-                                {(Array.isArray(course?.enrolledCraftsmen) ? course.enrolledCraftsmen.length : 0)} enrolled
-                            </span> */}
                             <h2>EGP {course.price}</h2>
                           </div>
                         </div>
@@ -708,7 +703,6 @@ const Profile = () => {
                       const otherUser = conv.members.find(
                         (m) => m._id !== currentUser._id
                       );
-
                       return (
                         <div
                           className="user"
@@ -732,44 +726,25 @@ const Profile = () => {
                   )}
                 </div>
               </div>
-              {/* 
-              <div className="latest-purchases">
-                <div className="head">
-                  <h3>Latest purchases</h3>
-                </div>
-                <div className="content">
-                  {[1, 2, 3].map((i) => (
-                    <div className="user" key={i}>
-                      <img src={userAvatar} alt="" />
-                      <div className="info">
-                        <h4>Muhammed Salah</h4>
-                        <span>Craftsman</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
-
-
-{
-  currentUser?.role === 2 &&
-              <button
-                type="button"
-                className="join-button"
-                onClick={() => navigate("/createcourse")}
-              >
-                <span className="fold"></span>
-                <div className="points_wrapper">
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <i key={i} className="point"></i>
-                  ))}
-                </div>
-                <span className="inner-btn">
-                  <RiVideoAiLine className="icon" />
-                  {t("Create New Course")}
-                </span>
-              </button>
-                }
+              {
+                currentUser?.role === 2 &&
+                <button
+                  type="button"
+                  className="join-button"
+                  onClick={() => navigate("/createcourse")}
+                >
+                  <span className="fold"></span>
+                  <div className="points_wrapper">
+                    {Array.from({ length: 10 }).map((_, i) => (
+                      <i key={i} className="point"></i>
+                    ))}
+                  </div>
+                  <span className="inner-btn">
+                    <RiVideoAiLine className="icon" />
+                    {t("Create New Course")}
+                  </span>
+                </button>
+              }
             </div>
           </div>
         </main>

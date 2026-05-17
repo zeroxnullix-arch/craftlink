@@ -70,7 +70,7 @@ export default function ResetPassword() {
     if (step === 2) return verifyOtp();
     if (step === 3) return resetPassword();
   };
-const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   return (
     <>
       <div className="background" />
@@ -165,14 +165,14 @@ const { i18n, t } = useTranslation();
                         )}
                       </div>
 
-                      <AuthButton  type="submit" loading={loading}>
+                      <AuthButton type="submit" loading={loading}>
                         {t("Verify OTP")}
                       </AuthButton>
                     </>
                   )}
 
                   {step === 3 && (
-                    <AuthButton  type="submit" loading={loading}>
+                    <AuthButton type="submit" loading={loading}>
                       {t("Reset Password")}
                     </AuthButton>
                   )}

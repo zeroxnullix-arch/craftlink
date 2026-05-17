@@ -62,7 +62,7 @@ const AuthInput = ({
           ref={inputRef}
           type={type}
           value={value}
-           onChange={(e) => onChange?.(e.target.value)} 
+          onChange={(e) => onChange?.(e.target.value)}
           onFocus={handleFocusLocal}
           onBlur={handleBlurLocal}
           id={id}

@@ -2,7 +2,8 @@ import express from "express";
 import {
     createPayment,
     paymentCallback,
-    verifyPayment, getPaymentStatus, verifyPaymobTransaction } from "../controller/paymentController.js";
+    verifyPayment, getPaymentStatus, verifyPaymobTransaction
+} from "../controller/paymentController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 const paymentRouter = express.Router();
 paymentRouter.post("/create-payment", authMiddleware, createPayment);

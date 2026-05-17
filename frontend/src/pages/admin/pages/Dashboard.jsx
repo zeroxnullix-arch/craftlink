@@ -6,9 +6,6 @@ import { toast } from "react-toastify";
 import Nav from "../../../components/dashboard/components/Nav";
 import SideBar from "../../../components/dashboard/components/SideBar";
 import { useTheme } from "../../../context/ThemeContext";
-import { PiUserCircleDashed, PiSubtitlesBold } from "@icons";
-import { BsCurrencyPound } from "react-icons/bs";
-import image from "../../../assets/img/image.png";
 import userAvatar from "../../../assets/img/userAvatar.jpg";
 import { HiVideoCamera } from "react-icons/hi2";
 import { FaUsers } from "react-icons/fa";
@@ -19,7 +16,7 @@ const Dashboard = () => {
     const { darkMode, setDarkMode } = useTheme();
     const [sidebarHide, setSidebarHide] = useState(false);
     const [searchShow, setSearchShow] = useState(false);
-const { i18n, t } = useTranslation();
+    const { i18n, t } = useTranslation();
     const [stats, setStats] = useState(null);
     const [withdrawals, setWithdrawals] = useState([]);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
@@ -37,19 +34,12 @@ const { i18n, t } = useTranslation();
     }, [darkMode]);
 
     useEffect(() => {
-        // Check if user is admin
-        // if (currentUser?.role !== 0) {
-        //   navigate("/profile");
-        //   return;
-        // }
-
         loadDashboardData();
     }, [currentUser]);
 
     const loadDashboardData = async () => {
         try {
             setLoading(true);
-
             // Load stats
             const statsRes = await api.get("/api/withdrawal/admin/dashboard-stats", {
                 withCredentials: true,
@@ -62,7 +52,6 @@ const { i18n, t } = useTranslation();
             const withdrawalsRes = await api.get(
                 "/api/withdrawal/admin/withdrawals",
                 {
-                    // const withdrawalsRes = await api.get("/api/withdrawal/admin/withdrawals?status=pending", {
                     withCredentials: true,
                 },
             );
@@ -151,24 +140,6 @@ const { i18n, t } = useTranslation();
         } catch (error) {
             console.error("Error completing withdrawal:", error);
             toast.error("failed to complete withdrawal");
-        }
-    };
-
-    const handleToggleUserStatus = async (userId) => {
-        try {
-            const res = await api.post(
-                `/api/withdrawal/admin/toggle-user/${userId}`,
-                {},
-                { withCredentials: true },
-            );
-
-            if (res.data?.success) {
-                toast.success(res.data.message);
-                loadDashboardData();
-            }
-        } catch (error) {
-            console.error("Error toggling user status:", error);
-            toast.error("failed to toggle user status");
         }
     };
 
@@ -261,7 +232,7 @@ const { i18n, t } = useTranslation();
                                             setShowWithdrawal(false)
                                         }}
                                     >
-                                         {t("Approve")}
+                                        {t("Approve")}
                                     </button>
 
                                     <button
@@ -308,50 +279,6 @@ const { i18n, t } = useTranslation();
                 />
 
                 <main className="main-dash">
-                    {/* <div className="stats-num-dash">
-                        {stats && (
-                            <div className="admin-stats">
-                                <div className="stats-grid">
-                                    <div className="stat-card total">
-                                        <div className="stat-icon">
-                                            <FaUsers />
-                                        </div>
-                                        <div className="stat-content">
-                                            <div>
-
-                                            <h3>Users</h3>
-                                            <p className="stat-number">{stats.users.total}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="stat-card courses">
-                                        <div className="stat-icon">
-                                            <HiVideoCamera />
-                                        </div>
-                                        <div className="stat-content">
-                                            <div>
-
-                                            <h3>Courses</h3>
-                                            <p className="stat-number">{stats.courses.total}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="stat-card revenue">
-                                        <div className="stat-icon">
-                                            <BsCreditCard2FrontFill />
-                                        </div>
-                                        <div className="stat-content">
-                                            <div>
-
-                                            <h3>Revenues</h3>
-                                            <p className="stat-number">{stats.revenue.total} EGP</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div> */}
                     <div className="order">
                         <div className="order-controls">
                             <div className="stats-num-dash">
@@ -382,18 +309,6 @@ const { i18n, t } = useTranslation();
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* <div className="stat-card revenue">
-                                        <div className="stat-icon">
-                                            <BsCreditCard2FrontFill />
-                                        </div>
-                                        <div className="stat-content">
-                                            <div>
-
-                                            <h3>Revenues</h3>
-                                            <p className="stat-number">{stats.revenue.total} EGP</p>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                         </div>
                                     </div>
                                 )}
@@ -503,40 +418,6 @@ const { i18n, t } = useTranslation();
                                                     <span>{w.amount}</span>
                                                     <span className="currency"> {t("EGP")}</span>
                                                 </div>
-                                                {/* <div>
-                                                    <div className="history-actions">
-                                                        {w.status === "pending" && (
-                                                            <>
-                                                                <button className="btn-approved"
-                                                                    onClick={() => handleApproveWithdrawal(w._id)}
-                                                                >
-                                                                    ✔
-                                                                </button>
-                                                                <button
-                                                                    className="btn-rejected"
-                                                                    onClick={() => handleRejectWithdrawal(w._id)}
-                                                                >
-                                                                    ✖
-                                                                </button>
-                                                            </>
-                                                        )}
-
-                                                        {w.status === "approved" && (
-                                                            <button
-                                                                className="btn-completed"
-                                                                onClick={() => handleCompleteWithdrawal(w._id)}
-                                                            >
-                                                                ✔
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                    <div className={`history-status ${w.status}`}>
-                                                        {w.status === "pending" && "pending"}
-                                                        {w.status === "approved" && "approved"}
-                                                        {w.status === "completed" && "completed"}
-                                                        {w.status === "rejected" && "rejected"}
-                                                    </div>
-                                                </div> */}
                                             </div>
                                         </div>
 

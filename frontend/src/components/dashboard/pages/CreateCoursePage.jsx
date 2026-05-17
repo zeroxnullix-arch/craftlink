@@ -32,7 +32,7 @@ const CreateCoursePage = () => {
   const [resetUpload, setResetUpload] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const compressImage = (file, maxWidth = 800, maxHeight = 800) => {
-    
+
     return new Promise((resolve) => {
       const img = new Image();
       img.src = URL.createObjectURL(file);
@@ -128,7 +128,7 @@ const CreateCoursePage = () => {
       console.error(error);
       toast.error("Something went wrong ❌");
     } finally {
-      setLoading(false); // 👈 هنا بس
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -143,7 +143,7 @@ const CreateCoursePage = () => {
           setDescription(res.data.description || "");
           setCategory(res.data.category || "");
           setLevel(res.data.level || "");
-           setResetUpload(true);
+          setResetUpload(true);
         } catch (err) {
           console.error(err);
         }
@@ -166,7 +166,7 @@ const CreateCoursePage = () => {
 
       toast.success("Course deleted successfully ✅");
 
-      navigate("/profile"); // غيرها حسب عندك
+      navigate("/profile");
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete course ❌");
@@ -189,11 +189,10 @@ const CreateCoursePage = () => {
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="create-thumb">
               <ThumbnailUpload
-// key={resetUpload}
-  setThumbnail={setThumbnail}
-  type="image"
-  reset={resetUpload}
-  currentImageUrl={courseDataState?.thumbnail}
+                setThumbnail={setThumbnail}
+                type="image"
+                reset={resetUpload}
+                currentImageUrl={courseDataState?.thumbnail}
               />
               <div className="info">
                 <AuthInput

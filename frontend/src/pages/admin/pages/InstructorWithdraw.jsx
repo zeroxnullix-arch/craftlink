@@ -6,8 +6,6 @@ import SideBar from "../../../components/dashboard/components/SideBar";
 import { useTheme } from "../../../context/ThemeContext";
 import { toast } from "react-toastify";
 import { api } from "@services/api";
-import image from "../../../assets/img/image.png";
-import userAvatar from "../../../assets/img/userAvatar.jpg";
 import "./InstructorWithdraw.css";
 import { SiMoneygram } from "react-icons/si";
 import { BsClockHistory } from "react-icons/bs";
@@ -24,14 +22,12 @@ const InstructorWithdraw = () => {
   const { darkMode, setDarkMode } = useTheme();
   const [sidebarHide, setSidebarHide] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
- const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { handleFocus, handleBlur } = useInputAnimation();
   const [earnings, setEarnings] = useState(null);
   const [withdrawals, setWithdrawals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  // const [activeTab, setActiveTab] = useState("request"); // request, history
-
   const [amount, setAmount] = useState("");
   const [accountInfo, setAccountInfo] = useState({
     name: "",
@@ -50,7 +46,6 @@ const InstructorWithdraw = () => {
   }, [darkMode]);
 
   useEffect(() => {
-    // إذا لم يكن المستخدم مدرباً
     if (!isInstructor) {
       navigate("/profile");
       return;
@@ -62,7 +57,6 @@ const InstructorWithdraw = () => {
   const loadEarningsData = async () => {
     try {
       setLoading(true);
-
       // Load earnings
       const earningsRes = await api.get("/api/withdrawal/earnings", {
         withCredentials: true,
@@ -126,7 +120,6 @@ const InstructorWithdraw = () => {
           iban: "",
           address: "",
         });
-        // setActiveTab("history");
         loadEarningsData();
       }
     } catch (error) {
@@ -161,7 +154,6 @@ const InstructorWithdraw = () => {
   };
   const getChartData = () => {
     if (!withdrawals || withdrawals.length === 0) return [];
-    // حساب توزيع الحالات
     const statusCount = {
       pending: 0,
       approved: 0,
@@ -209,7 +201,6 @@ const InstructorWithdraw = () => {
 
   const COLORS = ["#10b981", "#f59e0b", "#06b6d4"];
 
-  // مكون BarChart مخصص
   const CustomBarChart = ({ data, height = 300 }) => {
     if (!data || data.length === 0) return null;
     const maxValue = Math.max(...data.map((d) => d.value || 0));
@@ -244,7 +235,6 @@ const InstructorWithdraw = () => {
     );
   };
 
-  // مكون PieChart مخصص
   const CustomPieChart = ({ data, height = 300 }) => {
     if (!data || data.length === 0) return null;
     const total = data.reduce((sum, item) => sum + (item.value || 0), 0);
@@ -256,7 +246,6 @@ const InstructorWithdraw = () => {
       const endAngle = currentAngle + sliceAngle;
       const color = getStatusBadgeColor(item.status);
 
-      // حساب نقاط المسار
       const start = polarToCartesian(150, 150, 100, endAngle);
       const end = polarToCartesian(150, 150, 100, startAngle);
       const largeArc = sliceAngle > 180 ? 1 : 0;
@@ -314,7 +303,6 @@ const InstructorWithdraw = () => {
     );
   };
 
-  // دالة مساعدة لتحويل الإحداثيات القطبية
   const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
     const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
     return {
@@ -367,26 +355,6 @@ const InstructorWithdraw = () => {
                     </p>
                   </div>
                 </div>
-
-                {/* <div className="earnings-card pending-amount">
-                  <div className="earnings-icon"><BsClockHistory /></div>
-                  <div className="earnings-content">
-                    <h3>Balance Pending</h3>
-                    <p className="earnings-amount">
-                      {earnings.pendingAmount || 0} EGP
-                    </p>
-                  </div>
-                </div>
-
-                <div className="earnings-card approved-amount">
-                  <div className="earnings-icon">✅</div>
-                  <div className="earnings-content">
-                    <h3>Approved</h3>
-                    <p className="earnings-amount">
-                      {earnings.approvedAmount || 0} EGP
-                    </p>
-                  </div>
-                </div> */}
                 <div className="earnings-card approved-amount">
                   <div className="earnings-icon"><MdCreditScore /></div>
                   <div className="earnings-content">
@@ -414,43 +382,16 @@ const InstructorWithdraw = () => {
               </div>
             )}
 
-            {/* Tabs */}
-            {/* <div className="withdraw-tabs">
-              <button
-                className={`tab-btn `}
-                // onClick={() => setActiveTab("request")}
-              >
-                طلب سحب جديد
-              </button>
-              <button
-                className={`tab-btn `}
-              
-              >
-                New withdrawal request ({withdrawals.length})
-              </button>
-            </div> */}
 
-            {/* Tab Content */}
-            {/* {activeTab === "request" && ( */}
             <div className="w-f-h">
               <div className="withdraw-form-section">
                 <div className="form-container">
                   <h2>{t("Order Details")}</h2>
 
                   <div className="form-group">
-                    {/* <label>The amount to be withdrawn (EGP)</label> */}
-                    {/* <input
-                      type="number"
-                      placeholder="Enter the amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      min="0"
-                      max={earnings?.availableBalance}
-                    /> */}
                     <AuthInput
                       type="text"
                       label={t("Amount (EGP)")}
-                      // Icon={PiSubtitles}
                       handleFocus={handleFocus}
                       handleBlur={handleBlur}
                       value={amount}
@@ -461,20 +402,13 @@ const InstructorWithdraw = () => {
                     </small>
                   </div>
 
-                  {/* <h3>Vodafone Cash information</h3> */}
 
                   <div className="form-row">
                     <div className="form-group">
-                      {/* <label>full name *</label> */}
-                      {/* <input
-                        placeholder="full name"
-                        value={accountInfo.name}
-                        onChange={handleAccountInfoChange}
-                      /> */}
+
                       <AuthInput
                         type="text"
                         label={t("Full Name")}
-                        // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
                         value={accountInfo.name}
@@ -482,18 +416,10 @@ const InstructorWithdraw = () => {
                       />
                     </div>
                     <div className="form-group">
-                      {/* <label>Vodafone Cash number *</label> */}
-                      {/* <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Vodafone Cash number"
-                        value={accountInfo.phone}
-                        onChange={handleAccountInfoChange}
-                      /> */}
+
                       <AuthInput
                         type="tel"
                         label={t("Vodafone Cash number")}
-                        // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
                         value={accountInfo.phone}
@@ -504,18 +430,10 @@ const InstructorWithdraw = () => {
 
                   <div className="form-row">
                     <div className="form-group">
-                      {/* <label>e-mail</label>
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="e-mail"
-                        value={accountInfo.email}
-                        onChange={handleAccountInfoChange}
-                      /> */}
+
                       <AuthInput
                         type="email"
                         label={t("E-mail")}
-                        // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
                         value={accountInfo.email}
@@ -523,18 +441,9 @@ const InstructorWithdraw = () => {
                       />
                     </div>
                     <div className="form-group">
-                      {/* <label>Vodafone Cash wallet number</label>
-                      <input
-                        type="tel"
-                        name="vodafonePhone"
-                        placeholder="Wallet number"
-                        value={accountInfo.vodafonePhone}
-                        onChange={handleAccountInfoChange}
-                      /> */}
                       <AuthInput
                         type="tel"
                         label={t("Wallet number")}
-                        // Icon={PiSubtitles}
                         handleFocus={handleFocus}
                         handleBlur={handleBlur}
                         value={accountInfo.vodafonePhone}
@@ -544,19 +453,10 @@ const InstructorWithdraw = () => {
                   </div>
 
                   <div className="form-group">
-                    {/* <label>the address</label>
-                    <textarea
-                      name="address"
-                      placeholder="the address"
-                      value={accountInfo.address}
-                      onChange={handleAccountInfoChange}
-                      rows="3"
-                    /> */}
                     <AuthInput
                       textarea
                       type="tel"
                       label={t("Address")}
-                      // Icon={PiSubtitles}
                       handleFocus={handleFocus}
                       handleBlur={handleBlur}
                       value={accountInfo.address}
@@ -573,9 +473,6 @@ const InstructorWithdraw = () => {
                   </button>
                 </div>
               </div>
-              {/* )} */}
-
-              {/* {activeTab === "history" && ( */}
               <div className="withdrawals-history">
                 <h2>{t("History")}</h2>
                 {withdrawals.length === 0 ? (
@@ -625,7 +522,6 @@ const InstructorWithdraw = () => {
                 )}
               </div>
             </div>
-            {/* )} */}
           </div>
         </main>
       </section>

@@ -40,14 +40,16 @@ import { VscSettings } from "react-icons/vsc";
 import { GoDotFill } from "react-icons/go";
 import {
   BiMessageSquareError,
-BiLike,
-BiSolidLike,
-BiComment,
-BiArrowBack  } from "react-icons/bi";
+  BiLike,
+  BiSolidLike,
+  BiComment,
+  BiArrowBack
+} from "react-icons/bi";
 import {
-  AiOutlineMessage,} from "react-icons/ai";
+  AiOutlineMessage,
+} from "react-icons/ai";
 import { LuWifiOff } from "react-icons/lu";
-import { RiChatSmileAiFill, RiSearch2Line  } from "react-icons/ri";
+import { RiChatSmileAiFill, RiSearch2Line } from "react-icons/ri";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { HiSparkles } from "react-icons/hi2";
 import { LuSearchX } from "react-icons/lu";
@@ -104,19 +106,19 @@ export {
   SiGoogleadsense,
   FaRegNewspaper,
   BiLike,
-BiSolidLike,
-BiComment,
-SiTelegram,
-BsThreeDots,
-RiImageCircleAiFill,
-BiArrowBack,
-FaPhoneFlip,
-PiSubtitlesBold,
-MdTimeline,
-PiUserCircleDashed,
-TbHelpSquareRoundedFilled,
-BiSupport,
-MdPrivacyTip,
-GoCodeOfConduct,
-RiSearchLine,
+  BiSolidLike,
+  BiComment,
+  SiTelegram,
+  BsThreeDots,
+  RiImageCircleAiFill,
+  BiArrowBack,
+  FaPhoneFlip,
+  PiSubtitlesBold,
+  MdTimeline,
+  PiUserCircleDashed,
+  TbHelpSquareRoundedFilled,
+  BiSupport,
+  MdPrivacyTip,
+  GoCodeOfConduct,
+  RiSearchLine,
 };

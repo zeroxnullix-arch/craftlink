@@ -15,14 +15,14 @@ const courseSlice = createSlice({
         lastUpdated: Date.now(),
       };
     },
-   setCourseData: (state, action) => {
-  const courses = action.payload;
+    setCourseData: (state, action) => {
+      const courses = action.payload;
 
-  courses.forEach((course) => {
-    state.courseData[course._id] = course;
-    state.lastUpdated[course._id] = Date.now();
-  });
-},
+      courses.forEach((course) => {
+        state.courseData[course._id] = course;
+        state.lastUpdated[course._id] = Date.now();
+      });
+    },
     setSelectedCourse: (state, action) => {
       state.selectedCourse = action.payload;
     },

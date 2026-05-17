@@ -45,7 +45,7 @@ const CreateLecture = () => {
           setDarkMode={setDarkMode}
         />
 
-<CreateLecturePage/>
+        <CreateLecturePage />
       </section>
     </div>
   );

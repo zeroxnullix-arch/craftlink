@@ -12,7 +12,7 @@ const HeroImgSection = () => {
         <section className="section-main intro">
             <div className="left section-layout">
                 <div className="text-intro-container">
-     
+
                     <h2>
                         {t("unlock your")} <span>{t("creative potential")}</span> & {t("start your career")}
                         <span>!</span>
@@ -21,8 +21,8 @@ const HeroImgSection = () => {
                         {t("master creative skills, explore endless learning opportunities, start today and transform your future.")}
                     </p>
                     <div className="btn-group">
-                        <button className="join-now" onClick={()=>navigate("/signup")}>{t("join now")}</button>
-                        <button className="learn-more" onClick={()=>navigate("/about")}>
+                        <button className="join-now" onClick={() => navigate("/signup")}>{t("join now")}</button>
+                        <button className="learn-more" onClick={() => navigate("/about")}>
                             <span>{t("Learn More")}</span>
                             <FaLocationArrow />
                         </button>
@@ -51,7 +51,7 @@ const HeroImgSection = () => {
                 </div>
                 <div className="img-intro-container">
                     <img src={image} className="inverted-radius" alt="intro" />
-                    <button onClick={()=>navigate("/search")}>
+                    <button onClick={() => navigate("/search")}>
                         <FaPlay />
                     </button>
                 </div>
